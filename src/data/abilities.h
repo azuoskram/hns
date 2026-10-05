@@ -2432,4 +2432,66 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
     },
+
+    [ABILITY_PIERCING_DRILL] =
+    {
+        .name = _("PIERCING DRILL"),
+        .description = COMPOUND_STRING("Contact evades protection."),
+        .aiRating = 5,
+    },
+
+    [ABILITY_DRAGONIZE] =
+    {
+        .name = _("DRAGONIZE"),
+        .description = COMPOUND_STRING("Normal moves turn Dragon."),
+        .aiRating = 8,
+    },
+
+    [ABILITY_EELEVATE] =
+    {
+        .name = _("EELEVATE"),
+        .description = COMPOUND_STRING("Levitate and Beast Boost."),
+        .aiRating = 8,
+    },
+
+    [ABILITY_314] =
+    {
+        .name = _("-------"),
+        .description = COMPOUND_STRING("No special ability."),
+    },
+
+    [ABILITY_MEGA_SOL] =
+    {
+        .name = _("MEGA SOL"),
+        .description = COMPOUND_STRING("Acts like under sun."),
+        .aiRating = 8,
+    },
+
+    [ABILITY_FIRE_MANE] =
+    {
+        .name = _("FIRE MANE"),
+        .description = COMPOUND_STRING("Ups Fire-type moves."),
+        .aiRating = 8,
+    },
+
+    [ABILITY_317] =
+    {
+        .name = _("-------"),
+        .description = COMPOUND_STRING("No special ability."),
+    },
+
+    [ABILITY_SPICY_SPRAY] =
+    {
+        .name = _("SPICY SPRAY"),
+        .description = COMPOUND_STRING("Burns the foe when damaged."),
+        .aiRating = 6,
+    },
+
+    [ABILITY_AURA_GUARD] =
+    {
+        .name = _("AURA GUARD"),
+        .description = COMPOUND_STRING("Halves contact damage."),
+        .aiRating = 6,
+        .breakable = TRUE,
+    },
 };
