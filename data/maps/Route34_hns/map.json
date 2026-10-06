@@ -524,6 +524,13 @@
       "elevation": 0,
       "dest_map": "MAP_ABANDONED_HOUSE_MAIN_HNS",
       "dest_warp_id": "0"
+    },
+    {
+      "x": 23,
+      "y": 51,
+      "elevation": 0,
+      "dest_map": "MAP_ABANDONED_HOUSE_MAIN_HNS",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [

@@ -15999,3 +15999,73 @@ Tera Type: Fighting
 - Bulk Up  
 - Throat Chop
 
+=== TRAINER_CYNTHIA_HNS ===
+Name: CYNTHIA
+Class: Pkmn Trainer 1 Hns
+Pic: Cynthia
+Gender: Female
+Music: Hg Champion
+Double Battle: No
+AI: Smart Trainer / Prediction
+Items: Full Restore / Full Restore
+Mugshot: Black
+
+Spiritomb @ Sitrus Berry
+Ability: Pressure
+Level: 84
+EVs: 252 HP / 6 Atk / 0 Def / 252 SpA / 0 SpD / 0 Spe
+Quiet Nature
+- Dark Pulse
+- Shadow Ball
+- Will-O-Wisp
+- Sucker Punch
+
+Roserade @ Life Orb
+Ability: Poison Point
+Level: 85
+EVs: 0 HP / 0 Atk / 0 Def / 252 SpA / 6 SpD / 252 Spe
+Timid Nature
+- Dazzling Gleam
+- Sludge Bomb 
+- Shadow Ball 
+- Energy Ball
+
+Togekiss @ Leftovers 
+Ability: Serene Grace
+Level: 86 
+EVs: 6 HP / 0 Atk / 0 Def / 252 SpA / 0 SpD / 252 Spe
+Timid Nature
+- Air Slash 
+- Aura Sphere 
+- Moonblast
+- Thunder Wave
+
+Lucario @ Focus Sash
+Ability: Inner Focus
+Level: 86   
+EVs: 6 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
+Jolly Nature
+- Close Combat  
+- Meteor Mash
+- Extreme Speed
+- Earthquake
+
+Milotic @ Flame Orb 
+Ability: Marvel Scale
+Level: 84
+EVs: 252 HP / 0 Atk / 252 Def / 6 SpA / 0 SpD / 0 Spe
+Bold Nature
+- Scald  
+- Ice Beam
+- Mirror Coat
+- Recover
+
+Garchomp @ Yache Berry  
+Ability: Rough Skin
+Level: 88  
+EVs: 6 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
+Jolly Nature
+- Dragon Claw
+- Earthquake  
+- Swords Dance
+- Poison Jab
