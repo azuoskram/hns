@@ -1259,6 +1259,21 @@ static const struct ChallengeMenuItem *GetCurrentTabItems(void)
     return sTabs[sMenu->currentTab].items;
 }
 
+// Return the original item ID for the currently highlighted visible row.
+// The list is compacted to omit hidden options, so its row index is not the
+// same as the corresponding index in the full tab item array.
+static u8 GetSelectedItemIndex(void)
+{
+    u16 scrollOffset, selectedRow;
+    ListMenuGetScrollAndRow(sMenu->listTaskId, &scrollOffset, &selectedRow);
+    u16 listIndex = scrollOffset + selectedRow;
+
+    if (listIndex >= MAX_ITEMS_PER_TAB)
+        return GetCurrentTabItemCount();
+
+    return sListItems[listIndex].id;
+}
+
 // =============================================================================
 // Conditions / presets
 // =============================================================================
@@ -1606,11 +1621,11 @@ static void InitListMenu(void)
 
     HighlightRow();
 
-    if (count > ITEMS_VISIBLE)
+    if (visibleCount > ITEMS_VISIBLE)
     {
         sMenu->arrowTaskId = AddScrollIndicatorArrowPairParameterized(
             SCROLL_ARROW_UP, 240 / 2, 20, 110,
-            count - ITEMS_VISIBLE,
+            visibleCount - ITEMS_VISIBLE,
             110, 110,
             &sMenu->scrollOffset[sMenu->currentTab]);
     }
@@ -1667,9 +1682,7 @@ static void DrawTopBar(void)
 static void DrawDescription(void)
 {
     const u8 color[3] = { TEXT_COLOR_TRANSPARENT, TEXT_COLOR_OPTIONS_GRAY_FG, TEXT_COLOR_OPTIONS_GRAY_SHADOW };
-    u16 scrollOffset, selectedRow;
-    ListMenuGetScrollAndRow(sMenu->listTaskId, &scrollOffset, &selectedRow);
-    u8 itemIndex = scrollOffset + selectedRow;
+    u8 itemIndex = GetSelectedItemIndex();
 
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(1));
 
