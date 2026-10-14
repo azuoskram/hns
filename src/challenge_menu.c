@@ -112,8 +112,6 @@ enum {
     ITEM_DIFFICULTY_EXP_MULTIPLIER,
     ITEM_DIFFICULTY_ITEM_PLAYER,
     ITEM_DIFFICULTY_ITEM_TRAINER,
-    ITEM_DIFFICULTY_MAX_PARTY_IVS,
-    ITEM_DIFFICULTY_SCALING_IVS,
     ITEM_DIFFICULTY_NO_EVS,
     ITEM_DIFFICULTY_SCALING_EVS,
     ITEM_DIFFICULTY_LESS_ESCAPES,
@@ -212,8 +210,6 @@ static const u8 sMidGameLockPolicy[TAB_COUNT * MAX_ITEMS_PER_TAB] = {
     [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_EXP_MULTIPLIER] = LOCK_FREE,
     [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_ITEM_PLAYER]    = LOCK_ONEWAY_DOWN,
     [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_ITEM_TRAINER]   = LOCK_FREE,
-    [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_MAX_PARTY_IVS]  = LOCK_FREE,
-    [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_SCALING_IVS]    = LOCK_ONEWAY_DOWN,
     [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_NO_EVS]         = LOCK_ONEWAY_DOWN,
     [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_SCALING_EVS]    = LOCK_ONEWAY_DOWN,
     [TAB_DIFFICULTY * MAX_ITEMS_PER_TAB + ITEM_DIFFICULTY_LESS_ESCAPES]   = LOCK_ONEWAY_DOWN,
@@ -582,23 +578,11 @@ static const u8 *const sChoices_ExpMult[] = {
     COMPOUND_STRING("x0.0"),
 };
 
-static const u8 *const sChoices_TrainerIVs[] = {
-    COMPOUND_STRING("OFF"),
-    COMPOUND_STRING("SCALE"),
-    COMPOUND_STRING("HARD"),
-};
-
 static const u8 *const sChoices_TrainerEVs[] = {
     COMPOUND_STRING("OFF"),
     COMPOUND_STRING("SCALE"),
     COMPOUND_STRING("HARD"),
     COMPOUND_STRING("EXTREM"),
-};
-
-static const u8 *const sChoices_PlayerIVs[] = {
-    COMPOUND_STRING("YES"),
-    COMPOUND_STRING("NO"),
-    COMPOUND_STRING("NO (HP)"),
 };
 
 static const u8 *const sChoices_PkmnCenter[] = {
@@ -994,21 +978,11 @@ static const u8 *const sDesc_NoEVs[] = {
     COMPOUND_STRING("The player's {PKMN} gain effort\nvalues as expected."),
     COMPOUND_STRING("The player's {PKMN} do NOT gain any\neffort values!"),
 };
-static const u8 *const sDesc_ScalingIVs[] = {
-    COMPOUND_STRING("The {PKMN} of enemy Trainer have\nthe expected IVs."),
-    COMPOUND_STRING("The IVs of Trainer {PKMN} increase\nwith gym badges!"),
-    COMPOUND_STRING("All Trainer {PKMN} have perfect IVs!"),
-};
 static const u8 *const sDesc_ScalingEVs[] = {
     COMPOUND_STRING("The {PKMN} of enemy Trainer have\nno EVs."),
     COMPOUND_STRING("The EVs of Trainer {PKMN} increase\nwith gym badges!"),
     COMPOUND_STRING("All Trainer {PKMN} have high EVs!"),
     COMPOUND_STRING("All Trainer {PKMN} have 252 EVs!\nVery Hard!"),
-};
-static const u8 *const sDesc_MaxPartyIVs[] = {
-    COMPOUND_STRING("Your {PKMN} have the expected IVs\n(between 0 and 31)."),
-    COMPOUND_STRING("The IVs of your {PKMN} are set\nalways to the maximum (31)."),
-    COMPOUND_STRING("IVs are set between 30 and 31 to\nallow different Hidden Powers."),
 };
 static const u8 *const sDesc_LessEscapes[] = {
     COMPOUND_STRING("The player can easily run away from\nbattles, as usual."),
@@ -1052,18 +1026,6 @@ static const struct ChallengeMenuItem sTabItems_Difficulty[] = {
         .descriptions = sDesc_ItemTrainer,
         .numChoices   = 2,
         .choiceNames  = sChoices_YesNo,
-    },
-    [ITEM_DIFFICULTY_MAX_PARTY_IVS] = {
-        .name         = COMPOUND_STRING("PLAYER IVs"),
-        .descriptions = sDesc_MaxPartyIVs,
-        .numChoices   = 3,
-        .choiceNames  = sChoices_PlayerIVs,
-    },
-    [ITEM_DIFFICULTY_SCALING_IVS] = {
-        .name         = COMPOUND_STRING("TRAINER IVs"),
-        .descriptions = sDesc_ScalingIVs,
-        .numChoices   = 3,
-        .choiceNames  = sChoices_TrainerIVs,
     },
     [ITEM_DIFFICULTY_NO_EVS] = {
         .name         = COMPOUND_STRING("PLAYER EVs"),
@@ -2061,9 +2023,7 @@ static void Task_ConfirmSaveYes(u8 taskId)
     cs->tx_Challenges_NoItemPlayer    = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_ITEM_PLAYER);
     cs->tx_Challenges_NoItemTrainer   = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_ITEM_TRAINER);
     cs->tx_Challenges_NoEVs           = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_NO_EVS);
-    cs->tx_Challenges_TrainerScalingIVs = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_SCALING_IVS);
     cs->tx_Challenges_TrainerScalingEVs = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_SCALING_EVS);
-    cs->tx_Challenges_MaxPartyIVs     = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_MAX_PARTY_IVS);
     cs->tx_Challenges_LessEscapes     = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_LESS_ESCAPES);
     cs->tx_Difficulty_EscapeRopeDig   = *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_ESCAPE_ROPE_DIG);
 
@@ -2267,9 +2227,7 @@ void CB2_InitChallengeMenu(void)
             *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_ITEM_PLAYER)    = cs->tx_Challenges_NoItemPlayer;
             *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_ITEM_TRAINER)   = cs->tx_Challenges_NoItemTrainer;
             *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_NO_EVS)         = cs->tx_Challenges_NoEVs;
-            *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_SCALING_IVS)    = cs->tx_Challenges_TrainerScalingIVs;
             *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_SCALING_EVS)    = cs->tx_Challenges_TrainerScalingEVs;
-            *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_MAX_PARTY_IVS)  = cs->tx_Challenges_MaxPartyIVs;
             *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_LESS_ESCAPES)   = cs->tx_Challenges_LessEscapes;
             *GetSelectionPtr(TAB_DIFFICULTY, ITEM_DIFFICULTY_ESCAPE_ROPE_DIG)= cs->tx_Difficulty_EscapeRopeDig;
 
