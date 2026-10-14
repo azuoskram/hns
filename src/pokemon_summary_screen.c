@@ -3592,8 +3592,8 @@ static void DrawSkillsStatLabels(bool8 hiddenPower)
 
     if (hiddenPower)
     {
-        // Use a compact label to avoid text overflowing the narrow stat column.
-        PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, sText_HiddenPowerLabel, 1, 33, 0, 1);
+        // Use a compact label beside the type badge to avoid overflow.
+        PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, sText_HiddenPowerLabel, 1, 17, 0, 1);
         CopyWindowToVram(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, COPYWIN_GFX);
         CopyWindowToVram(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, COPYWIN_GFX);
         return;
