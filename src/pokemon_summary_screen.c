@@ -506,12 +506,12 @@ static const struct WindowTemplate sSummaryTemplate[] =
     },
     [PSS_LABEL_WINDOW_UNUSED1] = {
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 4,
-        .width = 0,
+        .tilemapLeft = 25,
+        .tilemapTop = 6,
+        .width = 4,
         .height = 2,
-        .paletteNum = 6,
-        .baseBlock = 137,
+        .paletteNum = 2,
+        .baseBlock = 389,
     },
     [PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL] = {
         .bg = 0,
@@ -3569,6 +3569,19 @@ static void PrintAOrBButtonIcon(u8 windowId, bool8 bButton, u32 x)
 }
 
 static const u8 sText_HiddenPowerLabel[] = _("HP");
+static const u8 sText_HiddenPowerPrompt[] = _("HP");
+
+static void DrawHiddenPowerPromptLabel(void)
+{
+    u8 width = WindowTemplateWidthPx(&sSummaryTemplate[PSS_LABEL_WINDOW_UNUSED1]);
+    u8 x = GetStringCenterAlignXOffset(FONT_NORMAL, sText_HiddenPowerPrompt, width);
+
+    // The background prompt is part of the page tilemap. Cover just its old
+    // "IVS" word with the same yellow used by the page header, then write "HP".
+    FillWindowPixelBuffer(PSS_LABEL_WINDOW_UNUSED1, PIXEL_FILL(7));
+    PrintTextOnWindow(PSS_LABEL_WINDOW_UNUSED1, sText_HiddenPowerPrompt, x, 1, 0, 0);
+    CopyWindowToVram(PSS_LABEL_WINDOW_UNUSED1, COPYWIN_FULL);
+}
 
 static void DrawSkillsStatLabels(bool8 hiddenPower)
 {
@@ -3614,6 +3627,7 @@ static void PrintPageNamesAndStats(void)
 
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL, gText_RentalPkmn, 0, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_TYPE, gText_TypeSlash, 0, 1, 0, 0);
+    DrawHiddenPowerPromptLabel();
     DrawSkillsStatLabels(FALSE);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP, gText_ExpPoints, 6, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP, gText_NextLv, 6, 17, 0, 1);
@@ -3650,6 +3664,7 @@ static void PutPageWindowTilemaps(u8 page)
         break;
     case PSS_PAGE_SKILLS:
         PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_TITLE);
+        PutWindowTilemap(PSS_LABEL_WINDOW_UNUSED1);
         PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT);
         PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT);
         PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP);
@@ -3701,6 +3716,7 @@ static void ClearPageWindowTilemaps(u8 page)
         ClearWindowTilemap(PSS_LABEL_WINDOW_PROMPT_RELEARN);
         break;
     case PSS_PAGE_SKILLS:
+        ClearWindowTilemap(PSS_LABEL_WINDOW_UNUSED1);
         ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT);
         ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT);
         ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP);
