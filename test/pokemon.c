@@ -152,6 +152,56 @@ TEST("Hyper Training increases stats without affecting IVs")
     EXPECT_EQ(spdef - 3 + MAX_PER_STAT_IVS, GetMonData(&mon, MON_DATA_SPDEF));
 }
 
+
+TEST("Battle stats use perfect IVs without changing stored IVs")
+{
+    u32 friendship = 0;
+    s32 normalStats[NUM_STATS];
+    bool32 wasInBattle = gMain.inBattle;
+    struct Pokemon mon;
+
+    CreateMonWithIVs(&mon, SPECIES_WOBBUFFET, 100, 0, OTID_STRUCT_PRESET(0), 3);
+    SetMonData(&mon, MON_DATA_FRIENDSHIP, &friendship);
+
+    gMain.inBattle = FALSE;
+    CalculateMonStats(&mon);
+    normalStats[STAT_HP] = GetMonData(&mon, MON_DATA_MAX_HP);
+    normalStats[STAT_ATK] = GetMonData(&mon, MON_DATA_ATK);
+    normalStats[STAT_DEF] = GetMonData(&mon, MON_DATA_DEF);
+    normalStats[STAT_SPEED] = GetMonData(&mon, MON_DATA_SPEED);
+    normalStats[STAT_SPATK] = GetMonData(&mon, MON_DATA_SPATK);
+    normalStats[STAT_SPDEF] = GetMonData(&mon, MON_DATA_SPDEF);
+
+    gMain.inBattle = TRUE;
+    CalculateMonStats(&mon);
+
+    // At level 100, replacing IV 3 with IV 31 adds 28 to each stat.
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_MAX_HP), normalStats[STAT_HP] + 28);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_ATK), normalStats[STAT_ATK] + 28);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_DEF), normalStats[STAT_DEF] + 28);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPEED), normalStats[STAT_SPEED] + 28);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPATK), normalStats[STAT_SPATK] + 28);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPDEF), normalStats[STAT_SPDEF] + 28);
+
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_HP_IV), 3);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_ATK_IV), 3);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_DEF_IV), 3);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPEED_IV), 3);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPATK_IV), 3);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPDEF_IV), 3);
+
+    gMain.inBattle = FALSE;
+    CalculateMonStats(&mon);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_MAX_HP), normalStats[STAT_HP]);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_ATK), normalStats[STAT_ATK]);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_DEF), normalStats[STAT_DEF]);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPEED), normalStats[STAT_SPEED]);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPATK), normalStats[STAT_SPATK]);
+    EXPECT_EQ(GetMonData(&mon, MON_DATA_SPDEF), normalStats[STAT_SPDEF]);
+
+    gMain.inBattle = wasInBattle;
+}
+
 TEST("Status1 round-trips through BoxPokemon")
 {
     u32 status1;
