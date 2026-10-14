@@ -1890,17 +1890,35 @@ void BattleMainCB2(void)
     }
 }
 
+static void RestorePlayerPartyStatsAfterBattle(void)
+{
+    for (u32 monId = 0; monId < PARTY_SIZE; monId++)
+    {
+        struct Pokemon *mon = &gPlayerParty[monId];
+        if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
+        {
+            s32 oldHP = GetMonData(mon, MON_DATA_HP);
+            s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP);
+            CalculateMonStats(mon);
+
+            // Keep battle damage and level-up HP changes when returning to normal IV stats.
+            s32 newMaxHP = GetMonData(mon, MON_DATA_MAX_HP);
+            s32 newHP = oldHP == 0 ? 0 : oldHP + newMaxHP - oldMaxHP;
+            if (newHP < 0)
+                newHP = 0;
+            if (newHP > newMaxHP)
+                newHP = newMaxHP;
+            SetMonData(mon, MON_DATA_HP, &newHP);
+        }
+    }
+}
+
 static void FreeRestoreBattleData(void)
 {
     gMain.callback1 = gPreBattleCallback1;
     gScanlineEffect.state = 3;
     gMain.inBattle = FALSE;
-    // Restore the player's normal IV-based stats after the battle.
-    for (u32 monId = 0; monId < PARTY_SIZE; monId++)
-    {
-        if (GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES) != SPECIES_NONE)
-            CalculateMonStats(&gPlayerParty[monId]);
-    }
+    RestorePlayerPartyStatsAfterBattle();
     ZeroEnemyPartyMons();
     m4aSongNumStop(SE_LOW_HEALTH, FlagGet(FLAG_SYS_GBS_ENABLED));
     FreeMonSpritesGfx();
@@ -6102,12 +6120,7 @@ static void ReturnFromBattleToOverworld(void)
 
     gSpecialVar_Result = gBattleOutcome;
     gMain.inBattle = FALSE;
-    // Restore the player's normal IV-based stats after the battle.
-    for (u32 monId = 0; monId < PARTY_SIZE; monId++)
-    {
-        if (GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES) != SPECIES_NONE)
-            CalculateMonStats(&gPlayerParty[monId]);
-    }
+    RestorePlayerPartyStatsAfterBattle();
     gMain.callback1 = gPreBattleCallback1;
 
     if (gBattleTypeFlags & BATTLE_TYPE_ROAMER)
