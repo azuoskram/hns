@@ -336,12 +336,13 @@ static bool32 ShouldShowMoveRelearner(void);
 static void BufferLeftColumnIvEvStats(void);
 static void ShowUtilityPrompt(s16 mode);
 static void ShowMonSkillsInfo(u8 taskId, s16 mode);
+static void DrawSkillsStatLabels(bool8 hiddenPower);
+static u8 GetMonHiddenPowerType(struct Pokemon *mon);
 void ExtractMonSkillStatsData(struct Pokemon *mon, struct PokeSummary *sum);
 void ExtractMonSkillIvData(struct Pokemon *mon, struct PokeSummary *sum);
 void ExtractMonSkillEvData(struct Pokemon *mon, struct PokeSummary *sum);
 static void PrintTextOnWindow(u8 windowId, const u8 *string, u8 x, u8 y, u8 lineSpacing, u8 colorId);
 static void PrintTextOnWindowWithFont(u8 windowId, const u8 *string, u8 x, u8 y, u8 lineSpacing, u8 colorId, u32 fontId);
-static const u8 *GetLetterGrade(u32 stat);
 static u8 AddWindowFromTemplateList(const struct WindowTemplate *template, u8 templateId);
 u32 GetAdjustedIvData(struct Pokemon *mon, u32 stat);
 static void TryUpdateRelearnType(enum IncrDecrUpdateValues delta);
@@ -1977,8 +1978,8 @@ static void Task_HandleInput(u8 taskId)
         {
             if (sMonSummaryScreen->currPageIndex == PSS_PAGE_SKILLS)
             {
-                ShowMonSkillsInfo(taskId, SUMMARY_SKILLS_MODE_IVS);
-                sMonSummaryScreen->skillsPageMode = SUMMARY_SKILLS_MODE_IVS;
+                ShowMonSkillsInfo(taskId, SUMMARY_SKILLS_MODE_HIDDEN_POWER);
+                sMonSummaryScreen->skillsPageMode = SUMMARY_SKILLS_MODE_HIDDEN_POWER;
                 PlaySE(SE_SELECT);
             }
         }
@@ -1998,19 +1999,31 @@ static void ShowMonSkillsInfo(u8 taskId, s16 mode)
 {
     struct PokeSummary *sum = &sMonSummaryScreen->summary;
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
+    u8 leftWindow = AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_LEFT);
+    u8 rightWindow = AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_RIGHT);
 
-    FillWindowPixelBuffer(sMonSummaryScreen->windowIds[PSS_DATA_WINDOW_SKILLS_STATS_LEFT], 0);
-    FillWindowPixelBuffer(sMonSummaryScreen->windowIds[PSS_DATA_WINDOW_SKILLS_STATS_RIGHT], 0);
+    FillWindowPixelBuffer(leftWindow, PIXEL_FILL(0));
+    FillWindowPixelBuffer(rightWindow, PIXEL_FILL(0));
+
+    if (mode == SUMMARY_SKILLS_MODE_HIDDEN_POWER)
+    {
+        u8 hiddenPowerType = GetMonHiddenPowerType(mon);
+        const u8 *typeName = gTypesInfo[hiddenPowerType].name;
+        int x = GetStringCenterAlignXOffset(FONT_NORMAL, typeName,
+            WindowTemplateWidthPx(&sPageSkillsTemplate[PSS_DATA_WINDOW_SKILLS_STATS_LEFT]));
+
+        DrawSkillsStatLabels(TRUE);
+        PrintTextOnWindow(leftWindow, typeName, x, 33, 0, 1);
+        gTasks[taskId].func = Task_HandleInput;
+        return;
+    }
+
+    DrawSkillsStatLabels(FALSE);
 
     if (mode == SUMMARY_SKILLS_MODE_STATS)
     {
         ExtractMonSkillStatsData(mon, sum);
         BufferLeftColumnStats();
-    }
-    else if (mode == SUMMARY_SKILLS_MODE_IVS)
-    {
-        ExtractMonSkillIvData(mon, sum);
-        BufferLeftColumnIvEvStats();
     }
     else if (mode == SUMMARY_SKILLS_MODE_EVS)
     {
@@ -2022,6 +2035,31 @@ static void ShowMonSkillsInfo(u8 taskId, s16 mode)
     BufferRightColumnStats();
     PrintRightColumnStats();
     gTasks[taskId].func = Task_HandleInput;
+}
+
+// Calculate Hidden Power from the Pokemon's stored IVs, which remain unchanged
+// by the battle-only perfect-IV stat override.
+static u8 GetMonHiddenPowerType(struct Pokemon *mon)
+{
+    u32 typeBits = ((GetMonData(mon, MON_DATA_HP_IV) & 1) << 0)
+                 | ((GetMonData(mon, MON_DATA_ATK_IV) & 1) << 1)
+                 | ((GetMonData(mon, MON_DATA_DEF_IV) & 1) << 2)
+                 | ((GetMonData(mon, MON_DATA_SPEED_IV) & 1) << 3)
+                 | ((GetMonData(mon, MON_DATA_SPATK_IV) & 1) << 4)
+                 | ((GetMonData(mon, MON_DATA_SPDEF_IV) & 1) << 5);
+    u8 hiddenPowerTypes[NUMBER_OF_MON_TYPES];
+    u32 i, hiddenPowerTypeCount = 0;
+
+    for (i = 0; i < NUMBER_OF_MON_TYPES; i++)
+    {
+        if (gTypesInfo[i].isHiddenPowerType)
+            hiddenPowerTypes[hiddenPowerTypeCount++] = i;
+    }
+
+    if (hiddenPowerTypeCount == 0)
+        return TYPE_NONE;
+
+    return hiddenPowerTypes[((hiddenPowerTypeCount - 1) * typeBits) / 63];
 }
 
 void ExtractMonSkillStatsData(struct Pokemon *mon, struct PokeSummary *sum)
@@ -2227,7 +2265,10 @@ static void Task_ChangeSummaryMon(u8 taskId)
             return;
 
         if (sMonSummaryScreen->currPageIndex == PSS_PAGE_SKILLS)
+        {
             sMonSummaryScreen->skillsPageMode = SUMMARY_SKILLS_MODE_STATS;
+            DrawSkillsStatLabels(FALSE);
+        }
 
         if (P_SUMMARY_SCREEN_MOVE_RELEARNER
              && (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES
@@ -2388,7 +2429,10 @@ static void ChangePage(u8 taskId, s8 delta)
         struct Pokemon *mon = &sMonSummaryScreen->currentMon;
 
         if (sMonSummaryScreen->skillsPageMode != SUMMARY_SKILLS_MODE_STATS)
+        {
             sMonSummaryScreen->skillsPageMode = SUMMARY_SKILLS_MODE_STATS;
+            DrawSkillsStatLabels(FALSE);
+        }
 
         ExtractMonSkillStatsData(mon, summary);
         BufferLeftColumnStats();
@@ -3509,19 +3553,21 @@ static void PrintAOrBButtonIcon(u8 windowId, bool8 bButton, u32 x)
     BlitBitmapToWindow(windowId, button, x, 0, 16, 16);
 }
 
-static void PrintPageNamesAndStats(void)
+static const u8 sText_HiddenPowerLabel[] = _("HIDDEN\nPOWER\nTYPE");
+
+static void DrawSkillsStatLabels(bool8 hiddenPower)
 {
     int statsXPos;
 
-    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_TITLE, gText_PkmnInfo, 2, 1, 0, 1);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_TITLE, gText_PkmnSkills, 2, 1, 0, 1);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_BATTLE_MOVES_TITLE, gText_BattleMoves, 2, 1, 0, 1);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_CONTEST_MOVES_TITLE, gText_ContestMoves, 2, 1, 0, 1);
+    FillWindowPixelBuffer(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, PIXEL_FILL(0));
+    FillWindowPixelBuffer(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, PIXEL_FILL(0));
 
-    ShowUtilityPrompt(SUMMARY_MODE_NORMAL);
+    if (hiddenPower)
+    {
+        PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, sText_HiddenPowerLabel, 1, 1, 0, 1);
+        return;
+    }
 
-    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL, gText_RentalPkmn, 0, 1, 0, 1);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_TYPE, gText_TypeSlash, 0, 1, 0, 0);
     statsXPos = 6 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_HP4, 42);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, gText_HP4, statsXPos, 1, 0, 1);
     statsXPos = 6 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_Attack3, 42);
@@ -3534,6 +3580,21 @@ static void PrintPageNamesAndStats(void)
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, gText_SpDef4, statsXPos, 17, 0, 1);
     statsXPos = 2 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_Speed2, 36);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, gText_Speed2, statsXPos, 33, 0, 1);
+}
+
+static void PrintPageNamesAndStats(void)
+{
+
+    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_TITLE, gText_PkmnInfo, 2, 1, 0, 1);
+    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_TITLE, gText_PkmnSkills, 2, 1, 0, 1);
+    PrintTextOnWindow(PSS_LABEL_WINDOW_BATTLE_MOVES_TITLE, gText_BattleMoves, 2, 1, 0, 1);
+    PrintTextOnWindow(PSS_LABEL_WINDOW_CONTEST_MOVES_TITLE, gText_ContestMoves, 2, 1, 0, 1);
+
+    ShowUtilityPrompt(SUMMARY_MODE_NORMAL);
+
+    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL, gText_RentalPkmn, 0, 1, 0, 1);
+    PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_TYPE, gText_TypeSlash, 0, 1, 0, 0);
+    DrawSkillsStatLabels(FALSE);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP, gText_ExpPoints, 6, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP, gText_NextLv, 6, 17, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS, gText_Status, 2, 1, 0, 1);
@@ -4090,39 +4151,13 @@ static void BufferStat(u8 *dst, enum Stat statIndex, u32 stat, u32 strId, u32 n)
     else
         txtPtr = StringCopy(dst, sTextNatureNeutral);
 
-    if (!P_SUMMARY_SCREEN_IV_EV_VALUES
-        && sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS)
-        StringAppend(dst, GetLetterGrade(stat));
-    else
-        if (stat > 999 && n < 4)
-            n = 4;
-        ConvertIntToDecimalStringN(txtPtr, stat, STR_CONV_MODE_RIGHT_ALIGN, n);
+    if (stat > 999 && n < 4)
+        n = 4;
+    ConvertIntToDecimalStringN(txtPtr, stat, STR_CONV_MODE_RIGHT_ALIGN, n);
 
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(strId, dst);
 }
 
-static const u8 *GetLetterGrade(u32 stat)
-{
-    static const u8 gText_GradeF[] = _("F");
-    static const u8 gText_GradeD[] = _("D");
-    static const u8 gText_GradeC[] = _("C");
-    static const u8 gText_GradeB[] = _("B");
-    static const u8 gText_GradeA[] = _("A");
-    static const u8 gText_GradeS[] = _("S");
-
-    if (stat <= 0)
-        return gText_GradeF;
-    else if (stat <= 15)
-        return gText_GradeD;
-    else if (stat <= 25)
-        return gText_GradeC;
-    else if (stat <= 29)
-        return gText_GradeB;
-    else if (stat <= 30)
-        return gText_GradeA;
-    else
-        return gText_GradeS;
-}
 
 static void BufferLeftColumnStats(void)
 {
@@ -4167,14 +4202,7 @@ static void BufferLeftColumnIvEvStats(void)
 
 static void PrintLeftColumnStats(void)
 {
-    int x;
-
-    if (sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS && !P_SUMMARY_SCREEN_IV_EV_VALUES)
-        x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 46);
-    else
-        x = 4;
-
-    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_LEFT), gStringVar4, x, 1, 0, 0);
+    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_LEFT), gStringVar4, 4, 1, 0, 0);
 }
 
 static void BufferRightColumnStats(void)
@@ -4190,14 +4218,7 @@ static void BufferRightColumnStats(void)
 
 static void PrintRightColumnStats(void)
 {
-    int x;
-
-    if (sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS && !P_SUMMARY_SCREEN_IV_EV_VALUES)
-        x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 20);
-    else
-        x = 2;
-
-    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_RIGHT), gStringVar4, x, 1, 0, 0);
+    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_RIGHT), gStringVar4, 2, 1, 0, 0);
 }
 
 static void PrintExpPointsNextLevel(void)
