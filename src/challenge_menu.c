@@ -1790,9 +1790,7 @@ static void SwitchTab(u8 taskId, s8 direction)
 
 static void ProcessLeftRight(void)
 {
-    u16 scrollOffset, selectedRow;
-    ListMenuGetScrollAndRow(sMenu->listTaskId, &scrollOffset, &selectedRow);
-    u8 itemIndex = scrollOffset + selectedRow;
+    u8 itemIndex = GetSelectedItemIndex();
 
     const struct ChallengeMenuItem *items = GetCurrentTabItems();
     if (itemIndex >= GetCurrentTabItemCount())
