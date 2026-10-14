@@ -1,4 +1,5 @@
 #include "global.h"
+#include "main.h"
 #include "battle.h"
 #include "egg_hatch.h"
 #include "event_data.h"
