@@ -2001,19 +2001,24 @@ static void ShowMonSkillsInfo(u8 taskId, s16 mode)
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
     u8 leftWindow = AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_LEFT);
     u8 rightWindow = AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_RIGHT);
+    u8 i;
 
     FillWindowPixelBuffer(leftWindow, PIXEL_FILL(0));
     FillWindowPixelBuffer(rightWindow, PIXEL_FILL(0));
 
+    // These sprites are shared with the profile and move pages. Hide them first,
+    // then show only the Hidden Power icon when that view is selected.
+    for (i = SPRITE_ARR_ID_TYPE; i < SPRITE_ARR_ID_TYPE + TYPE_ICON_SPRITE_COUNT; i++)
+        SetSpriteInvisibility(i, TRUE);
+
     if (mode == SUMMARY_SKILLS_MODE_HIDDEN_POWER)
     {
         u8 hiddenPowerType = GetMonHiddenPowerType(mon);
-        const u8 *typeName = gTypesInfo[hiddenPowerType].name;
-        int x = GetStringCenterAlignXOffset(FONT_NORMAL, typeName,
-            WindowTemplateWidthPx(&sPageSkillsTemplate[PSS_DATA_WINDOW_SKILLS_STATS_LEFT]));
 
         DrawSkillsStatLabels(TRUE);
-        PrintTextOnWindow(leftWindow, typeName, x, 33, 0, 1);
+        // Match the type badge shown on the Info/Profile page. Center it in the
+        // value column beside the "HIDDEN POWER TYPE" label.
+        SetTypeSpritePosAndPal(hiddenPowerType, 136, 72, SPRITE_ARR_ID_TYPE);
         gTasks[taskId].func = Task_HandleInput;
         return;
     }
