@@ -1054,13 +1054,13 @@ static const struct ChallengeMenuItem sTabItems_Difficulty[] = {
         .choiceNames  = sChoices_YesNo,
     },
     [ITEM_DIFFICULTY_MAX_PARTY_IVS] = {
-        .name         = COMPOUND_STRING("PLAYER IVs"),
+        .name         = NULL, // Hidden from the menu; keep the setting logic intact.
         .descriptions = sDesc_MaxPartyIVs,
         .numChoices   = 3,
         .choiceNames  = sChoices_PlayerIVs,
     },
     [ITEM_DIFFICULTY_SCALING_IVS] = {
-        .name         = COMPOUND_STRING("TRAINER IVs"),
+        .name         = NULL, // Hidden from the menu; keep the setting logic intact.
         .descriptions = sDesc_ScalingIVs,
         .numChoices   = 3,
         .choiceNames  = sChoices_TrainerIVs,
@@ -1568,18 +1568,24 @@ static void InitListMenu(void)
     const struct ChallengeMenuItem *items = GetCurrentTabItems();
     u8 count = GetCurrentTabItemCount();
 
+    // Build a compact display list, skipping options whose names are NULL.
+    // The original item IDs are preserved so their settings still load/save normally.
+    u8 visibleCount = 0;
     for (u8 i = 0; i < count; i++)
     {
-        sListItems[i].name = items[i].name;
-        sListItems[i].id = i;
+        if (items[i].name == NULL)
+            continue;
+        sListItems[visibleCount].name = items[i].name;
+        sListItems[visibleCount].id = i;
+        visibleCount++;
     }
 
     memset(&template, 0, sizeof(template));
     template.items = sListItems;
     template.moveCursorFunc = ChallengeMenu_MoveCursorFunc;
     template.itemPrintFunc = ChallengeMenu_ItemPrintFunc;
-    template.totalItems = count;
-    template.maxShowed = (count < ITEMS_VISIBLE) ? count : ITEMS_VISIBLE;
+    template.totalItems = visibleCount;
+    template.maxShowed = (visibleCount < ITEMS_VISIBLE) ? visibleCount : ITEMS_VISIBLE;
     template.windowId = WIN_OPTIONS;
     template.header_X = 0;
     template.item_X = 8;
@@ -2473,5 +2479,7 @@ bool8 DoesSpeciesPassOneTypeChallenge(u16 species)
     if (!IsOneTypeChallengeActive())
         return TRUE;
 
+    return DoesEvoLineHaveType(species, gSaveBlock3Ptr->challengeSettings.tx_Challenges_OneTypeChallenge, 0);
+}
     return DoesEvoLineHaveType(species, gSaveBlock3Ptr->challengeSettings.tx_Challenges_OneTypeChallenge, 0);
 }
