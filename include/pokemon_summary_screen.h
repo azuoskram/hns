@@ -46,7 +46,7 @@ enum PokemonSummaryScreenPage
 enum PokemonSummarySkillsMode
 {
     SUMMARY_SKILLS_MODE_STATS,
-    SUMMARY_SKILLS_MODE_IVS,
+    SUMMARY_SKILLS_MODE_HIDDEN_POWER,
     SUMMARY_SKILLS_MODE_EVS,
 };
 
