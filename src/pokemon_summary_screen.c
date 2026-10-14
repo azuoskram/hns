@@ -338,6 +338,7 @@ static void ShowUtilityPrompt(s16 mode);
 static void ShowMonSkillsInfo(u8 taskId, s16 mode);
 static void DrawSkillsStatLabels(bool8 hiddenPower);
 static u8 GetMonHiddenPowerType(struct Pokemon *mon);
+static void SetSpriteInvisibility(u8 spriteArrayId, bool8 invisible);
 void SetTypeSpritePosAndPal(enum Type typeId, u8 x, u8 y, u8 spriteArrayId);
 void ExtractMonSkillStatsData(struct Pokemon *mon, struct PokeSummary *sum);
 void ExtractMonSkillIvData(struct Pokemon *mon, struct PokeSummary *sum);
