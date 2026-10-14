@@ -679,6 +679,17 @@ static void CB2_InitBattleInternal(void)
     }
 
     gMain.inBattle = TRUE;
+
+    // Recalculate both parties for battle with perfect IVs. CalculateMonStats
+    // keeps the original IVs stored on each Pokemon, so Hidden Power is unchanged.
+    for (u32 monId = 0; monId < PARTY_SIZE; monId++)
+    {
+        if (GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES) != SPECIES_NONE)
+            CalculateMonStats(&gPlayerParty[monId]);
+        if (GetMonData(&gEnemyParty[monId], MON_DATA_SPECIES) != SPECIES_NONE)
+            CalculateMonStats(&gEnemyParty[monId]);
+    }
+
     gSaveBlock2Ptr->frontier.disableRecordBattle = FALSE;
 
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1884,6 +1895,12 @@ static void FreeRestoreBattleData(void)
     gMain.callback1 = gPreBattleCallback1;
     gScanlineEffect.state = 3;
     gMain.inBattle = FALSE;
+    // Restore the player's normal IV-based stats after the battle.
+    for (u32 monId = 0; monId < PARTY_SIZE; monId++)
+    {
+        if (GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES) != SPECIES_NONE)
+            CalculateMonStats(&gPlayerParty[monId]);
+    }
     ZeroEnemyPartyMons();
     m4aSongNumStop(SE_LOW_HEALTH, FlagGet(FLAG_SYS_GBS_ENABLED));
     FreeMonSpritesGfx();
@@ -6085,6 +6102,12 @@ static void ReturnFromBattleToOverworld(void)
 
     gSpecialVar_Result = gBattleOutcome;
     gMain.inBattle = FALSE;
+    // Restore the player's normal IV-based stats after the battle.
+    for (u32 monId = 0; monId < PARTY_SIZE; monId++)
+    {
+        if (GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES) != SPECIES_NONE)
+            CalculateMonStats(&gPlayerParty[monId]);
+    }
     gMain.callback1 = gPreBattleCallback1;
 
     if (gBattleTypeFlags & BATTLE_TYPE_ROAMER)
