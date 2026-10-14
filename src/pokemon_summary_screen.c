@@ -2271,8 +2271,13 @@ static void Task_ChangeSummaryMon(u8 taskId)
 
         if (sMonSummaryScreen->currPageIndex == PSS_PAGE_SKILLS)
         {
+            u8 i;
             sMonSummaryScreen->skillsPageMode = SUMMARY_SKILLS_MODE_STATS;
             DrawSkillsStatLabels(FALSE);
+            // Changing Pokemon resets the Skills page, so also hide the
+            // previous Pokemon's Hidden Power type icon.
+            for (i = SPRITE_ARR_ID_TYPE; i < SPRITE_ARR_ID_TYPE + TYPE_ICON_SPRITE_COUNT; i++)
+                SetSpriteInvisibility(i, TRUE);
         }
 
         if (P_SUMMARY_SCREEN_MOVE_RELEARNER
