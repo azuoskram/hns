@@ -2017,9 +2017,12 @@ static void ShowMonSkillsInfo(u8 taskId, s16 mode)
     {
         u8 hiddenPowerType = GetMonHiddenPowerType(mon);
 
+        // Clear both numeric value windows in VRAM so stale stat values don't
+        // remain visible while showing only the Hidden Power type badge.
+        CopyWindowToVram(leftWindow, COPYWIN_GFX);
+        CopyWindowToVram(rightWindow, COPYWIN_GFX);
         DrawSkillsStatLabels(TRUE);
-        // Match the type badge shown on the Info/Profile page. Center it in the
-        // value column beside the "HIDDEN POWER TYPE" label.
+        // Reuse the type badge from the Info/Profile page.
         SetTypeSpritePosAndPal(hiddenPowerType, 136, 72, SPRITE_ARR_ID_TYPE);
         gTasks[taskId].func = Task_HandleInput;
         return;
@@ -3565,7 +3568,7 @@ static void PrintAOrBButtonIcon(u8 windowId, bool8 bButton, u32 x)
     BlitBitmapToWindow(windowId, button, x, 0, 16, 16);
 }
 
-static const u8 sText_HiddenPowerLabel[] = _("HIDDEN\nPOWER\nTYPE");
+static const u8 sText_HiddenPowerLabel[] = _("HP");
 
 static void DrawSkillsStatLabels(bool8 hiddenPower)
 {
@@ -3576,7 +3579,10 @@ static void DrawSkillsStatLabels(bool8 hiddenPower)
 
     if (hiddenPower)
     {
-        PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, sText_HiddenPowerLabel, 1, 1, 0, 1);
+        // Use a compact label to avoid text overflowing the narrow stat column.
+        PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, sText_HiddenPowerLabel, 1, 33, 0, 1);
+        CopyWindowToVram(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, COPYWIN_GFX);
+        CopyWindowToVram(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, COPYWIN_GFX);
         return;
     }
 
@@ -3592,6 +3598,8 @@ static void DrawSkillsStatLabels(bool8 hiddenPower)
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, gText_SpDef4, statsXPos, 17, 0, 1);
     statsXPos = 2 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_Speed2, 36);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, gText_Speed2, statsXPos, 33, 0, 1);
+    CopyWindowToVram(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, COPYWIN_GFX);
+    CopyWindowToVram(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, COPYWIN_GFX);
 }
 
 static void PrintPageNamesAndStats(void)
