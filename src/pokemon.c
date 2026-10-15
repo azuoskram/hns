@@ -3840,6 +3840,11 @@ void CalculateMonStats(struct Pokemon *mon)
         iv[i] = GetMonData(mon, MON_DATA_HP_IV + i);
         ev[i] = GetMonData(mon, MON_DATA_HP_EV + i);
 
+        // In battle, calculate stats as if every IV were perfect. The stored IVs
+        // remain unchanged so Hidden Power can still use the Pokemon's original IVs.
+        if (gMain.inBattle)
+            iv[i] = MAX_PER_STAT_IVS;
+
         if (hyperTrained[i])
         {
         #if TESTING
