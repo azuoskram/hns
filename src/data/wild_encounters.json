@@ -72725,7 +72725,7 @@
               {
                 "min_level": 40,
                 "max_level": 45,
-                "species": "SPECIES_GASTLY"
+                "species": "SPECIES_LITWICK"
               },
               {
                 "min_level": 40,
@@ -72735,17 +72735,17 @@
               {
                 "min_level": 40,
                 "max_level": 45,
-                "species": "SPECIES_DUSKULL"
+                "species": "SPECIES_LAMPENT"
               },
               {
                 "min_level": 40,
                 "max_level": 45,
-                "species": "SPECIES_DUSKULL"
+                "species": "SPECIES_SINISTEA"
               },
               {
                 "min_level": 40,
                 "max_level": 45,
-                "species": "SPECIES_HAUNTER"
+                "species": "SPECIES_SINISTEA"
               },
               {
                 "min_level": 40,
@@ -72753,14 +72753,14 @@
                 "species": "SPECIES_SABLEYE"
               },
               {
-                "min_level": 40,
-                "max_level": 45,
-                "species": "SPECIES_DUSCLOPS"
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_CERULEDGE"
               },
               {
                 "min_level": 45,
                 "max_level": 50,
-                "species": "SPECIES_GENGAR"
+                "species": "SPECIES_CHANDELURE"
               },
               {
                 "min_level": 45,
@@ -72792,64 +72792,64 @@
             "encounter_rate": 20,
             "mons": [
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 40,
+                "max_level": 45,
                 "species": "SPECIES_GASTLY"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_MISDREAVUS"
+                "min_level": 40,
+                "max_level": 45,
+                "species": "SPECIES_FRILLISH"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_DUSKULL"
+                "min_level": 40,
+                "max_level": 45,
+                "species": "SPECIES_GREAVARD"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_DUSKULL"
+                "min_level": 40,
+                "max_level": 45,
+                "species": "SPECIES_GREAVARD"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 40,
+                "max_level": 45,
                 "species": "SPECIES_HAUNTER"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_SABLEYE"
+                "min_level": 40,
+                "max_level": 45,
+                "species": "SPECIES_SANDYGAST"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_DUSCLOPS"
+                "min_level": 40,
+                "max_level": 45,
+                "species": "SPECIES_HOUNDSTONE"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 45,
+                "max_level": 50,
                 "species": "SPECIES_GENGAR"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_MISMAGIUS"
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_JELLICENT"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_SPIRITOMB"
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_MIMIKYU"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_SPIRITOMB"
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_MIMIKYU"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_MISMAGIUS"
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_JELLICENT"
               }
             ]
           }
@@ -72868,7 +72868,7 @@
               {
                 "min_level": 40,
                 "max_level": 45,
-                "species": "SPECIES_MISDREAVUS"
+                "species": "SPECIES_PUMPKABOO"
               },
               {
                 "min_level": 40,
@@ -72878,7 +72878,7 @@
               {
                 "min_level": 40,
                 "max_level": 45,
-                "species": "SPECIES_DUSKULL"
+                "species": "SPECIES_DREEPY"
               },
               {
                 "min_level": 40,
@@ -72888,7 +72888,7 @@
               {
                 "min_level": 40,
                 "max_level": 45,
-                "species": "SPECIES_SABLEYE"
+                "species": "SPECIES_PHANTUMP"
               },
               {
                 "min_level": 40,
@@ -72903,22 +72903,22 @@
               {
                 "min_level": 45,
                 "max_level": 50,
-                "species": "SPECIES_MISMAGIUS"
+                "species": "SPECIES_GOURGEIST"
               },
               {
                 "min_level": 45,
                 "max_level": 50,
-                "species": "SPECIES_SPIRITOMB"
+                "species": "SPECIES_DRAKLOAK"
               },
               {
                 "min_level": 45,
                 "max_level": 50,
-                "species": "SPECIES_SPIRITOMB"
+                "species": "SPECIES_DRAKLOAK"
               },
               {
                 "min_level": 45,
                 "max_level": 50,
-                "species": "SPECIES_MISMAGIUS"
+                "species": "SPECIES_GOURGEIST"
               }
             ]
           }

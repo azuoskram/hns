@@ -16243,8 +16243,8 @@
     {
       "id": "LAYOUT_ABANDONED_HOUSE_BEDROOM_HNS",
       "name": "AbandonedHouse_Bedroom_hns_Layout",
-      "width": 8,
-      "height": 8,
+      "width": 12,
+      "height": 10,
       "primary_tileset": "gTileset_Johto_Building_Hns",
       "secondary_tileset": "gTileset_DragonsDen_Shrine_Hns",
       "border_filepath": "data/layouts/AbandonedHouse_Bedroom_hns/border.bin",
