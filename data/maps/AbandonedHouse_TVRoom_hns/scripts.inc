@@ -5,6 +5,13 @@ AbandonedHouse_TVRoom_EventScript_Item_RotomCatalog::
 	finditem ITEM_ROTOM_CATALOG
 	end
 
+AbandonedHouse_TVRoom_Greavard::
+	lock
+	msgbox AbandonedHouse_TVRoom_Text_Greavard, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
 AbandonedHouse_TVRoom_EventScript_CheckTV::
 	goto_if_unset FLAG_HIDE_ROTOM, AbandonedHouse_TVRoom_EventScript_TVInteract
 	goto_if_set FLAG_HIDE_ROTOM, AbandonedShip_TVRoom_EventScript_NoRotom
@@ -52,3 +59,7 @@ AbandonedHouse_TVRoom_TVText_Rotom::
 
 AbandonedHouse_TVRoom_TVText_NoRotom::
 	.string "The POKéMON has left the TV.$"
+
+AbandonedHouse_TVRoom_Text_Greavard::
+	.string "A very good boy is sleeping next\n"
+	.string "to the TV.$"
