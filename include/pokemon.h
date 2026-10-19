@@ -812,6 +812,7 @@ u8 GetMonsStateToDoubles(void);
 u8 GetMonsStateToDoubles_2(void);
 enum Ability GetAbilityBySpecies(u16 species, u8 abilityNum);
 enum Ability GetMonAbility(struct Pokemon *mon);
+enum Ability GetSpeciesInnate(u16 species);
 void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord);
 enum TrainerPicID GetSecretBaseTrainerPicIndex(void);
 enum TrainerClassID GetSecretBaseTrainerClass(void);
