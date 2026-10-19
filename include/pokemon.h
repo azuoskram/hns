@@ -392,7 +392,7 @@ struct Evolution
 #define MON_RANDOMIZER_SPECIAL_FORM 2
 #define MON_RANDOMIZER_INVALID      3
 
-struct SpeciesInfo /*0xC4*/
+struct SpeciesInfo
 {
     u8 baseHP;
     u8 baseAttack;
