@@ -148,7 +148,7 @@ u32 BattlePalace_TryEscapeStatus(enum BattlerId battler)
                 {
                     u32 toSub;
 
-                    if (GetBattlerAbility(battler) == ABILITY_EARLY_BIRD)
+                    if (BattlerHasTrait(battler, ABILITY_EARLY_BIRD))
                         toSub = 2;
                     else
                         toSub = 1;
