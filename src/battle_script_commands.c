@@ -6570,7 +6570,7 @@ static void Cmd_setgravity(void)
 static bool32 TryCheekPouch(enum BattlerId battler, enum Item itemId, const u8 *nextInstr)
 {
     if (GetItemPocket(itemId) == POCKET_BERRIES
-        && GetBattlerAbility(battler) == ABILITY_CHEEK_POUCH
+        && BattlerHasTrait(battler, ABILITY_CHEEK_POUCH)
         && !gBattleMons[battler].volatiles.healBlock
         && GetBattlerPartyState(battler)->ateBerry
         && !IsBattlerAtMaxHp(battler))
@@ -7987,7 +7987,7 @@ static u32 ChangeStatBuffs(enum BattlerId battler, s8 statValue, enum Stat statI
                     if (IsBattlerAlly(index, battler))
                         continue; // Only triggers on opposing side
 
-                    if (GetBattlerAbility(index) == ABILITY_OPPORTUNIST
+                    if (BattlerHasTrait(index, ABILITY_OPPORTUNIST)
                      && gProtectStructs[battler].activateOpportunist == 0) // don't activate opportunist on other mon's opportunist raises
                     {
                         gProtectStructs[index].activateOpportunist = 2;      // set stats to copy
@@ -10453,7 +10453,7 @@ static void Cmd_tryrecycleitem(void)
 
     u16 *usedHeldItem;
 
-    if (gCurrentMove == MOVE_NONE && GetBattlerAbility(gBattlerAttacker) == ABILITY_PICKUP)
+    if (gCurrentMove == MOVE_NONE && BattlerHasTrait(gBattlerAttacker, ABILITY_PICKUP))
         usedHeldItem = &GetBattlerPartyState(gBattlerTarget)->usedHeldItem;
     else
         usedHeldItem = &GetBattlerPartyState(gBattlerAttacker)->usedHeldItem;
@@ -12569,7 +12569,7 @@ void BS_TryHealPulse(void)
     else
     {
         s32 healAmount = 0;
-        if (GetBattlerAbility(gBattlerAttacker) == ABILITY_MEGA_LAUNCHER && IsPulseMove(gCurrentMove))
+        if (BattlerHasTrait(gBattlerAttacker, ABILITY_MEGA_LAUNCHER) && IsPulseMove(gCurrentMove))
             healAmount = GetNonDynamaxMaxHP(gBattlerTarget) * 75 / 100;
         else if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && GetMoveEffectArg_MoveProperty(gCurrentMove) == MOVE_EFFECT_FLORAL_HEALING)
             healAmount = GetNonDynamaxMaxHP(gBattlerTarget) * 2 / 3;
@@ -14120,10 +14120,8 @@ void BS_TryActivateReceiver(void)
     NATIVE_ARGS(u8 battler);
     enum BattlerId faintedBattler = GetBattlerForBattleScript(cmd->battler);
     enum BattlerId receiverBattler = BATTLE_PARTNER(faintedBattler);
-    enum Ability receiverAbility = GetBattlerAbility(receiverBattler);
-
     if (IsBattlerAlive(receiverBattler)
-     && (receiverAbility == ABILITY_RECEIVER || receiverAbility == ABILITY_POWER_OF_ALCHEMY)
+     && (BattlerHasTrait(receiverBattler, ABILITY_RECEIVER) || BattlerHasTrait(receiverBattler, ABILITY_POWER_OF_ALCHEMY))
      && GetBattlerHoldEffectIgnoreAbility(receiverBattler) != HOLD_EFFECT_ABILITY_SHIELD
      && !gAbilitiesInfo[gBattleMons[faintedBattler].ability].cantBeCopied)
     {
@@ -14146,7 +14144,7 @@ void BS_TryActivateSoulheart(void)
     {
         gBattleScripting.battler = gBattleStruct->soulheartBattlerId++;
         u32 ability = GetBattlerAbility(gBattleScripting.battler);
-        if (ability == ABILITY_SOUL_HEART
+        if (BattlerHasTrait(gBattleScripting.battler, ABILITY_SOUL_HEART)
             && IsBattlerAlive(gBattleScripting.battler)
             && !NoAliveMonsForEitherParty()
             && CompareStat(gBattleScripting.battler, STAT_SPATK, MAX_STAT_STAGE, CMP_LESS_THAN, ability))
