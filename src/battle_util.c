@@ -5008,6 +5008,31 @@ enum Ability GetBattlerAbility(enum BattlerId battler)
     return GetBattlerAbilityInternal(battler, FALSE, FALSE);
 }
 
+bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
+{
+    bool32 hasAbilityShield;
+
+    if (ability == ABILITY_NONE)
+        return FALSE;
+
+    if (GetBattlerAbility(battler) == ability)
+        return TRUE;
+
+    if (GetSpeciesInnate(gBattleMons[battler].species) != ability)
+        return FALSE;
+
+    // Innates are fixed traits, but are still suppressed by Gastro Acid and
+    // Neutralizing Gas under the same basic rules as ordinary Abilities.
+    if (gBattleMons[battler].volatiles.gastroAcid)
+        return FALSE;
+
+    hasAbilityShield = GetBattlerHoldEffect(battler) == HOLD_EFFECT_ABILITY_SHIELD;
+    if (IsNeutralizingGasOnField() && !hasAbilityShield && !gAbilitiesInfo[ability].cantBeSuppressed)
+        return FALSE;
+
+    return TRUE;
+}
+
 enum Ability GetBattlerAbilityInternal(enum BattlerId battler, bool32 ignoreMoldBreaker, bool32 noAbilityShield)
 {
     bool32 hasAbilityShield = !noAbilityShield && GetBattlerHoldEffectIgnoreAbility(battler) == HOLD_EFFECT_ABILITY_SHIELD;
@@ -5043,9 +5068,9 @@ enum Ability GetBattlerAbilityInternal(enum BattlerId battler, bool32 ignoreMold
 
 u32 IsAbilityOnSide(enum BattlerId battler, enum Ability ability)
 {
-    if (IsBattlerAlive(battler) && GetBattlerAbility(battler) == ability)
+    if (IsBattlerAlive(battler) && BattlerHasTrait(battler, ability))
         return battler + 1;
-    else if (IsBattlerAlive(BATTLE_PARTNER(battler)) && GetBattlerAbility(BATTLE_PARTNER(battler)) == ability)
+    else if (IsBattlerAlive(BATTLE_PARTNER(battler)) && BattlerHasTrait(BATTLE_PARTNER(battler), ability))
         return BATTLE_PARTNER(battler) + 1;
     else
         return 0;
@@ -5060,7 +5085,7 @@ u32 IsAbilityOnField(enum Ability ability)
 {
     for (enum BattlerId i = 0; i < gBattlersCount; i++)
     {
-        if (IsBattlerAlive(i) && GetBattlerAbility(i) == ability)
+        if (IsBattlerAlive(i) && BattlerHasTrait(i, ability))
             return i + 1;
     }
 
@@ -5071,7 +5096,7 @@ u32 IsAbilityOnFieldExcept(enum BattlerId battler, enum Ability ability)
 {
     for (enum BattlerId i = 0; i < gBattlersCount; i++)
     {
-        if (i != battler && IsBattlerAlive(i) && GetBattlerAbility(i) == ability)
+        if (i != battler && IsBattlerAlive(i) && BattlerHasTrait(i, ability))
             return i + 1;
     }
 
