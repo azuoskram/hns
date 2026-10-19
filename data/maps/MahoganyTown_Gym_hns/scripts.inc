@@ -84,7 +84,7 @@ MahoganyTown_Gym_EventScript_PryceVictory::
 	setvar VAR_0x8008, 7
 	call Common_EventScript_SetGymTrainers_hns
 	giveitem ITEM_TM_SNOWSCAPE 
-	msgbox MahoganyTown_Gym_Text_Snowscape Speech, MSGBOX_DEFAULT
+	msgbox MahoganyTown_Gym_Text_SnowscapeSpeech, MSGBOX_DEFAULT
 	setvar VAR_MAHOGANY_TOWN_STATE, 15
     setrespawn HEAL_LOCATION_MAHOGANY_TOWN_HNS
     call_if_eq VAR_NUM_BADGES, 7, MahoganyTown_Gym_EventScript_SetupElmRocketCall
@@ -151,7 +151,7 @@ MahoganyTown_Gym_Text_GlacierBadgeSpeech:
     .string "real whirlpools.\p"
     .string "And this… This is a gift from me!$"
 
-MahoganyTown_Gym_Text_Snowscape Speech:
+MahoganyTown_Gym_Text_SnowscapeSpeech:
     .string "That TM contains SNOWSCAPE .\p"
     .string "It inflicts damage every\n"
     .string "turn for 5 turns.\p"
