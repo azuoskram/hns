@@ -4976,6 +4976,7 @@ static const struct LevelUpMove sMewLevelUpLearnset[] = {
 static const struct LevelUpMove sChikoritaLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_TACKLE),
     LEVEL_UP_MOVE( 1, MOVE_GROWL),
+    LEVEL_UP_MOVE( 6, MOVE_SOLAR_BEAM),
     LEVEL_UP_MOVE( 6, MOVE_RAZOR_LEAF),
     LEVEL_UP_MOVE( 9, MOVE_POISON_POWDER),
     LEVEL_UP_MOVE( 10, MOVE_LEECH_SEED),
@@ -4989,7 +4990,6 @@ static const struct LevelUpMove sChikoritaLevelUpLearnset[] = {
     LEVEL_UP_MOVE(34, MOVE_BODY_SLAM),
     LEVEL_UP_MOVE(39, MOVE_SAFEGUARD),
     LEVEL_UP_MOVE(42, MOVE_AROMATHERAPY),
-    LEVEL_UP_MOVE(45, MOVE_SOLAR_BEAM),
     LEVEL_UP_END
 };
 
