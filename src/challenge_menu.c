@@ -2492,5 +2492,3 @@ bool8 DoesSpeciesPassOneTypeChallenge(u16 species)
 
     return DoesEvoLineHaveType(species, gSaveBlock3Ptr->challengeSettings.tx_Challenges_OneTypeChallenge, 0);
 }
-    return DoesEvoLineHaveType(species, gSaveBlock3Ptr->challengeSettings.tx_Challenges_OneTypeChallenge, 0);
-}
