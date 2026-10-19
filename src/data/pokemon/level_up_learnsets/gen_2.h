@@ -3551,7 +3551,7 @@ static const struct LevelUpMove sChikoritaLevelUpLearnset[] = {
     LEVEL_UP_MOVE(29, MOVE_BODY_SLAM),
     LEVEL_UP_MOVE(36, MOVE_LIGHT_SCREEN),
     LEVEL_UP_MOVE(43, MOVE_SAFEGUARD),
-    LEVEL_UP_MOVE(50, MOVE_SOLAR_BEAM),
+    LEVEL_UP_MOVE( 5, MOVE_SOLAR_BEAM),
     LEVEL_UP_END
 };
 
