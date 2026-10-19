@@ -5011,6 +5011,7 @@ enum Ability GetBattlerAbility(enum BattlerId battler)
 bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
 {
     bool32 hasAbilityShield;
+    bool32 neutralizingGasOnField = FALSE;
 
     if (ability == ABILITY_NONE)
         return FALSE;
@@ -5026,8 +5027,26 @@ bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
     if (gBattleMons[battler].volatiles.gastroAcid)
         return FALSE;
 
+    // Check Neutralizing Gas directly here to avoid recursion through
+    // IsNeutralizingGasOnField(), which itself queries all active traits.
+    for (enum BattlerId i = 0; i < gBattlersCount; i++)
+    {
+        if (!IsBattlerAlive(i) || gBattleMons[i].volatiles.gastroAcid)
+            continue;
+
+        if (gBattleMons[i].ability == ABILITY_NEUTRALIZING_GAS
+         || GetSpeciesInnate(gBattleMons[i].species) == ABILITY_NEUTRALIZING_GAS)
+        {
+            if (GetBattlerHoldEffect(i) != HOLD_EFFECT_ABILITY_SHIELD)
+            {
+                neutralizingGasOnField = TRUE;
+                break;
+            }
+        }
+    }
+
     hasAbilityShield = GetBattlerHoldEffect(battler) == HOLD_EFFECT_ABILITY_SHIELD;
-    if (IsNeutralizingGasOnField() && !hasAbilityShield && !gAbilitiesInfo[ability].cantBeSuppressed)
+    if (neutralizingGasOnField && !hasAbilityShield && !gAbilitiesInfo[ability].cantBeSuppressed)
         return FALSE;
 
     return TRUE;
