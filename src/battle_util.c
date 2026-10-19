@@ -3063,7 +3063,7 @@ static bool32 IsRestrictedAbility(enum BattlerId battler, enum Ability ability)
         || GetSpeciesAbility(gBattleMons[battler].species, 2) == ability;
 }
 
-u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum Ability ability, enum Move move, bool32 shouldAbilityTrigger)
+static u32 AbilityBattleEffectsSingle(enum AbilityEffect caseID, enum BattlerId battler, enum Ability ability, enum Move move, bool32 shouldAbilityTrigger)
 {
     u32 effect = 0;
     enum Type moveType = 0;
@@ -3081,7 +3081,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     if (ability)
         gLastUsedAbility = ability;
     else
-        gLastUsedAbility = GetBattlerAbility(battler);
+        gLastUsedAbility = ability ? ability : GetBattlerAbility(battler);
 
     if (move == MOVE_NONE)
         move = gCurrentMove;
@@ -4858,7 +4858,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     case ABILITYEFFECT_ON_WEATHER: // For ability effects that activate when the battle weather changes.
         if (!IsBattlerAlive(battler))
             return effect;
-        gLastUsedAbility = GetBattlerAbility(battler);
+        gLastUsedAbility = ability ? ability : GetBattlerAbility(battler);
         switch (gLastUsedAbility)
         {
         case ABILITY_FORECAST:
@@ -4905,7 +4905,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     case ABILITYEFFECT_ON_TERRAIN:  // For ability effects that activate when the field terrain changes.
         if (!IsBattlerAlive(battler))
             return effect;
-        gLastUsedAbility = GetBattlerAbility(battler);
+        gLastUsedAbility = ability ? ability : GetBattlerAbility(battler);
         switch (gLastUsedAbility)
         {
         case ABILITY_MIMICRY:
@@ -4941,7 +4941,32 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     if (effect)
     {
         RecordAbilityBattle(battler, gLastUsedAbility);
-        gBattlerAbility = battler;
+   
+// Run the selected Ability first. If it has no effect for this event, try the
+// species' fixed innate Ability. The battle-script command re-enters this
+// function after an activation, so multiple switch-in effects are processed
+// one at a time without overwriting a pending battle script.
+u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum Ability ability, enum Move move, bool32 shouldAbilityTrigger)
+{
+    enum Ability primaryAbility;
+    enum Ability innateAbility;
+    u32 effect;
+
+    if (battler >= gBattlersCount)
+        return 0;
+
+    primaryAbility = ability ? ability : GetBattlerAbility(battler);
+    effect = AbilityBattleEffectsSingle(caseID, battler, primaryAbility, move, shouldAbilityTrigger);
+    if (effect != 0 || primaryAbility != GetBattlerAbility(battler))
+        return effect;
+
+    innateAbility = GetSpeciesInnate(gBattleMons[battler].species);
+    if (innateAbility == ABILITY_NONE || innateAbility == primaryAbility || !BattlerHasTrait(battler, innateAbility))
+        return 0;
+
+    return AbilityBattleEffectsSingle(caseID, battler, innateAbility, move, shouldAbilityTrigger);
+}
+     gBattlerAbility = battler;
     }
 
     return effect;
