@@ -5708,6 +5708,14 @@ enum Ability GetMonAbility(struct Pokemon *mon)
     return GetAbilityBySpecies(species, abilityNum);
 }
 
+enum Ability GetSpeciesInnate(u16 species)
+{
+    if (species >= NUM_SPECIES)
+        return ABILITY_NONE;
+
+    return gSpeciesInfo[species].innate;
+}
+
 void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord)
 {
     s32 i, j;
