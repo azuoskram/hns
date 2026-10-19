@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - upcoming
+      - soulgold-one-innate
   pull_request:
 
 env:
