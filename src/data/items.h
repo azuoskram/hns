@@ -632,7 +632,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_BEAST_BALL] =
     {
         .name = ITEM_NAME("BEAST BALL"),
-        .price = 0,
+        .price = 2500,
         .description = COMPOUND_STRING(
             "A Ball designed to\n"
             "catch Ultra Beasts."),
@@ -16232,9 +16232,9 @@ const struct ItemInfo gItemsInfo[] =
         .name = ITEM_NAME("PASS"),
         .price = 0,
         .description = COMPOUND_STRING(
-            "A pass for the\n"
-            "Magnet Train between\n"
-            "Goldenrod and Saffron."),
+            "Train pass to ride\n"
+            "between Goldenrod\n"
+            "and Saffron."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,

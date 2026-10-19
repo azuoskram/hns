@@ -530,6 +530,22 @@ const struct RideablePokemon gSurfablePokemon[] =
         .species = SPECIES_ARCEUS,
         .trainerPose = 0,
     },
+    {
+        .species = SPECIES_FRILLISH,
+        .trainerPose = 0,
+    },
+    {
+        .species = SPECIES_JELLICENT,
+        .trainerPose = 0,
+    },
+    {
+        .species = SPECIES_DRAKLOAK,
+        .trainerPose = 0,
+    },
+    {
+        .species = SPECIES_DRAGAPULT,
+        .trainerPose = 0,
+    },
 // Regional Form Surfables
     {
         .species = SPECIES_RAICHU_ALOLA,

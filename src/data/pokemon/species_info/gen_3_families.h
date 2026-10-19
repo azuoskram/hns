@@ -12500,6 +12500,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .expYield = 211,
     #endif
         .evYield_SpDefense = 3,
+        .itemRare = ITEM_SOUL_DEW,
         .genderRatio = MON_FEMALE,
         .eggCycles = 120,
         .friendship = 90,
@@ -12660,6 +12661,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .expYield = 211,
     #endif
         .evYield_SpAttack = 3,
+        .itemRare = ITEM_SOUL_DEW,
         .genderRatio = MON_MALE,
         .eggCycles = 120,
         .friendship = 90,

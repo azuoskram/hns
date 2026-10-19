@@ -17,4 +17,4 @@ AbandonedHouse_Main_Text_Book::
 
 AbandonedHouse_Main_Text_Ceruledge::
 	.string "A suit of armor that looks\n"
-	.string "like a {PKMN}.$"
+	.string "like a POKéMON.$"

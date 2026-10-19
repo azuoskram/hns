@@ -425,7 +425,7 @@ VermilionCity_Text_Truck:
 	.string "There's something under the\n"
 	.string "truck.\p"
 	.string "You find two pieces of paper:\n"
-	.string "One is a poorly drawn {PKMN}\l"
+	.string "One is a poorly drawn POKéMON\l"
 	.string "that looks similar to MEW.\p"
 	.string "Scribbled next to it is a name:\n"
 	.string "MEWTHREE.\p"

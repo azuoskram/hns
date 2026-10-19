@@ -671,6 +671,25 @@ const u32 gSurfableShinyPokemonPic_Arceus[] = INCBIN_U32("graphics/object_events
 const u16 gSurfablePokemonPalette_Arceus[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0493_arceus.gbapal");
 const u16 gSurfablePokemonShinyPalette_Arceus[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0493_arceus_shiny.gbapal");
 
+const u32 gSurfablePokemonPic_Frillish[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0592_frillish.4bpp");
+const u32 gSurfableShinyPokemonPic_Frillish[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0592_frillish_shiny.4bpp");
+const u16 gSurfablePokemonPalette_Frillish[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0592_frillish.gbapal");
+const u16 gSurfablePokemonShinyPalette_Frillish[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0592_frillish_shiny.gbapal");
+
+const u32 gSurfablePokemonPic_Jellicent[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0593_jellicent.4bpp");
+const u32 gSurfableShinyPokemonPic_Jellicent[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0593_jellicent_shiny.4bpp");
+const u16 gSurfablePokemonPalette_Jellicent[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0593_jellicent.gbapal");
+const u16 gSurfablePokemonShinyPalette_Jellicent[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0593_jellicent_shiny.gbapal");
+
+const u32 gSurfablePokemonPic_Drakloak[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0886_drakloak.4bpp");
+const u32 gSurfableShinyPokemonPic_Drakloak[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0886_drakloak_shiny.4bpp");
+const u16 gSurfablePokemonPalette_Drakloak[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0886_drakloak.gbapal");
+const u16 gSurfablePokemonShinyPalette_Drakloak[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0886_drakloak_shiny.gbapal");
+
+const u32 gSurfablePokemonPic_Dragapult[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0887_dragapult.4bpp");
+const u32 gSurfableShinyPokemonPic_Dragapult[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/0887_dragapult_shiny.4bpp");
+const u16 gSurfablePokemonPalette_Dragapult[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0887_dragapult.gbapal");
+const u16 gSurfablePokemonShinyPalette_Dragapult[] = INCBIN_U16("graphics/object_events/pics/pokemon/surfable/0887_dragapult_shiny.gbapal");
 
 // Regional Form Surfables
 const u32 gSurfablePokemonPic_RaichuAlola[] = INCBIN_U32("graphics/object_events/pics/pokemon/surfable/regional_raichu_alola.4bpp");
