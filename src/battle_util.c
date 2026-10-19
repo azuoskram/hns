@@ -4941,11 +4941,12 @@ static u32 AbilityBattleEffectsSingle(enum AbilityEffect caseID, enum BattlerId 
     if (effect)
     {
         RecordAbilityBattle(battler, gLastUsedAbility);
-   
-// Run the selected Ability first. If it has no effect for this event, try the
-// species' fixed innate Ability. The battle-script command re-enters this
-// function after an activation, so multiple switch-in effects are processed
-// one at a time without overwriting a pending battle script.
+        gBattlerAbility = battler;
+    }
+
+    return effect;
+}
+
 u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum Ability ability, enum Move move, bool32 shouldAbilityTrigger)
 {
     enum Ability primaryAbility;
@@ -4965,11 +4966,6 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
         return 0;
 
     return AbilityBattleEffectsSingle(caseID, battler, innateAbility, move, shouldAbilityTrigger);
-}
-     gBattlerAbility = battler;
-    }
-
-    return effect;
 }
 
 bool32 TryPrimalReversion(enum BattlerId battler)
