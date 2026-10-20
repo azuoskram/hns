@@ -980,6 +980,7 @@ extern u16 gCalledMove;
 extern s32 gBideDmg[MAX_BATTLERS_COUNT];
 extern u16 gLastUsedItem;
 extern enum Ability gLastUsedAbility;
+extern enum Ability gTraitStack[MAX_BATTLERS_COUNT * (4 + MAX_MON_INNATES_INTERNAL)][2];
 extern enum BattlerId gBattlerAttacker;
 extern enum BattlerId gBattlerTarget;
 extern enum BattlerId gBattlerFainted;
