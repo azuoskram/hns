@@ -180,3 +180,19 @@ SINGLE_BATTLE_TEST("Innate Klutz suppresses held-item effects")
         EXPECT_EQ(player->hp, 100);
     }
 }
+
+SINGLE_BATTLE_TEST("Innate Dancer copies dance moves")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_QUIVER_DANCE));
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_TANGLED_FEET); }
+    } WHEN {
+        opponent->innates[0] = ABILITY_DANCER;
+        TURN { MOVE(player, MOVE_QUIVER_DANCE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_QUIVER_DANCE, player);
+        ABILITY_POPUP(opponent, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_QUIVER_DANCE, opponent);
+    }
+}
