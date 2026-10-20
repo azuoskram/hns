@@ -79,3 +79,18 @@ SINGLE_BATTLE_TEST("Innate Levitate prevents Ground-type damage")
         EXPECT_EQ(opponent->hp, opponent->maxHP);
     }
 }
+
+SINGLE_BATTLE_TEST("Innate Wonder Guard blocks non-super-effective damage")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_SNORLAX) { Ability(ABILITY_THICK_FAT); }
+    } WHEN {
+        opponent->innates[0] = ABILITY_WONDER_GUARD;
+        TURN { MOVE(player, MOVE_EARTHQUAKE); }
+    } SCENE {
+        NOT HP_BAR(opponent);
+    } THEN {
+        EXPECT_EQ(opponent->hp, opponent->maxHP);
+    }
+}
