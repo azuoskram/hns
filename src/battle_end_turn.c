@@ -500,10 +500,10 @@ static bool32 HandleEndTurnPoison(enum BattlerId battler)
 
     gBattleStruct->eventState.endTurnBattler++;
 
-    if ((gBattleMons[battler].status1 & STATUS1_POISON || gBattleMons[battler].status1 & STATUS1_TOXIC_POISON)
-     && IsBattlerAlive(battler)
-     && !IsTraitAndRecord(battler, ABILITY_MAGIC_GUARD))
+    if ((gBattleMons[battler].status1 & (STATUS1_POISON | STATUS1_TOXIC_POISON))
+     && IsBattlerAlive(battler))
     {
+        // Poison Heal replaces poison damage even when Magic Guard is also present.
         if (BattlerHasTrait(battler, ABILITY_POISON_HEAL))
         {
             if (!IsBattlerAtMaxHp(battler) && !gBattleMons[battler].volatiles.healBlock)
@@ -514,18 +514,20 @@ static bool32 HandleEndTurnPoison(enum BattlerId battler)
                 effect = TRUE;
             }
         }
-        else if (gBattleMons[battler].status1 & STATUS1_TOXIC_POISON)
+        else if (!IsTraitAndRecord(battler, ABILITY_MAGIC_GUARD))
         {
-            SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 16);
-            if ((gBattleMons[battler].status1 & STATUS1_TOXIC_COUNTER) != STATUS1_TOXIC_TURN(15)) // not 16 turns
-                gBattleMons[battler].status1 += STATUS1_TOXIC_TURN(1);
-            gBattleStruct->passiveHpUpdate[battler] *= (gBattleMons[battler].status1 & STATUS1_TOXIC_COUNTER) >> 8;
-            BattleScriptExecute(BattleScript_PoisonTurnDmg);
-            effect = TRUE;
-        }
-        else
-        {
-            SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 8);
+            if (gBattleMons[battler].status1 & STATUS1_TOXIC_POISON)
+            {
+                SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 16);
+                if ((gBattleMons[battler].status1 & STATUS1_TOXIC_COUNTER) != STATUS1_TOXIC_TURN(15)) // not 16 turns
+                    gBattleMons[battler].status1 += STATUS1_TOXIC_TURN(1);
+                gBattleStruct->passiveHpUpdate[battler] *= (gBattleMons[battler].status1 & STATUS1_TOXIC_COUNTER) >> 8;
+            }
+            else
+            {
+                SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 8);
+            }
+
             BattleScriptExecute(BattleScript_PoisonTurnDmg);
             effect = TRUE;
         }
