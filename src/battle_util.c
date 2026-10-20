@@ -5592,7 +5592,7 @@ bool32 IsSafeguardProtected(enum BattlerId battlerAtk, enum BattlerId battlerDef
         return FALSE;
     if (IsBattlerAlly(battlerAtk, battlerDef))
         return TRUE;
-    if (abilityAtk == ABILITY_INFILTRATOR)
+    if (BattlerHasTrait(battlerAtk, ABILITY_INFILTRATOR))
         return FALSE;
     return TRUE;
 }
@@ -6104,7 +6104,7 @@ bool32 IsMoveMakingContact(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         RecordItemEffectBattle(battlerAtk, HOLD_EFFECT_PUNCHING_GLOVE);
         return FALSE;
     }
-    else if (abilityAtk == ABILITY_LONG_REACH)
+    else if (BattlerHasTrait(battlerAtk, ABILITY_LONG_REACH))
     {
         RecordAbilityBattle(battlerAtk, ABILITY_LONG_REACH);
         return FALSE;
@@ -10628,7 +10628,7 @@ bool32 CanMoveSkipAccuracyCalc(enum BattlerId battlerAtk, enum BattlerId battler
         effect = TRUE;
     }
     // If the attacker has the ability No Guard and they aren't targeting a Pokemon involved in a Sky Drop with the move Sky Drop, move hits.
-    else if (abilityAtk == ABILITY_NO_GUARD
+    else if (BattlerHasTrait(battlerAtk, ABILITY_NO_GUARD)
           && gBattleMons[battlerDef].volatiles.semiInvulnerable != STATE_COMMANDER
           && (moveEffect != EFFECT_SKY_DROP || gBattleStruct->skyDropTargets[battlerDef] == SKY_DROP_NO_TARGET))
     {
@@ -10636,7 +10636,7 @@ bool32 CanMoveSkipAccuracyCalc(enum BattlerId battlerAtk, enum BattlerId battler
         ability = ABILITY_NO_GUARD;
     }
     // If the target has the ability No Guard and they aren't involved in a Sky Drop or the current move isn't Sky Drop, move hits.
-    else if (abilityDef == ABILITY_NO_GUARD
+    else if (BattlerHasTrait(battlerDef, ABILITY_NO_GUARD)
           && (moveEffect != EFFECT_SKY_DROP || gBattleStruct->skyDropTargets[battlerDef] == SKY_DROP_NO_TARGET))
     {
         effect = TRUE;
@@ -10913,7 +10913,7 @@ bool32 BreaksThroughSemiInvulnerablity(enum BattlerId battlerAtk, enum BattlerId
     {
         if (CanMoveSkipAccuracyCheck(battlerAtk, move))
             return TRUE;
-        if (abilityAtk == ABILITY_NO_GUARD || abilityDef == ABILITY_NO_GUARD)
+        if (BattlerHasTrait(battlerAtk, ABILITY_NO_GUARD) || BattlerHasTrait(battlerDef, ABILITY_NO_GUARD))
             return TRUE;
         if (gBattleMons[battlerAtk].volatiles.battlerWithSureHit == battlerDef + 1)
             return TRUE;
