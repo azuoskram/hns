@@ -365,19 +365,29 @@ static bool32 HandleEndTurnFirstEventBlock(enum BattlerId battler)
         break;
     case FIRST_EVENT_BLOCK_ABILITIES:
     {
-        enum Ability ability = GetBattlerAbility(battler);
-        switch (ability)
+        while (gBattleStruct->eventState.endTurnTrait <= MAX_MON_INNATES_INTERNAL)
         {
-        case ABILITY_HEALER:
-        case ABILITY_HYDRATION:
-        case ABILITY_SHED_SKIN:
-            if (AbilityBattleEffects(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
-                effect = TRUE;
-            break;
-        default:
-            break;
+            enum Ability ability = GetBattlerTrait(battler, gBattleStruct->eventState.endTurnTrait++, FALSE);
+            switch (ability)
+            {
+            case ABILITY_HEALER:
+            case ABILITY_HYDRATION:
+            case ABILITY_SHED_SKIN:
+                if (AbilityBattleEffectsForTrait(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
+                    effect = TRUE;
+                break;
+            default:
+                break;
+            }
+            if (effect)
+                break;
         }
-        gBattleStruct->eventState.endTurnBlock++;
+
+        if (!effect && gBattleStruct->eventState.endTurnTrait > MAX_MON_INNATES_INTERNAL)
+        {
+            gBattleStruct->eventState.endTurnTrait = 0;
+            gBattleStruct->eventState.endTurnBlock++;
+        }
         break;
     }
     case FIRST_EVENT_BLOCK_HEAL_ITEMS:
@@ -1262,25 +1272,35 @@ static bool32 HandleEndTurnThirdEventBlock(enum BattlerId battler)
         break;
     case THIRD_EVENT_BLOCK_ABILITIES:
     {
-        enum Ability ability = GetBattlerAbility(battler);
-        switch (ability)
+        while (gBattleStruct->eventState.endTurnTrait <= MAX_MON_INNATES_INTERNAL)
         {
-        case ABILITY_TRUANT: // Not fully accurate but it has to be handled somehow. TODO: Find a better way.
-        case ABILITY_CUD_CHEW:
-        case ABILITY_SLOW_START:
-        case ABILITY_BAD_DREAMS:
-        case ABILITY_BALL_FETCH:
-        case ABILITY_HARVEST:
-        case ABILITY_MOODY:
-        case ABILITY_PICKUP:
-        case ABILITY_SPEED_BOOST:
-            if (AbilityBattleEffects(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
-                effect = TRUE;
-            break;
-        default:
-            break;
+            enum Ability ability = GetBattlerTrait(battler, gBattleStruct->eventState.endTurnTrait++, FALSE);
+            switch (ability)
+            {
+            case ABILITY_TRUANT: // Not fully accurate but it has to be handled somehow. TODO: Find a better way.
+            case ABILITY_CUD_CHEW:
+            case ABILITY_SLOW_START:
+            case ABILITY_BAD_DREAMS:
+            case ABILITY_BALL_FETCH:
+            case ABILITY_HARVEST:
+            case ABILITY_MOODY:
+            case ABILITY_PICKUP:
+            case ABILITY_SPEED_BOOST:
+                if (AbilityBattleEffectsForTrait(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
+                    effect = TRUE;
+                break;
+            default:
+                break;
+            }
+            if (effect)
+                break;
         }
-        gBattleStruct->eventState.endTurnBlock++;
+
+        if (!effect && gBattleStruct->eventState.endTurnTrait > MAX_MON_INNATES_INTERNAL)
+        {
+            gBattleStruct->eventState.endTurnTrait = 0;
+            gBattleStruct->eventState.endTurnBlock++;
+        }
         break;
     }
     case THIRD_EVENT_BLOCK_ITEMS:
