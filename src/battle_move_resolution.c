@@ -3046,6 +3046,10 @@ static enum MoveEndResult MoveEndMoveBlock(void)
             if (BattlerHasTrait(gBattlerTarget, ABILITY_STICKY_HOLD))
             {
                 gBattlerAbility = gBattlerTarget;
+                gLastUsedAbility = ABILITY_STICKY_HOLD;
+                RecordAbilityBattle(gBattlerTarget, ABILITY_STICKY_HOLD);
+                if (GetBattlerAbility(gBattlerTarget) != ABILITY_STICKY_HOLD)
+                    PushTraitStack(gBattlerTarget, ABILITY_STICKY_HOLD);
                 BattleScriptCall(BattleScript_StickyHoldActivatesRet);
                 result = MOVEEND_RESULT_RUN_SCRIPT;
                 break;
@@ -3086,8 +3090,10 @@ static enum MoveEndResult MoveEndMoveBlock(void)
         else if (BattlerHasTrait(gBattlerTarget, ABILITY_STICKY_HOLD))
         {
             BattleScriptCall(BattleScript_NoItemSteal);
-            gLastUsedAbility = gBattleMons[gBattlerTarget].ability;
+            gLastUsedAbility = ABILITY_STICKY_HOLD;
             RecordAbilityBattle(gBattlerTarget, gLastUsedAbility);
+            if (GetBattlerAbility(gBattlerTarget) != ABILITY_STICKY_HOLD)
+                PushTraitStack(gBattlerTarget, ABILITY_STICKY_HOLD);
             result = MOVEEND_RESULT_RUN_SCRIPT;
         }
         else
