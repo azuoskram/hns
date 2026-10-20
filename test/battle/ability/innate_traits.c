@@ -46,3 +46,19 @@ SINGLE_BATTLE_TEST("Innate Poison Heal heals poison damage")
         HP_BAR(player, damage: -50);
     }
 }
+
+SINGLE_BATTLE_TEST("Poison Heal still activates alongside innate Magic Guard")
+{
+    GIVEN {
+        PLAYER(SPECIES_SHROOMISH) { Ability(ABILITY_EFFECT_SPORE); Status1(STATUS1_POISON); HP(1), MaxHP(400); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        player->innates[0] = ABILITY_MAGIC_GUARD;
+        player->innates[1] = ABILITY_POISON_HEAL;
+        TURN { MOVE(player, MOVE_CELEBRATE); }
+    } SCENE {
+        ABILITY_POPUP(player, ABILITY_POISON_HEAL);
+        MESSAGE("The poisoning healed Shroomish a little bit!");
+        HP_BAR(player, damage: -50);
+    }
+}
