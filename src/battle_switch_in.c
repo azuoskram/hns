@@ -435,11 +435,55 @@ static bool32 SecondEventBlockEvents(struct BattleCalcValues *calcValues)
     switch (gBattleStruct->eventState.battlerSwitchIn)
     {
     case SECOND_EVENT_ABILITIES:
-        if (AbilityBattleEffects(ABILITYEFFECT_ON_WEATHER, battler, calcValues->abilities[battler], MOVE_NONE, TRUE)
-         || AbilityBattleEffects(ABILITYEFFECT_ON_TERRAIN, battler, calcValues->abilities[battler], MOVE_NONE, TRUE)
-         || AbilityBattleEffects(ABILITYEFFECT_COMMANDER, battler, calcValues->abilities[battler], MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
-            effect = TRUE;
-        gBattleStruct->eventState.battlerSwitchIn++;
+        // Run weather, terrain, and Commander checks across every trait. Advance
+        // the cursor before invoking scripts so each activation resumes safely.
+        while (gBattleStruct->eventState.battlerSwitchInAbilityEvent < 3)
+        {
+            enum AbilityEffect abilityEffect;
+            bool32 shouldTrigger;
+            u32 traitIndex = gBattleStruct->eventState.battlerSwitchInTrait;
+            enum Ability trait;
+
+            if (traitIndex > MAX_MON_INNATES_INTERNAL)
+            {
+                gBattleStruct->eventState.battlerSwitchInTrait = 0;
+                gBattleStruct->eventState.battlerSwitchInAbilityEvent++;
+                continue;
+            }
+
+            trait = GetBattlerTrait(battler, traitIndex, FALSE);
+            gBattleStruct->eventState.battlerSwitchInTrait++;
+
+            switch (gBattleStruct->eventState.battlerSwitchInAbilityEvent)
+            {
+            case 0:
+                abilityEffect = ABILITYEFFECT_ON_WEATHER;
+                shouldTrigger = TRUE;
+                break;
+            case 1:
+                abilityEffect = ABILITYEFFECT_ON_TERRAIN;
+                shouldTrigger = TRUE;
+                break;
+            default:
+                abilityEffect = ABILITYEFFECT_COMMANDER;
+                shouldTrigger = gBattleStruct->battlerState[battler].switchIn;
+                break;
+            }
+
+            if (trait != ABILITY_NONE
+             && AbilityBattleEffects(abilityEffect, battler, trait, MOVE_NONE, shouldTrigger))
+            {
+                effect = TRUE;
+                break;
+            }
+        }
+
+        if (gBattleStruct->eventState.battlerSwitchInAbilityEvent >= 3)
+        {
+            gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
+            gBattleStruct->eventState.battlerSwitchInTrait = 0;
+            gBattleStruct->eventState.battlerSwitchIn++;
+        }
         break;
     case SECOND_EVENT_BOOSTER_ENERGY:
         if (ItemBattleEffects(battler, 0, calcValues->holdEffects[battler], IsBoosterEnergyActivation))
