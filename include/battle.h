@@ -544,6 +544,8 @@ struct EventStates
     enum BattleIntroStates battleIntro:8;
     enum SwitchInEvents switchIn:8;
     u32 battlerSwitchIn:8; // SwitchInFirstEventBlock, SwitchInSecondEventBlock
+    u32 battlerSwitchInTrait:3; // Current selected/innate trait being processed for switch-in abilities
+    u32 paddingSwitchInTrait:5;
     u32 moveEndBlock:8;
 };
 
