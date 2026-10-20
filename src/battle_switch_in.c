@@ -312,9 +312,23 @@ static bool32 FirstEventBlockEvents(struct BattleCalcValues *calcValues)
         }
         break;
     case FIRST_EVENT_BLOCK_IMMUNITY_ABILITIES:
-        if (AbilityBattleEffects(ABILITYEFFECT_IMMUNITY, battler, calcValues->abilities[battler], MOVE_NONE, TRUE))
-            effect = TRUE;
-        gBattleStruct->eventState.battlerSwitchIn++;
+        while (gBattleStruct->eventState.battlerSwitchInTrait <= MAX_MON_INNATES_INTERNAL)
+        {
+            u32 traitIndex = gBattleStruct->eventState.battlerSwitchInTrait++;
+            enum Ability trait = GetBattlerTrait(battler, traitIndex, FALSE);
+            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_IMMUNITY, battler, trait, MOVE_NONE, TRUE))
+            {
+                effect = TRUE;
+                break;
+            }
+        }
+
+        if (!effect && gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
+        {
+            gBattleStruct->eventState.battlerSwitchInTrait = 0;
+            gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
+            gBattleStruct->eventState.battlerSwitchIn++;
+        }
         break;
     case FIRST_EVENT_BLOCK_ITEMS:
         if (ItemBattleEffects(battler, 0, calcValues->holdEffects[battler], IsOnSwitchInActivation))
