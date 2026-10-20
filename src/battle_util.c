@@ -5102,19 +5102,30 @@ enum Ability GetBattlerAbility(enum BattlerId battler)
 
 enum Ability GetBattlerTrait(enum BattlerId battler, u32 traitNum, bool32 ignoreMoldBreaker)
 {
+    enum Ability trait;
+    u32 i;
+
     if (battler >= gBattlersCount || traitNum > MAX_MON_INNATES_INTERNAL)
         return ABILITY_NONE;
 
     if (traitNum == 0)
         return ignoreMoldBreaker ? GetBattlerAbilityIgnoreMoldBreaker(battler) : GetBattlerAbility(battler);
 
-    if (gBattleMons[battler].innates[traitNum - 1] == ABILITY_NONE)
+    trait = gBattleMons[battler].innates[traitNum - 1];
+    if (trait == ABILITY_NONE || !BattlerHasTrait(battler, trait))
         return ABILITY_NONE;
 
-    if (!BattlerHasTrait(battler, gBattleMons[battler].innates[traitNum - 1]))
+    // A duplicated trait should not trigger the same effect multiple times.
+    if (trait == GetBattlerAbility(battler))
         return ABILITY_NONE;
 
-    return gBattleMons[battler].innates[traitNum - 1];
+    for (i = 0; i + 1 < traitNum; i++)
+    {
+        if (gBattleMons[battler].innates[i] == trait)
+            return ABILITY_NONE;
+    }
+
+    return trait;
 }
 
 void PushTraitStack(enum BattlerId battler, enum Ability ability)
