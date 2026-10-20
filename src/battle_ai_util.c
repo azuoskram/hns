@@ -1809,9 +1809,9 @@ bool32 CanTargetFaintAiWithMod(enum BattlerId battlerDef, enum BattlerId battler
 
 bool32 AI_IsAbilityOnSide(enum BattlerId battlerId, enum Ability ability)
 {
-    if (IsBattlerAlive(battlerId) && gAiLogicData->abilities[battlerId] == ability)
+    if (IsBattlerAlive(battlerId) && AI_BATTLER_HAS_TRAIT(battlerId, ability))
         return TRUE;
-    else if (IsBattlerAlive(BATTLE_PARTNER(battlerId)) && gAiLogicData->abilities[BATTLE_PARTNER(battlerId)] == ability)
+    else if (IsBattlerAlive(BATTLE_PARTNER(battlerId)) && AI_BATTLER_HAS_TRAIT(BATTLE_PARTNER(battlerId), ability))
         return TRUE;
     else
         return FALSE;
