@@ -10219,9 +10219,10 @@ static void Cmd_switchoutabilities(void)
         }
     }
 
-    switch (GetBattlerAbility(battler))
+    // Innate traits are active alongside the selected Ability, so both
+    // switch-out effects can run when a Pokémon has both traits.
+    if (BattlerHasTrait(battler, ABILITY_NATURAL_CURE))
     {
-    case ABILITY_NATURAL_CURE:
         if (gBattleMons[battler].status1 & STATUS1_SLEEP)
             TryDeactivateSleepClause(GetBattlerSide(battler), gBattlerPartyIndexes[battler]);
 
@@ -10231,8 +10232,9 @@ static void Cmd_switchoutabilities(void)
                                         sizeof(gBattleMons[battler].status1),
                                         &gBattleMons[battler].status1);
         MarkBattlerForControllerExec(battler);
-        break;
-    case ABILITY_REGENERATOR:
+    }
+
+    if (BattlerHasTrait(battler, ABILITY_REGENERATOR))
     {
         u32 regenerate = GetNonDynamaxMaxHP(battler) / 3;
         regenerate += gBattleMons[battler].hp;
@@ -10243,10 +10245,6 @@ static void Cmd_switchoutabilities(void)
                                         sizeof(regenerate),
                                         &regenerate);
         MarkBattlerForControllerExec(battler);
-        break;
-    }
-    default:
-        break;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
