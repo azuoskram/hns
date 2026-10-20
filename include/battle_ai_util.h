@@ -75,32 +75,8 @@ static inline bool32 IsMoveUnusable(u32 moveIndex, enum Move move, u32 moveLimit
         || moveLimitations & 1u << moveIndex;
 }
 
-// Check Neutralizing Gas against cached AI traits without recursively calling
-// AI_BattlerHasTraitInData.
-static inline bool32 AI_IsTraitSuppressedByNeutralizingGas(const struct AiLogicData *aiData, enum Ability ability)
-{
-    if (gAbilitiesInfo[ability].cantBeSuppressed)
-        return FALSE;
-
-    for (enum BattlerId i = 0; i < MAX_BATTLERS_COUNT; i++)
-    {
-        if (gBattleMons[i].hp == 0
-         || gBattleMons[i].volatiles.gastroAcid
-         || aiData->holdEffects[i] == HOLD_EFFECT_ABILITY_SHIELD)
-            continue;
-
-        if (aiData->abilities[i] == ABILITY_NEUTRALIZING_GAS)
-            return TRUE;
-
-        for (u32 j = 0; j < MAX_MON_INNATES_INTERNAL; j++)
-        {
-            if (aiData->innates[i][j] == ABILITY_NEUTRALIZING_GAS)
-                return TRUE;
-        }
-    }
-
-    return FALSE;
-}
+// Implemented in battle_ai_util.c, where ability suppression metadata is available.
+bool32 AI_IsTraitSuppressedByNeutralizingGas(const struct AiLogicData *aiData, enum Ability ability);
 
 // Trait-aware ability lookup for AI calculations. Innates follow the same
 // Gastro Acid and Neutralizing Gas suppression rules as battle execution.
