@@ -10865,18 +10865,32 @@ bool32 DoesOHKOMoveMissTarget(struct BattleCalcValues *cv)
         return TRUE;
     }
 
-    if (cv->abilities[cv->battlerDef] == ABILITY_STURDY)
+    bool32 hasSturdy = gAiLogicData != NULL
+        ? AI_BATTLER_HAS_TRAIT_DATA(gAiLogicData, cv->battlerDef, ABILITY_STURDY)
+        : BattlerHasTrait(cv->battlerDef, ABILITY_STURDY);
+    if (hasSturdy)
     {
+        RecordAbilityBattle(cv->battlerDef, ABILITY_STURDY);
         gBattleStruct->moveResultFlags[cv->battlerDef] |= MOVE_RESULT_ONE_HIT_KO_STURDY;
         return TRUE;
     }
 
     enum OHKOResult lands = NO_HIT;
+    bool32 attackerHasNoGuard = gAiLogicData != NULL
+        ? AI_BATTLER_HAS_TRAIT_DATA(gAiLogicData, cv->battlerAtk, ABILITY_NO_GUARD)
+        : BattlerHasTrait(cv->battlerAtk, ABILITY_NO_GUARD);
+    bool32 defenderHasNoGuard = gAiLogicData != NULL
+        ? AI_BATTLER_HAS_TRAIT_DATA(gAiLogicData, cv->battlerDef, ABILITY_NO_GUARD)
+        : BattlerHasTrait(cv->battlerDef, ABILITY_NO_GUARD);
 
     if (gBattleMons[cv->battlerAtk].volatiles.battlerWithSureHit == cv->battlerDef + 1
-          || IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_NO_GUARD)
-          || IsAbilityAndRecord(cv->battlerDef, cv->abilities[cv->battlerDef], ABILITY_NO_GUARD))
+     || attackerHasNoGuard
+     || defenderHasNoGuard)
     {
+        if (attackerHasNoGuard)
+            RecordAbilityBattle(cv->battlerAtk, ABILITY_NO_GUARD);
+        else if (defenderHasNoGuard)
+            RecordAbilityBattle(cv->battlerDef, ABILITY_NO_GUARD);
         lands = SURE_HIT;
     }
     else
