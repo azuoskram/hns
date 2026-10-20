@@ -645,6 +645,8 @@ void SetBattlerAiData(enum BattlerId battler, struct AiLogicData *aiData)
     enum HoldEffect holdEffect;
 
     ability = aiData->abilities[battler] = AI_DecideKnownAbilityForTurn(battler);
+    for (u32 innateIndex = 0; innateIndex < MAX_MON_INNATES_INTERNAL; innateIndex++)
+        aiData->innates[battler][innateIndex] = gBattleMons[battler].innates[innateIndex];
     aiData->items[battler] = gBattleMons[battler].item;
     holdEffect = aiData->holdEffects[battler] = AI_DecideHoldEffectForTurn(battler);
     aiData->holdEffectParams[battler] = GetBattlerHoldEffectParam(battler);
