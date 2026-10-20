@@ -3507,6 +3507,10 @@ static enum MoveEndResult MoveEndPickpocket(void)
                     StealTargetItem(battlerDef, gBattlerAttacker);  // Target takes attacker's item
 
                 gEffectBattler = gBattlerAttacker;
+                if (GetBattlerAbility(battlerDef) != ABILITY_PICKPOCKET)
+                    PushTraitStack(battlerDef, ABILITY_PICKPOCKET);
+                gLastUsedAbility = ABILITY_PICKPOCKET;
+                RecordAbilityBattle(battlerDef, ABILITY_PICKPOCKET);
                 BattleScriptCall(BattleScript_Pickpocket);   // Includes sticky hold check to print separate string
                 result = MOVEEND_RESULT_RUN_SCRIPT;
                 break; // Pickpocket activates on fastest mon, so exit loop.
