@@ -10404,7 +10404,7 @@ bool32 EmergencyExitCanBeTriggered(enum BattlerId battler)
 
 bool32 TryTriggerSymbiosis(enum BattlerId battler, u32 ally)
 {
-    return GetBattlerAbility(ally) == ABILITY_SYMBIOSIS
+    return BattlerHasTrait(ally, ABILITY_SYMBIOSIS)
         && gBattleMons[battler].item == ITEM_NONE
         && gBattleMons[ally].item != ITEM_NONE
         && CanBattlerGetOrLoseItem(battler, ally, gBattleMons[ally].item)
