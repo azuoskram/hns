@@ -898,8 +898,8 @@ static bool32 HandleEndTurnYawn(enum BattlerId battler)
         gBattleMons[battler].volatiles.yawn--;
         if (!gBattleMons[battler].volatiles.yawn
          && !(gBattleMons[battler].status1 & STATUS1_ANY)
-         && ability != ABILITY_VITAL_SPIRIT
-         && ability != ABILITY_INSOMNIA
+         && !BattlerHasTrait(battler, ABILITY_VITAL_SPIRIT)
+         && !BattlerHasTrait(battler, ABILITY_INSOMNIA)
          && !UproarWakeUpCheck(battler)
          && !IsLeafGuardProtected(battler, ability))
         {
@@ -1254,7 +1254,7 @@ static bool32 HandleEndTurnThirdEventBlock(enum BattlerId battler)
             for (gEffectBattler = 0; gEffectBattler < gBattlersCount; gEffectBattler++)
             {
                 if ((gBattleMons[gEffectBattler].status1 & STATUS1_SLEEP)
-                 && GetBattlerAbility(gEffectBattler) != ABILITY_SOUNDPROOF)
+                 && !BattlerHasTrait(gEffectBattler, ABILITY_SOUNDPROOF))
                 {
                     gBattleMons[gEffectBattler].status1 &= ~STATUS1_SLEEP;
                     gBattleMons[gEffectBattler].volatiles.nightmare = FALSE;
