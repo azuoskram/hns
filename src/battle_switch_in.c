@@ -42,31 +42,58 @@ bool32 DoSwitchInEvents(void)
     case SWITCH_IN_EVENTS_TERA_SHIFT:
         while (gBattleStruct->switchInBattlerCounter < gBattlersCount)
         {
-            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter++];
-            if (AbilityBattleEffects(ABILITYEFFECT_TERA_SHIFT, battler, calcValues.abilities[battler], 0, gBattleStruct->battlerState[battler].switchIn))
+            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter];
+            if (gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
+            {
+                gBattleStruct->eventState.battlerSwitchInTrait = 0;
+                gBattleStruct->switchInBattlerCounter++;
+                continue;
+            }
+
+            enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
+            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_TERA_SHIFT, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         gBattleStruct->eventState.switchIn++;
         break;
     case SWITCH_IN_EVENTS_NEUTRALIZING_GAS:
         while (gBattleStruct->switchInBattlerCounter < gBattlersCount)
         {
-            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter++];
-            if (AbilityBattleEffects(ABILITYEFFECT_NEUTRALIZINGGAS, battler, calcValues.abilities[battler], 0, gBattleStruct->battlerState[battler].switchIn))
+            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter];
+            if (gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
+            {
+                gBattleStruct->eventState.battlerSwitchInTrait = 0;
+                gBattleStruct->switchInBattlerCounter++;
+                continue;
+            }
+
+            enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
+            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_NEUTRALIZINGGAS, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         gBattleStruct->eventState.switchIn++;
         break;
     case SWITCH_IN_EVENTS_UNNERVE:
         while (gBattleStruct->switchInBattlerCounter < gBattlersCount)
         {
-            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter++];
-            if (AbilityBattleEffects(ABILITYEFFECT_UNNERVE, battler, calcValues.abilities[battler], 0, gBattleStruct->battlerState[battler].switchIn))
+            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter];
+            if (gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
+            {
+                gBattleStruct->eventState.battlerSwitchInTrait = 0;
+                gBattleStruct->switchInBattlerCounter++;
+                continue;
+            }
+
+            enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
+            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_UNNERVE, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         gBattleStruct->eventState.switchIn++;
         break;
     case SWITCH_IN_EVENTS_FIRST_BLOCK:
@@ -101,11 +128,20 @@ bool32 DoSwitchInEvents(void)
     case SWITCH_IN_EVENTS_FORM_CHANGE:
         while (gBattleStruct->switchInBattlerCounter < gBattlersCount)
         {
-            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter++];
-            if (AbilityBattleEffects(ABILITYEFFECT_SWITCH_IN_FORM_CHANGE, battler, calcValues.abilities[battler], 0, gBattleStruct->battlerState[battler].switchIn))
+            battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter];
+            if (gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
+            {
+                gBattleStruct->eventState.battlerSwitchInTrait = 0;
+                gBattleStruct->switchInBattlerCounter++;
+                continue;
+            }
+
+            enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
+            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_SWITCH_IN_FORM_CHANGE, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         gBattleStruct->eventState.switchIn++;
         break;
     case SWITCH_IN_EVENTS_SECOND_BLOCK:
