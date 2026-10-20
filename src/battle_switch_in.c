@@ -268,11 +268,37 @@ static bool32 FirstEventBlockEvents(struct BattleCalcValues *calcValues)
         }
         break;
     case FIRST_EVENT_BLOCK_GENERAL_ABILITIES:
-        if (TryPrimalReversion(battler)
-         || AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, battler, calcValues->abilities[battler], MOVE_NONE, gBattleStruct->battlerState[battler].switchIn)
-         || TryClearIllusion(battler, calcValues->abilities[battler]))
+        // Primal Reversion keeps its existing priority, before switch-in traits.
+        if (gBattleStruct->eventState.battlerSwitchInTrait == 0 && TryPrimalReversion(battler))
+        {
             effect = TRUE;
-        gBattleStruct->eventState.battlerSwitchIn++;
+            gBattleStruct->eventState.battlerSwitchIn++;
+            break;
+        }
+
+        // Process the selected Ability and every innate independently. Advance
+        // the cursor before running a script so a resumed event doesn't repeat
+        // the trait that just activated.
+        while (gBattleStruct->eventState.battlerSwitchInTrait <= MAX_MON_INNATES_INTERNAL)
+        {
+            u32 traitIndex = gBattleStruct->eventState.battlerSwitchInTrait++;
+            enum Ability trait = GetBattlerTrait(battler, traitIndex, FALSE);
+
+            if (trait != ABILITY_NONE
+             && AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
+            {
+                effect = TRUE;
+                break;
+            }
+        }
+
+        if (!effect && gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
+        {
+            gBattleStruct->eventState.battlerSwitchInTrait = 0;
+            if (TryClearIllusion(battler, calcValues->abilities[battler]))
+                effect = TRUE;
+            gBattleStruct->eventState.battlerSwitchIn++;
+        }
         break;
     case FIRST_EVENT_BLOCK_IMMUNITY_ABILITIES:
         if (AbilityBattleEffects(ABILITYEFFECT_IMMUNITY, battler, calcValues->abilities[battler], MOVE_NONE, TRUE))
