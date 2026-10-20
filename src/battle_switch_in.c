@@ -35,6 +35,7 @@ bool32 DoSwitchInEvents(void)
         gBattleStruct->battlersSorted = TRUE;
         gBattleStruct->switchInBattlerCounter = 0;
         gBattleStruct->eventState.battlerSwitchIn = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         gBattleStruct->eventState.switchIn++;
         // fallthrough
     case SWITCH_IN_EVENTS_TERA_SHIFT:
@@ -76,6 +77,7 @@ bool32 DoSwitchInEvents(void)
             {
                 gBattleStruct->switchInBattlerCounter++;
                 gBattleStruct->eventState.battlerSwitchIn = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
                 continue;
             }
 
@@ -88,6 +90,7 @@ bool32 DoSwitchInEvents(void)
 
             gBattleStruct->switchInBattlerCounter++;
             gBattleStruct->eventState.battlerSwitchIn = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         }
         gBattleStruct->switchInBattlerCounter = 0;
         gBattleStruct->eventState.switchIn++;
@@ -111,6 +114,7 @@ bool32 DoSwitchInEvents(void)
             {
                 gBattleStruct->switchInBattlerCounter++;
                 gBattleStruct->eventState.battlerSwitchIn = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
                 continue;
             }
 
@@ -123,6 +127,7 @@ bool32 DoSwitchInEvents(void)
 
             gBattleStruct->switchInBattlerCounter++;
             gBattleStruct->eventState.battlerSwitchIn = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         }
         gBattleStruct->switchInBattlerCounter = 0;
         gBattleStruct->eventState.switchIn++;
