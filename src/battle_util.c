@@ -4952,6 +4952,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     enum Ability primaryAbility;
     enum Ability innateAbility;
     u32 effect;
+    u32 innateIndex;
 
     if (battler >= gBattlersCount)
         return 0;
@@ -4961,11 +4962,20 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     if (effect != 0 || primaryAbility != GetBattlerAbility(battler))
         return effect;
 
-    innateAbility = GetSpeciesInnate(gBattleMons[battler].species);
-    if (innateAbility == ABILITY_NONE || innateAbility == primaryAbility || !BattlerHasTrait(battler, innateAbility))
-        return 0;
+    // Preserve the existing single-effect API while checking all innate slots.
+    // The first innate that produces an effect is returned to the battle script.
+    for (innateIndex = 0; innateIndex < MAX_MON_INNATES_INTERNAL; innateIndex++)
+    {
+        innateAbility = GetSpeciesInnateAtIndex(gBattleMons[battler].species, innateIndex);
+        if (innateAbility == ABILITY_NONE || innateAbility == primaryAbility || !BattlerHasTrait(battler, innateAbility))
+            continue;
 
-    return AbilityBattleEffectsSingle(caseID, battler, innateAbility, move, shouldAbilityTrigger);
+        effect = AbilityBattleEffectsSingle(caseID, battler, innateAbility, move, shouldAbilityTrigger);
+        if (effect != 0)
+            return effect;
+    }
+
+    return 0;
 }
 
 bool32 TryPrimalReversion(enum BattlerId battler)
