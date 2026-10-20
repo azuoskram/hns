@@ -94,3 +94,19 @@ SINGLE_BATTLE_TEST("Innate Wonder Guard blocks non-super-effective damage")
         EXPECT_EQ(opponent->hp, opponent->maxHP);
     }
 }
+
+SINGLE_BATTLE_TEST("Innate Mold Breaker bypasses an opposing innate Levitate")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET) { Ability(ABILITY_THICK_FAT); }
+        OPPONENT(SPECIES_SNORLAX) { Ability(ABILITY_THICK_FAT); }
+    } WHEN {
+        player->innates[0] = ABILITY_MOLD_BREAKER;
+        opponent->innates[0] = ABILITY_LEVITATE;
+        TURN { MOVE(player, MOVE_EARTHQUAKE); }
+    } SCENE {
+        HP_BAR(opponent);
+    } THEN {
+        EXPECT_LT(opponent->hp, opponent->maxHP);
+    }
+}
