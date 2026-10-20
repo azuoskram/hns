@@ -6564,7 +6564,7 @@ static inline u32 CalcMoveBasePower(struct BattleContext *ctx)
         break;
     case EFFECT_WEATHER_BALL:
         if ((ctx->weather & B_WEATHER_ANY)
-         || (ctx->abilityAtk == ABILITY_MEGA_SOL && ctx->holdEffectAtk != HOLD_EFFECT_UTILITY_UMBRELLA))
+         || (BattlerHasTrait(ctx->battlerAtk, ABILITY_MEGA_SOL) && ctx->holdEffectAtk != HOLD_EFFECT_UTILITY_UMBRELLA))
             basePower *= 2;
         break;
     case EFFECT_PURSUIT:
@@ -6782,7 +6782,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct BattleContext *ctx)
         break;
     }
     case EFFECT_SOLAR_BEAM:
-        if ((ctx->abilityAtk != ABILITY_MEGA_SOL && GetConfig(B_SANDSTORM_SOLAR_BEAM) >= GEN_3 && IsBattlerWeatherAffected(battlerAtk, B_WEATHER_LOW_LIGHT))
+        if ((!BattlerHasTrait(ctx->battlerAtk, ABILITY_MEGA_SOL) && GetConfig(B_SANDSTORM_SOLAR_BEAM) >= GEN_3 && IsBattlerWeatherAffected(battlerAtk, B_WEATHER_LOW_LIGHT))
             || IsBattlerWeatherAffected(battlerAtk, (B_WEATHER_RAIN | B_WEATHER_ICY_ANY | B_WEATHER_FOG))) // Excludes Sandstorm
             modifier = uq4_12_multiply(modifier, UQ_4_12(0.5));
         break;
@@ -7570,10 +7570,10 @@ static inline u32 CalcDefenseStat(struct BattleContext *ctx)
     }
 
     // sandstorm sp.def boost for rock types
-    if (ctx->abilityAtk != ABILITY_MEGA_SOL && GetConfig(B_SANDSTORM_SPDEF_BOOST) >= GEN_4 && IS_BATTLER_OF_TYPE(battlerDef, TYPE_ROCK) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SANDSTORM) && !usesDefStat)
+    if (!BattlerHasTrait(ctx->battlerAtk, ABILITY_MEGA_SOL) && GetConfig(B_SANDSTORM_SPDEF_BOOST) >= GEN_4 && IS_BATTLER_OF_TYPE(battlerDef, TYPE_ROCK) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SANDSTORM) && !usesDefStat)
         modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
     // snow def boost for ice types
-    if (ctx->abilityAtk != ABILITY_MEGA_SOL && IS_BATTLER_OF_TYPE(battlerDef, TYPE_ICE) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SNOW) && usesDefStat)
+    if (!BattlerHasTrait(ctx->battlerAtk, ABILITY_MEGA_SOL) && IS_BATTLER_OF_TYPE(battlerDef, TYPE_ICE) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SNOW) && usesDefStat)
         modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
 
     modifier = ApplyDefensiveBadgeBoost(modifier, battlerDef, move);
@@ -7620,7 +7620,7 @@ static inline uq4_12_t GetSameTypeAttackBonusModifier(struct BattleContext *ctx)
 // Utility Umbrella holders take normal damage from what would be rain- and sun-weakened attacks.
 static uq4_12_t GetWeatherDamageModifier(struct BattleContext *ctx)
 {
-    if (ctx->abilityAtk == ABILITY_MEGA_SOL && ctx->holdEffectAtk != HOLD_EFFECT_UTILITY_UMBRELLA)
+    if (BattlerHasTrait(ctx->battlerAtk, ABILITY_MEGA_SOL) && ctx->holdEffectAtk != HOLD_EFFECT_UTILITY_UMBRELLA)
     {
         if (ctx->moveType == TYPE_FIRE)
             return UQ_4_12(1.5);
@@ -9725,7 +9725,7 @@ bool32 PickupHasValidTarget(enum BattlerId battler)
 
 bool32 IsBattlerWeatherAffected(enum BattlerId battler, u32 weatherFlags)
 {
-    if (GetBattlerAbility(battler) == ABILITY_MEGA_SOL
+    if (BattlerHasTrait(battler, ABILITY_MEGA_SOL)
      && GetBattlerHoldEffect(battler) != HOLD_EFFECT_UTILITY_UMBRELLA
      && (weatherFlags & B_WEATHER_SUN))
         return TRUE;
