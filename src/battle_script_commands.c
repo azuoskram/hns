@@ -14378,7 +14378,24 @@ void BS_TryInstruct(void)
 void BS_ShowAbilityPopup(void)
 {
     NATIVE_ARGS();
-    CreateAbilityPopUp(gBattlerAbility, gBattleMons[gBattlerAbility].ability, (IsDoubleBattle()) != 0);
+    enum BattlerId battler = PullTraitStackBattler();
+    enum Ability ability = PullTraitStackAbility();
+
+    // Scripts that explicitly push a trait display that trait, including an innate.
+    // Keep the legacy behavior for existing scripts that do not use the trait stack.
+    if (battler != MAX_BATTLERS_COUNT && ability != ABILITY_NONE)
+    {
+        gBattleScripting.battler = battler;
+        gBattlerAbility = battler;
+        PopTraitStack();
+    }
+    else
+    {
+        battler = gBattlerAbility;
+        ability = gBattleMons[battler].ability;
+    }
+
+    CreateAbilityPopUp(battler, ability, (IsDoubleBattle()) != 0);
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
