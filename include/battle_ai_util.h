@@ -77,22 +77,28 @@ static inline bool32 IsMoveUnusable(u32 moveIndex, enum Move move, u32 moveLimit
 
 // Trait-aware ability lookup for AI calculations. The selected Ability and all
 // fixed innate Abilities can independently influence move scoring.
-static inline bool32 AI_BattlerHasTraitCached(enum BattlerId battler, enum Ability ability)
+static inline bool32 AI_BattlerHasTraitInData(const struct AiLogicData *aiData, enum BattlerId battler, enum Ability ability)
 {
-    if (battler >= MAX_BATTLERS_COUNT || ability == ABILITY_NONE)
+    if (aiData == NULL || battler >= MAX_BATTLERS_COUNT || ability == ABILITY_NONE)
         return FALSE;
 
-    if (gAiLogicData->abilities[battler] == ability)
+    if (aiData->abilities[battler] == ability)
         return TRUE;
 
     for (u32 i = 0; i < MAX_MON_INNATES_INTERNAL; i++)
-        if (gAiLogicData->innates[battler][i] == ability)
+        if (aiData->innates[battler][i] == ability)
             return TRUE;
 
     return FALSE;
 }
 
+static inline bool32 AI_BattlerHasTraitCached(enum BattlerId battler, enum Ability ability)
+{
+    return AI_BattlerHasTraitInData(gAiLogicData, battler, ability);
+}
+
 #define AI_BATTLER_HAS_TRAIT(battler, ability) AI_BattlerHasTraitCached((battler), (ability))
+#define AI_BATTLER_HAS_TRAIT_DATA(aiData, battler, ability) AI_BattlerHasTraitInData((aiData), (battler), (ability))
 
 typedef bool32 (*MoveFlag)(enum Move move);
 
