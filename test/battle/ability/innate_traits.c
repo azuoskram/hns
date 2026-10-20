@@ -137,3 +137,33 @@ SINGLE_BATTLE_TEST("Innate Sticky Hold prevents item theft")
         EXPECT_EQ(gBattleMons[B_POSITION_OPPONENT_LEFT].item, ITEM_LIFE_ORB);
     }
 }
+
+SINGLE_BATTLE_TEST("Innate Regenerator heals on switching out")
+{
+    GIVEN {
+        PLAYER(SPECIES_SLOWBRO) { Ability(ABILITY_OBLIVIOUS); HP(1); }
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        player->innates[0] = ABILITY_REGENERATOR;
+        TURN { SWITCH(player, 1); }
+        TURN { SWITCH(player, 0); }
+    } THEN {
+        EXPECT_EQ(player->hp, player->maxHP / 3 + 1);
+    }
+}
+
+SINGLE_BATTLE_TEST("Innate Natural Cure removes status on switching out")
+{
+    GIVEN {
+        PLAYER(SPECIES_STARMIE) { Ability(ABILITY_ILLUMINATE); Status1(STATUS1_BURN); }
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        player->innates[0] = ABILITY_NATURAL_CURE;
+        TURN { SWITCH(player, 1); }
+        TURN { SWITCH(player, 0); }
+    } THEN {
+        EXPECT_EQ(player->status1, 0);
+    }
+}
