@@ -6061,7 +6061,13 @@ enum Obedience GetAttackerObedienceForAction(void)
 
 enum HoldEffect GetBattlerHoldEffect(enum BattlerId battler)
 {
-    return GetBattlerHoldEffectInternal(battler, GetBattlerAbility(battler));
+    enum Ability ability = GetBattlerAbility(battler);
+
+    // Klutz can be an innate trait as well as the selected Ability.
+    if (BattlerHasTrait(battler, ABILITY_KLUTZ))
+        ability = ABILITY_KLUTZ;
+
+    return GetBattlerHoldEffectInternal(battler, ability);
 }
 
 enum HoldEffect GetBattlerHoldEffectIgnoreAbility(enum BattlerId battler)
