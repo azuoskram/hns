@@ -4951,6 +4951,19 @@ static u32 AbilityBattleEffectsSingle(enum AbilityEffect caseID, enum BattlerId 
     return effect;
 }
 
+u32 AbilityBattleEffectsForTrait(enum AbilityEffect caseID, enum BattlerId battler, enum Ability trait, enum Move move, bool32 shouldAbilityTrigger)
+{
+    u32 effect;
+
+    if (battler >= gBattlersCount || trait == ABILITY_NONE)
+        return 0;
+
+    effect = AbilityBattleEffectsSingle(caseID, battler, trait, move, shouldAbilityTrigger);
+    if (effect != 0 && trait != GetBattlerAbility(battler))
+        PushTraitStack(battler, trait);
+    return effect;
+}
+
 u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum Ability ability, enum Move move, bool32 shouldAbilityTrigger)
 {
     enum Ability primaryAbility;
