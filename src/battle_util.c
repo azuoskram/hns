@@ -5323,15 +5323,14 @@ u32 IsAbilityPreventingEscape(enum BattlerId battler)
         if (!IsBattlerAlive(battlerDef))
             continue;
 
-        enum Ability ability = GetBattlerAbility(battlerDef);
-
-        if (ability == ABILITY_SHADOW_TAG && (B_SHADOW_TAG_ESCAPE <= GEN_3 || GetBattlerAbility(battler) != ABILITY_SHADOW_TAG))
+        if (BattlerHasTrait(battlerDef, ABILITY_SHADOW_TAG)
+         && (B_SHADOW_TAG_ESCAPE <= GEN_3 || !BattlerHasTrait(battler, ABILITY_SHADOW_TAG)))
             return battlerDef + 1;
 
-        if (ability == ABILITY_ARENA_TRAP && isBattlerGrounded)
+        if (BattlerHasTrait(battlerDef, ABILITY_ARENA_TRAP) && isBattlerGrounded)
             return battlerDef + 1;
 
-        if (ability == ABILITY_MAGNET_PULL && IS_BATTLER_OF_TYPE(battler, TYPE_STEEL))
+        if (BattlerHasTrait(battlerDef, ABILITY_MAGNET_PULL) && IS_BATTLER_OF_TYPE(battler, TYPE_STEEL))
             return battlerDef + 1;
     }
 
