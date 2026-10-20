@@ -62,3 +62,20 @@ SINGLE_BATTLE_TEST("Poison Heal still activates alongside innate Magic Guard")
         HP_BAR(player, damage: -50);
     }
 }
+
+SINGLE_BATTLE_TEST("Innate Levitate prevents Ground-type damage")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_SNORLAX) { Ability(ABILITY_THICK_FAT); }
+    } WHEN {
+        opponent->innates[0] = ABILITY_RUN_AWAY;
+        opponent->innates[1] = ABILITY_UNAWARE;
+        opponent->innates[2] = ABILITY_LEVITATE;
+        TURN { MOVE(player, MOVE_EARTHQUAKE); }
+    } SCENE {
+        NOT HP_BAR(opponent);
+    } THEN {
+        EXPECT_EQ(opponent->hp, opponent->maxHP);
+    }
+}
