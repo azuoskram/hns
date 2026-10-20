@@ -197,7 +197,9 @@ static bool32 HandleEndTurnWeatherDamage(enum BattlerId battler)
 static bool32 HandleEndTurnEmergencyExit(enum BattlerId battler)
 {
     bool32 effect = FALSE;
-    enum Ability ability = BattlerHasTrait(battler, ABILITY_EMERGENCY_EXIT) ? ABILITY_EMERGENCY_EXIT : ABILITY_WIMP_OUT;
+    enum Ability ability = GetBattlerAbility(battler);
+    if (ability != ABILITY_EMERGENCY_EXIT && ability != ABILITY_WIMP_OUT)
+        ability = BattlerHasTrait(battler, ABILITY_EMERGENCY_EXIT) ? ABILITY_EMERGENCY_EXIT : ABILITY_WIMP_OUT;
 
     gBattleStruct->eventState.endTurnBattler++;
 
