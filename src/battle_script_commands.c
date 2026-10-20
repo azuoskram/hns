@@ -12876,9 +12876,12 @@ void BS_TryWindRiderPower(void)
 
     enum BattlerId battler = GetBattlerForBattleScript(cmd->battler);
     enum Ability ability = GetBattlerAbility(battler);
+    if (ability != ABILITY_WIND_RIDER && ability != ABILITY_WIND_POWER)
+        ability = BattlerHasTrait(battler, ABILITY_WIND_RIDER) ? ABILITY_WIND_RIDER : ABILITY_WIND_POWER;
+
     if (IsBattlerAlive(battler)
      && IsBattlerAlly(battler, gBattlerAttacker)
-     && (ability == ABILITY_WIND_RIDER || ability == ABILITY_WIND_POWER))
+     && (BattlerHasTrait(battler, ABILITY_WIND_RIDER) || BattlerHasTrait(battler, ABILITY_WIND_POWER)))
     {
         gLastUsedAbility = ability;
         RecordAbilityBattle(battler, gLastUsedAbility);
