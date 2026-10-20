@@ -5041,9 +5041,14 @@ bool32 IsNeutralizingGasOnField(void)
 
 bool32 IsMoldBreakerTypeAbility(enum BattlerId battler, enum Ability ability)
 {
-    if (gBattleMons[battler].volatiles.gastroAcid)
+    u32 innateIndex;
+
+    if (battler >= gBattlersCount || gBattleMons[battler].volatiles.gastroAcid)
         return FALSE;
 
+    // Check the selected ability first, then each active innate. The caller
+    // supplies the selected ability, so checking only this argument would make
+    // innate Mold Breaker, Teravolt, Turboblaze, and Mycelium Might ineffective.
     if (ability == ABILITY_MOLD_BREAKER
      || ability == ABILITY_TERAVOLT
      || ability == ABILITY_TURBOBLAZE
@@ -5051,6 +5056,23 @@ bool32 IsMoldBreakerTypeAbility(enum BattlerId battler, enum Ability ability)
     {
         RecordAbilityBattle(battler, ability);
         return TRUE;
+    }
+
+    for (innateIndex = 0; innateIndex < MAX_MON_INNATES_INTERNAL; innateIndex++)
+    {
+        enum Ability innateAbility = gBattleMons[battler].innates[innateIndex];
+
+        if (innateAbility == ABILITY_NONE || !BattlerHasTrait(battler, innateAbility))
+            continue;
+
+        if (innateAbility == ABILITY_MOLD_BREAKER
+         || innateAbility == ABILITY_TERAVOLT
+         || innateAbility == ABILITY_TURBOBLAZE
+         || (innateAbility == ABILITY_MYCELIUM_MIGHT && IsBattleMoveStatus(gCurrentMove)))
+        {
+            RecordAbilityBattle(battler, innateAbility);
+            return TRUE;
+        }
     }
 
     return FALSE;
