@@ -545,7 +545,8 @@ struct EventStates
     enum SwitchInEvents switchIn:8;
     u32 battlerSwitchIn:8; // SwitchInFirstEventBlock, SwitchInSecondEventBlock
     u32 battlerSwitchInTrait:3; // Current selected/innate trait being processed for switch-in abilities
-    u32 paddingSwitchInTrait:5;
+    u32 battlerSwitchInAbilityEvent:2; // Weather, terrain, then commander switch-in effects
+    u32 paddingSwitchInTrait:3;
     u32 moveEndBlock:8;
 };
 
