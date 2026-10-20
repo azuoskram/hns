@@ -1114,7 +1114,7 @@ const u8 *CheckSkyDropState(enum BattlerId battler, enum SkyDropState skyDropSta
         // Don't use CanBeConfused, can cause issues in edge cases.
         enum Ability ability = GetBattlerAbility(otherSkyDropper);
         if (!(gBattleMons[otherSkyDropper].volatiles.confusionTurns > 0
-            || IsAbilityAndRecord(otherSkyDropper, ability, ABILITY_OWN_TEMPO)
+            || IsTraitAndRecord(otherSkyDropper, ABILITY_OWN_TEMPO)
             || IsMistyTerrainAffected(otherSkyDropper, ability, GetBattlerHoldEffect(otherSkyDropper), gFieldStatuses)))
         {
             gBattleMons[otherSkyDropper].volatiles.confusionTurns = RandomUniform(RNG_CONFUSION_TURNS, 2, B_CONFUSION_TURNS); // 2-5 turns
@@ -1816,7 +1816,7 @@ void TryToRevertMimicryAndFlags(void)
     {
         gBattleMons[battler].volatiles.terrainAbilityDone = FALSE;
         ResetParadoxTerrainStat(battler);
-        if (IsAbilityAndRecord(battler, GetBattlerAbility(battler), ABILITY_MIMICRY))
+        if (IsTraitAndRecord(battler, ABILITY_MIMICRY))
             RESTORE_BATTLER_TYPE(battler);
     }
 }
@@ -4064,7 +4064,7 @@ static u32 AbilityBattleEffectsSingle(enum AbilityEffect caseID, enum BattlerId 
              && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
              && !CanBattlerAvoidContactEffects(gBattlerAttacker, gBattlerTarget, GetBattlerAbility(gBattlerAttacker), GetBattlerHoldEffect(gBattlerAttacker), move))
             {
-                if (!IsAbilityAndRecord(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker), ABILITY_MAGIC_GUARD))
+                if (!IsTraitAndRecord(gBattlerAttacker, ABILITY_MAGIC_GUARD))
                 {
                     PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                     SetPassiveDamageAmount(gBattlerAttacker, GetNonDynamaxMaxHP(gBattlerAttacker) / (B_ROUGH_SKIN_DMG >= GEN_4 ? 8 : 16));
@@ -4238,7 +4238,7 @@ static u32 AbilityBattleEffectsSingle(enum AbilityEffect caseID, enum BattlerId 
              && (GetConfig(B_ABILITY_TRIGGER_CHANCE) >= GEN_4 ? RandomPercentage(RNG_CUTE_CHARM, 30) : RandomChance(RNG_CUTE_CHARM, 1, 3))
              && !(gBattleMons[gBattlerAttacker].volatiles.infatuation)
              && AreBattlersOfOppositeGender(gBattlerAttacker, gBattlerTarget)
-             && !IsAbilityAndRecord(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker), ABILITY_OBLIVIOUS)
+             && !IsTraitAndRecord(gBattlerAttacker, ABILITY_OBLIVIOUS)
              && !CanBattlerAvoidContactEffects(gBattlerAttacker, gBattlerTarget, GetBattlerAbility(gBattlerAttacker), GetBattlerHoldEffect(gBattlerAttacker), move)
              && !IsAbilityOnSide(gBattlerAttacker, ABILITY_AROMA_VEIL))
             {
@@ -4444,7 +4444,7 @@ static u32 AbilityBattleEffectsSingle(enum AbilityEffect caseID, enum BattlerId 
             if (!IsBattlerAlive(gBattlerAttacker))
                 break;
 
-            if (!IsAbilityAndRecord(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker), ABILITY_MAGIC_GUARD))
+            if (!IsTraitAndRecord(gBattlerAttacker, ABILITY_MAGIC_GUARD))
                 SetPassiveDamageAmount(gBattlerAttacker, GetNonDynamaxMaxHP(gBattlerAttacker) / 4);
 
             switch (speciesForm)
@@ -11019,7 +11019,7 @@ void CheckSetUnburden(enum BattlerId battler)
 {
     if (!(gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
         && !gBattleMons[battler].volatiles.embargo
-        && IsAbilityAndRecord(battler, GetBattlerAbility(battler), ABILITY_UNBURDEN))
+        && IsTraitAndRecord(battler, ABILITY_UNBURDEN))
     {
         gBattleMons[battler].volatiles.unburdenActive = TRUE;
     }
