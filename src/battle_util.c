@@ -5033,14 +5033,21 @@ bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
 {
     bool32 hasAbilityShield;
     bool32 neutralizingGasOnField = FALSE;
+    u32 innateIndex;
 
-    if (ability == ABILITY_NONE)
+    if (ability == ABILITY_NONE || battler >= gBattlersCount)
         return FALSE;
 
     if (GetBattlerAbility(battler) == ability)
         return TRUE;
 
-    if (GetSpeciesInnate(gBattleMons[battler].species) != ability)
+    for (innateIndex = 0; innateIndex < MAX_MON_INNATES_INTERNAL; innateIndex++)
+    {
+        if (GetSpeciesInnateAtIndex(gBattleMons[battler].species, innateIndex) == ability)
+            break;
+    }
+
+    if (innateIndex == MAX_MON_INNATES_INTERNAL)
         return FALSE;
 
     // Innates are fixed traits, but are still suppressed by Gastro Acid and
@@ -5052,17 +5059,21 @@ bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
     // IsNeutralizingGasOnField(), which itself queries all active traits.
     for (enum BattlerId i = 0; i < gBattlersCount; i++)
     {
+        u32 gasInnateIndex;
+        bool32 hasNeutralizingGas = gBattleMons[i].ability == ABILITY_NEUTRALIZING_GAS;
+
         if (!IsBattlerAlive(i) || gBattleMons[i].volatiles.gastroAcid)
             continue;
 
-        if (gBattleMons[i].ability == ABILITY_NEUTRALIZING_GAS
-         || GetSpeciesInnate(gBattleMons[i].species) == ABILITY_NEUTRALIZING_GAS)
+        for (gasInnateIndex = 0; !hasNeutralizingGas && gasInnateIndex < MAX_MON_INNATES_INTERNAL; gasInnateIndex++)
         {
-            if (GetBattlerHoldEffect(i) != HOLD_EFFECT_ABILITY_SHIELD)
-            {
-                neutralizingGasOnField = TRUE;
-                break;
-            }
+            hasNeutralizingGas = GetSpeciesInnateAtIndex(gBattleMons[i].species, gasInnateIndex) == ABILITY_NEUTRALIZING_GAS;
+        }
+
+        if (hasNeutralizingGas && GetBattlerHoldEffect(i) != HOLD_EFFECT_ABILITY_SHIELD)
+        {
+            neutralizingGasOnField = TRUE;
+            break;
         }
     }
 
