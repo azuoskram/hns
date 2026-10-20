@@ -208,6 +208,8 @@ struct SimulatedDamage
 struct AiLogicData
 {
     enum Ability abilities[MAX_BATTLERS_COUNT];
+    // Additional fixed traits cached for AI calculations, matching battle state.
+    enum Ability innates[MAX_BATTLERS_COUNT][MAX_MON_INNATES_INTERNAL];
     enum Item items[MAX_BATTLERS_COUNT];
     enum HoldEffect holdEffects[MAX_BATTLERS_COUNT];
     u8 holdEffectParams[MAX_BATTLERS_COUNT];
