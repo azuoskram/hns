@@ -116,7 +116,7 @@ bool32 ShouldUseItem(enum BattlerId battler)
             }
             break;
         case EFFECT_ITEM_INCREASE_ALL_STATS:
-            if (gAiLogicData->abilities[battler] == ABILITY_CONTRARY)
+            if (AI_BATTLER_HAS_TRAIT(battler, ABILITY_CONTRARY))
                 break;
             if (gBattleStruct->battlerState[battler].isFirstTurn || !AI_OpponentCanFaintAiWithMod(battler, 0))
             {
@@ -159,8 +159,8 @@ bool32 ShouldUseItem(enum BattlerId battler)
                     break;
                 }
 
-                if (gAiLogicData->abilities[battler] == ABILITY_SUPER_LUCK
-                 || gAiLogicData->abilities[battler] == ABILITY_SNIPER
+                if (AI_BATTLER_HAS_TRAIT(battler, ABILITY_SUPER_LUCK)
+                 || AI_BATTLER_HAS_TRAIT(battler, ABILITY_SNIPER)
                  || gAiLogicData->holdEffects[battler] == HOLD_EFFECT_SCOPE_LENS
                  || HasMoveWithFlag(battler, GetMoveCriticalHitStage))
                     shouldUse = TRUE;
