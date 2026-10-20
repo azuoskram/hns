@@ -2281,38 +2281,57 @@ static enum MoveEndResult MoveEndSynchronizeTarget(void)
 
 static enum MoveEndResult MoveEndAbilities(void)
 {
-    enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
     enum Ability targetAbility = GetBattlerAbility(gBattlerTarget);
 
-    if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END, gBattlerTarget, targetAbility, 0, TRUE))
-        result = MOVEEND_RESULT_RUN_SCRIPT;
-    else if (TryClearIllusion(gBattlerTarget, targetAbility))
-        result = MOVEEND_RESULT_RUN_SCRIPT;
+    // Resume at the next trait after each ability script, allowing several
+    // different traits to activate during the same move-end event.
+    while (gBattleStruct->eventState.moveEndTrait <= MAX_MON_INNATES_INTERNAL)
+    {
+        enum Ability trait = GetBattlerTrait(gBattlerTarget, gBattleStruct->eventState.moveEndTrait++, FALSE);
+        if (trait != ABILITY_NONE
+         && AbilityBattleEffectsForTrait(ABILITYEFFECT_MOVE_END, gBattlerTarget, trait, 0, TRUE))
+            return MOVEEND_RESULT_RUN_SCRIPT;
+    }
+
+    gBattleStruct->eventState.moveEndTrait = 0;
+    if (TryClearIllusion(gBattlerTarget, targetAbility))
+    {
+        gBattleScripting.moveendState++;
+        return MOVEEND_RESULT_RUN_SCRIPT;
+    }
 
     gBattleScripting.moveendState++;
-    return result;
+    return MOVEEND_RESULT_CONTINUE;
 }
 
 static enum MoveEndResult MoveEndFormChangeOnHit(void)
 {
-    enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+    while (gBattleStruct->eventState.moveEndTrait <= MAX_MON_INNATES_INTERNAL)
+    {
+        enum Ability trait = GetBattlerTrait(gBattlerTarget, gBattleStruct->eventState.moveEndTrait++, FALSE);
+        if (trait != ABILITY_NONE
+         && AbilityBattleEffectsForTrait(ABILITYEFFECT_FORM_CHANGE_ON_HIT, gBattlerTarget, trait, 0, TRUE))
+            return MOVEEND_RESULT_RUN_SCRIPT;
+    }
 
-    if (AbilityBattleEffects(ABILITYEFFECT_FORM_CHANGE_ON_HIT, gBattlerTarget, GetBattlerAbility(gBattlerTarget), 0, TRUE))
-        result = MOVEEND_RESULT_RUN_SCRIPT;
-
+    gBattleStruct->eventState.moveEndTrait = 0;
     gBattleScripting.moveendState++;
-    return result;
+    return MOVEEND_RESULT_CONTINUE;
 }
 
 static enum MoveEndResult MoveEndAbilitiesAttacker(void)
 {
-    enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+    while (gBattleStruct->eventState.moveEndTrait <= MAX_MON_INNATES_INTERNAL)
+    {
+        enum Ability trait = GetBattlerTrait(gBattlerAttacker, gBattleStruct->eventState.moveEndTrait++, FALSE);
+        if (trait != ABILITY_NONE
+         && AbilityBattleEffectsForTrait(ABILITYEFFECT_MOVE_END_ATTACKER, gBattlerAttacker, trait, 0, TRUE))
+            return MOVEEND_RESULT_RUN_SCRIPT;
+    }
 
-    if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END_ATTACKER, gBattlerAttacker, 0, 0, TRUE))
-        result = MOVEEND_RESULT_RUN_SCRIPT;
-
+    gBattleStruct->eventState.moveEndTrait = 0;
     gBattleScripting.moveendState++;
-    return result;
+    return MOVEEND_RESULT_CONTINUE;
 }
 
 static enum MoveEndResult MoveEndQueueDancer(void)
@@ -3229,13 +3248,17 @@ static enum MoveEndResult MoveEndItemEffectsAttacker2(void)
 
 static enum MoveEndResult MoveEndAbilityEffectFoesFainted(void)
 {
-    enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+    while (gBattleStruct->eventState.moveEndTrait <= MAX_MON_INNATES_INTERNAL)
+    {
+        enum Ability trait = GetBattlerTrait(gBattlerAttacker, gBattleStruct->eventState.moveEndTrait++, FALSE);
+        if (trait != ABILITY_NONE
+         && AbilityBattleEffectsForTrait(ABILITYEFFECT_MOVE_END_FOES_FAINTED, gBattlerAttacker, trait, gCurrentMove, TRUE))
+            return MOVEEND_RESULT_RUN_SCRIPT;
+    }
 
-    if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END_FOES_FAINTED, gBattlerAttacker, GetBattlerAbility(gBattlerAttacker), gCurrentMove, TRUE))
-        result = MOVEEND_RESULT_RUN_SCRIPT;
-
+    gBattleStruct->eventState.moveEndTrait = 0;
     gBattleScripting.moveendState++;
-    return result;
+    return MOVEEND_RESULT_CONTINUE;
 }
 
 static enum MoveEndResult MoveEndShellTrap(void)
@@ -3265,14 +3288,28 @@ static enum MoveEndResult MoveEndColorChange(void)
 {
     while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
     {
-        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler;
         if (battler == gBattlerAttacker)
+        {
+            gBattleStruct->eventState.moveEndBattler++;
+            gBattleStruct->eventState.moveEndTrait = 0;
             continue;
-        if (AbilityBattleEffects(ABILITYEFFECT_COLOR_CHANGE, battler, GetBattlerAbility(battler), 0, TRUE))
-            return MOVEEND_RESULT_RUN_SCRIPT;
+        }
+
+        while (gBattleStruct->eventState.moveEndTrait <= MAX_MON_INNATES_INTERNAL)
+        {
+            enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.moveEndTrait++, FALSE);
+            if (trait != ABILITY_NONE
+             && AbilityBattleEffectsForTrait(ABILITYEFFECT_COLOR_CHANGE, battler, trait, 0, TRUE))
+                return MOVEEND_RESULT_RUN_SCRIPT;
+        }
+
+        gBattleStruct->eventState.moveEndTrait = 0;
+        gBattleStruct->eventState.moveEndBattler++;
     }
 
     gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleStruct->eventState.moveEndTrait = 0;
     gBattleScripting.moveendState++;
     return MOVEEND_RESULT_CONTINUE;
 }
@@ -3559,14 +3596,28 @@ static enum MoveEndResult MoveEndOpportunist(void)
 {
     while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
     {
-        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler;
         if (!IsBattlerAlive(battler))
+        {
+            gBattleStruct->eventState.moveEndBattler++;
+            gBattleStruct->eventState.moveEndTrait = 0;
             continue;
-        if (AbilityBattleEffects(ABILITYEFFECT_OPPORTUNIST, battler, GetBattlerAbility(battler), 0, TRUE))
-            return MOVEEND_RESULT_RUN_SCRIPT;
+        }
+
+        while (gBattleStruct->eventState.moveEndTrait <= MAX_MON_INNATES_INTERNAL)
+        {
+            enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.moveEndTrait++, FALSE);
+            if (trait != ABILITY_NONE
+             && AbilityBattleEffectsForTrait(ABILITYEFFECT_OPPORTUNIST, battler, trait, 0, TRUE))
+                return MOVEEND_RESULT_RUN_SCRIPT;
+        }
+
+        gBattleStruct->eventState.moveEndTrait = 0;
+        gBattleStruct->eventState.moveEndBattler++;
     }
 
     gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleStruct->eventState.moveEndTrait = 0;
     gBattleScripting.moveendState++;
     return MOVEEND_RESULT_CONTINUE;
 }
