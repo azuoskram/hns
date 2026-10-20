@@ -251,7 +251,7 @@ static bool32 AI_DoesChoiceEffectBlockMove(enum BattlerId battler, enum Move mov
     // Choice locked into something else
     if (gAiLogicData->lastUsedMove[battler] != MOVE_NONE && gAiLogicData->lastUsedMove[battler] != move
     && (IsHoldEffectChoice(GetBattlerHoldEffect(battler) && IsBattlerItemEnabled(battler))
-        || gAiLogicData->abilities[battler] == ABILITY_GORILLA_TACTICS))
+        || AI_BATTLER_HAS_TRAIT(battler, ABILITY_GORILLA_TACTICS)))
         return TRUE;
     return FALSE;
 }
@@ -422,7 +422,7 @@ static bool32 ShouldSwitchIfHasBadOdds(enum BattlerId battler)
 static bool32 ShouldSwitchIfTruant(enum BattlerId battler)
 {
     // Switch if mon with truant is bodied by Protect or invulnerability spam
-    if (gAiLogicData->abilities[battler] == ABILITY_TRUANT
+    if (AI_BATTLER_HAS_TRAIT(battler, ABILITY_TRUANT)
         && IsTruantMonVulnerable(battler, gBattlerTarget)
         && gBattleMons[battler].volatiles.truantCounter
         && gBattleMons[battler].hp >= gBattleMons[battler].maxHP / 2
@@ -549,7 +549,7 @@ static bool32 ShouldSwitchIfWonderGuard(enum BattlerId battler)
     if (IsDoubleBattle())
         return FALSE;
 
-    if (gAiLogicData->abilities[opposingBattler] != ABILITY_WONDER_GUARD)
+    if (!AI_BATTLER_HAS_TRAIT(opposingBattler, ABILITY_WONDER_GUARD))
         return FALSE;
 
     // Check if Pokémon has a super effective move.
@@ -815,10 +815,10 @@ static bool32 ShouldSwitchIfBadlyStatused(enum BattlerId battler)
 
             // Check if Active Pokemon evasion boosted and might be able to dodge until awake
             if (gBattleMons[battler].statStages[STAT_EVASION] > (DEFAULT_STAT_STAGE + 3)
-                && gAiLogicData->abilities[opposingBattler] != ABILITY_UNAWARE
-                && gAiLogicData->abilities[opposingBattler] != ABILITY_KEEN_EYE
-                && gAiLogicData->abilities[opposingBattler] != ABILITY_MINDS_EYE
-                && (GetConfig(B_ILLUMINATE_EFFECT) >= GEN_9 && gAiLogicData->abilities[opposingBattler] != ABILITY_ILLUMINATE)
+                && !AI_BATTLER_HAS_TRAIT(opposingBattler, ABILITY_UNAWARE)
+                && !AI_BATTLER_HAS_TRAIT(opposingBattler, ABILITY_KEEN_EYE)
+                && !AI_BATTLER_HAS_TRAIT(opposingBattler, ABILITY_MINDS_EYE)
+                && (GetConfig(B_ILLUMINATE_EFFECT) >= GEN_9 && !AI_BATTLER_HAS_TRAIT(opposingBattler, ABILITY_ILLUMINATE))
                 && !gBattleMons[battler].volatiles.foresight
                 && !gBattleMons[battler].volatiles.miracleEye)
                 switchMon = FALSE;
@@ -875,7 +875,7 @@ static bool32 GetHitEscapeTransformState(enum BattlerId battlerAtk, enum Move mo
     enum Type moveType;
 
     if (gBattleMons[battlerAtk].species != SPECIES_PALAFIN_ZERO
-     || gAiLogicData->abilities[battlerAtk] != ABILITY_ZERO_TO_HERO)
+     || !AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_ZERO_TO_HERO))
         return FALSE;
 
     if (GetMoveEffect(move) != EFFECT_HIT_ESCAPE)
@@ -1427,7 +1427,7 @@ bool32 ShouldStayInToUseMove(enum BattlerId battler)
         {
             // Palafin should not stay in for a hit escape move if it can't use it effectively (slower or no target)
             if (gBattleMons[battler].species == SPECIES_PALAFIN_ZERO
-             && gAiLogicData->abilities[battler] == ABILITY_ZERO_TO_HERO
+             && AI_BATTLER_HAS_TRAIT(battler, ABILITY_ZERO_TO_HERO)
              && aiMoveEffect == EFFECT_HIT_ESCAPE
              && !GetHitEscapeTransformState(battler, aiMove))
                 continue;
@@ -1835,7 +1835,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, enum BattlerId battler, const st
             currentHP = currentHP - weatherImpact;
 
         // Check if we're at a single use healing item threshold
-        if (currentHP > 0 && gAiLogicData->abilities[battler] != ABILITY_KLUTZ && usedSingleUseHealingItem == FALSE
+        if (currentHP > 0 && !AI_BATTLER_HAS_TRAIT(battler, ABILITY_KLUTZ) && usedSingleUseHealingItem == FALSE
          && !(opposingAbility == ABILITY_UNNERVE && GetItemPocket(item) == POCKET_BERRIES))
         {
             switch (heldItemEffect)
@@ -2059,7 +2059,7 @@ static bool32 AI_CanSwitchinAbilityTrapOpponent(enum Ability ability, enum Battl
         return FALSE;
     else if (ability == ABILITY_SHADOW_TAG)
     {
-        if (B_SHADOW_TAG_ESCAPE >= GEN_4 && gAiLogicData->abilities[opposingBattler] == ABILITY_SHADOW_TAG)
+        if (B_SHADOW_TAG_ESCAPE >= GEN_4 && AI_BATTLER_HAS_TRAIT(opposingBattler, ABILITY_SHADOW_TAG))
             return FALSE;
         else
             return TRUE;
@@ -2182,7 +2182,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
         }
 
         // While not really invalid per se, not really wise to switch into this mon
-        if (gAiLogicData->abilities[battler] == ABILITY_TRUANT && IsTruantMonVulnerable(battler, opposingBattler))
+        if (AI_BATTLER_HAS_TRAIT(battler, ABILITY_TRUANT) && IsTruantMonVulnerable(battler, opposingBattler))
             continue;
 
         // Get max number of hits for player to KO AI mon and type matchup for defensive switching
@@ -2311,7 +2311,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
 
                 // If mon can trap
                 if ((AI_CanSwitchinAbilityTrapOpponent(gAiLogicData->abilities[battler], opposingBattler)
-                    || (AI_CanSwitchinAbilityTrapOpponent(gAiLogicData->abilities[opposingBattler], opposingBattler) && gAiLogicData->abilities[battler] == ABILITY_TRACE))
+                    || (AI_CanSwitchinAbilityTrapOpponent(gAiLogicData->abilities[opposingBattler], opposingBattler) && AI_BATTLER_HAS_TRAIT(battler, ABILITY_TRACE)))
                     && canSwitchinWin1v1)
                     trapperIds |= (1u << monIndex);
             }
@@ -2429,7 +2429,7 @@ static u32 GetBestMonVanilla(struct Pokemon *party, int firstId, int lastId, enu
         InitializeSwitchinCandidate(battler, monIndex, &party[monIndex]);
 
         // While not really invalid per se, not really wise to switch into this mon
-        if (gAiLogicData->abilities[battler] == ABILITY_TRUANT && IsTruantMonVulnerable(battler, opposingBattler))
+        if (AI_BATTLER_HAS_TRAIT(battler, ABILITY_TRUANT) && IsTruantMonVulnerable(battler, opposingBattler))
             continue;
 
         typeMatchup = GetBattlerTypeMatchup(opposingBattler, battler);
