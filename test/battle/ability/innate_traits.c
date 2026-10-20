@@ -110,3 +110,30 @@ SINGLE_BATTLE_TEST("Innate Mold Breaker bypasses an opposing innate Levitate")
         EXPECT_NE(opponent->hp, opponent->maxHP);
     }
 }
+
+SINGLE_BATTLE_TEST("Innate Pressure consumes an additional PP")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET) { MovesWithPP({MOVE_POUND, 35}); }
+        OPPONENT(SPECIES_WOBBUFFET) { Ability(ABILITY_THICK_FAT); }
+    } WHEN {
+        opponent->innates[0] = ABILITY_PRESSURE;
+        TURN { MOVE(player, MOVE_POUND); }
+    } THEN {
+        EXPECT_EQ(player->pp[0], 33);
+    }
+}
+
+SINGLE_BATTLE_TEST("Innate Sticky Hold prevents item theft")
+{
+    GIVEN {
+        ASSUME(GetMoveEffect(MOVE_THIEF) == EFFECT_STEAL_ITEM);
+        PLAYER(SPECIES_URSALUNA) { Item(ITEM_NONE); }
+        OPPONENT(SPECIES_GASTRODON) { Ability(ABILITY_STORM_DRAIN); Item(ITEM_LIFE_ORB); }
+    } WHEN {
+        opponent->innates[0] = ABILITY_STICKY_HOLD;
+        TURN { MOVE(player, MOVE_THIEF); }
+    } THEN {
+        EXPECT_EQ(gBattleMons[B_POSITION_OPPONENT_LEFT].item, ITEM_LIFE_ORB);
+    }
+}
