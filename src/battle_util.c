@@ -4970,7 +4970,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     // The first innate that produces an effect is returned to the battle script.
     for (innateIndex = 0; innateIndex < MAX_MON_INNATES_INTERNAL; innateIndex++)
     {
-        innateAbility = GetSpeciesInnateAtIndex(gBattleMons[battler].species, innateIndex);
+        innateAbility = gBattleMons[battler].innates[innateIndex];
         if (innateAbility == ABILITY_NONE || innateAbility == primaryAbility || !BattlerHasTrait(battler, innateAbility))
             continue;
 
