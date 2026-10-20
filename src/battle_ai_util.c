@@ -23,6 +23,32 @@
 #include "constants/moves.h"
 #include "constants/items.h"
 
+bool32 AI_IsTraitSuppressedByNeutralizingGas(const struct AiLogicData *aiData, enum Ability ability)
+{
+    if (aiData == NULL || ability <= ABILITY_NONE || ability >= ABILITIES_COUNT
+     || gAbilitiesInfo[ability].cantBeSuppressed)
+        return FALSE;
+
+    for (enum BattlerId i = 0; i < MAX_BATTLERS_COUNT; i++)
+    {
+        if (gBattleMons[i].hp == 0
+         || gBattleMons[i].volatiles.gastroAcid
+         || aiData->holdEffects[i] == HOLD_EFFECT_ABILITY_SHIELD)
+            continue;
+
+        if (aiData->abilities[i] == ABILITY_NEUTRALIZING_GAS)
+            return TRUE;
+
+        for (u32 j = 0; j < MAX_MON_INNATES_INTERNAL; j++)
+        {
+            if (aiData->innates[i][j] == ABILITY_NEUTRALIZING_GAS)
+                return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
 static u32 GetAIEffectGroup(enum BattleMoveEffects effect);
 static u32 GetAIEffectGroupFromMove(enum BattlerId battler, enum Move move);
 
