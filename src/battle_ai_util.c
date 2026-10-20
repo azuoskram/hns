@@ -5359,11 +5359,11 @@ bool32 ShouldUseZMove(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum
         uq4_12_t effectiveness;
         struct SimulatedDamage dmg;
 
-        if (gBattleMons[battlerDef].ability == ABILITY_DISGUISE
+        if (AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_DISGUISE)
             && !MoveIgnoresTargetAbility(zMove)
             && IsMimikyuDisguised(battlerDef))
             return FALSE; // Don't waste a Z-Move busting disguise
-        if (gBattleMons[battlerDef].ability == ABILITY_ICE_FACE
+        if (AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_ICE_FACE)
             && !MoveIgnoresTargetAbility(zMove)
             && gBattleMons[battlerDef].species == SPECIES_EISCUE_ICE && IsBattleMovePhysical(chosenMove))
             return FALSE; // Don't waste a Z-Move busting Ice Face
@@ -5822,7 +5822,7 @@ bool32 IsBattlerItemEnabled(enum BattlerId battler)
         return FALSE;
     if (gBattleMons[battler].volatiles.embargo)
         return FALSE;
-    if (gBattleMons[battler].ability == ABILITY_KLUTZ && !gBattleMons[battler].volatiles.gastroAcid)
+    if (AI_BATTLER_HAS_TRAIT(battler, ABILITY_KLUTZ) && !gBattleMons[battler].volatiles.gastroAcid)
         return FALSE;
     return TRUE;
 }
