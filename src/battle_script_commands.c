@@ -9124,7 +9124,7 @@ static void Cmd_healpartystatus(void)
 
     if (GetConfig(B_HEAL_BELL_SOUNDPROOF) == GEN_5
      || GetConfig(B_HEAL_BELL_SOUNDPROOF) >= GEN_8
-     || !(isSoundMove && GetBattlerAbility(gBattlerAttacker) == ABILITY_SOUNDPROOF))
+     || !(isSoundMove && BattlerHasTrait(gBattlerAttacker, ABILITY_SOUNDPROOF)))
     {
         if (isSoundMove)
             gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_BELL;
@@ -9135,7 +9135,7 @@ static void Cmd_healpartystatus(void)
     }
     else
     {
-        RecordAbilityBattle(gBattlerAttacker, gBattleMons[gBattlerAttacker].ability);
+        RecordAbilityBattle(gBattlerAttacker, BattlerHasTrait(gBattlerAttacker, ABILITY_SOUNDPROOF) ? ABILITY_SOUNDPROOF : gBattleMons[gBattlerAttacker].ability);
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_BELL_SOUNDPROOF_ATTACKER;
     }
 
@@ -9151,7 +9151,7 @@ static void Cmd_healpartystatus(void)
         }
         else
         {
-            RecordAbilityBattle(partner, gBattleMons[partner].ability);
+            RecordAbilityBattle(partner, BattlerHasTrait(partner, ABILITY_SOUNDPROOF) ? ABILITY_SOUNDPROOF : gBattleMons[partner].ability);
             gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_BELL_SOUNDPROOF_PARTNER;
         }
     }
