@@ -4095,10 +4095,10 @@ static bool32 ShouldCureStatusInternal(enum BattlerId battlerAtk, enum BattlerId
         if (aiData->holdEffects[battlerDef] == HOLD_EFFECT_TOXIC_ORB)
             return FALSE;
 
-        if (aiData->abilities[battlerDef] == ABILITY_POISON_HEAL)
+        if (AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_POISON_HEAL))
             isHarmless = TRUE;
 
-        if (aiData->abilities[battlerDef] == ABILITY_TOXIC_BOOST && !isHarmless)
+        if (AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_TOXIC_BOOST) && !isHarmless)
         {
             if (HasMoveWithCategory(battlerDef, DAMAGE_CATEGORY_PHYSICAL))
                 isHarmless = TRUE;
@@ -4112,7 +4112,7 @@ static bool32 ShouldCureStatusInternal(enum BattlerId battlerAtk, enum BattlerId
         if (aiData->holdEffects[battlerDef] == HOLD_EFFECT_FLAME_ORB)
             return FALSE;
 
-        if (aiData->abilities[battlerDef] == ABILITY_FLARE_BOOST && !isHarmless)
+        if (AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_FLARE_BOOST) && !isHarmless)
         {
             if (HasMoveWithCategory(battlerDef, DAMAGE_CATEGORY_SPECIAL))
                 isHarmless = TRUE;
@@ -5710,14 +5710,14 @@ bool32 AI_ShouldSetUpHazards(enum BattlerId battlerAtk, enum BattlerId battlerDe
             return FALSE;
         if (DoesBattlerIgnoreAbilityChecks(battlerAtk, aiData->abilities[battlerAtk], move))
             return TRUE;
-        if (aiData->abilities[battlerDef] == ABILITY_MAGIC_BOUNCE)
+        if (AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_MAGIC_BOUNCE))
             return FALSE;
     }
     else
     {
         if (DoesBattlerIgnoreAbilityChecks(battlerAtk, aiData->abilities[battlerAtk], move))
             return TRUE;
-        if (aiData->abilities[battlerDef] == ABILITY_SHIELD_DUST)
+        if (AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_SHIELD_DUST))
             return FALSE;
     }
     return TRUE;
