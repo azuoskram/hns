@@ -901,7 +901,7 @@ static bool32 HandleEndTurnYawn(enum BattlerId battler)
          && !BattlerHasTrait(battler, ABILITY_VITAL_SPIRIT)
          && !BattlerHasTrait(battler, ABILITY_INSOMNIA)
          && !UproarWakeUpCheck(battler)
-         && !IsLeafGuardProtected(battler, ability))
+         && !IsLeafGuardProtected(battler, ABILITY_LEAF_GUARD))
         {
             gEffectBattler = gBattlerTarget = battler;
             enum HoldEffect holdEffect = GetBattlerHoldEffect(battler);
