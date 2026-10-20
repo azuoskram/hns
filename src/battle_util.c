@@ -4966,6 +4966,11 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
     if (effect != 0 || primaryAbility != GetBattlerAbility(battler))
         return effect;
 
+    // Switch-in abilities are dispatched one trait at a time by the switch-in
+    // event state machine so multiple innate switch-in effects can all run.
+    if (caseID == ABILITYEFFECT_ON_SWITCHIN)
+        return 0;
+
     // Preserve the existing single-effect API while checking all innate slots.
     // The first innate that produces an effect is returned to the battle script.
     for (innateIndex = 0; innateIndex < MAX_MON_INNATES_INTERNAL; innateIndex++)
