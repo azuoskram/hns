@@ -6239,7 +6239,7 @@ static bool32 IsBattlerUngroundedByAbilityItemOrEffect(enum BattlerId battler, e
     if (holdEffect == HOLD_EFFECT_AIR_BALLOON)
         return TRUE;
     if (ability == ABILITY_LEVITATE || ability == ABILITY_EELEVATE
-     || BattlerHasTrait(battler, ABILITY_LEVITATE) || BattlerHasTrait(battler, ABILITY_EELEVATE))
+     || (!gBattleStruct->moldBreakerActive && (BattlerHasTrait(battler, ABILITY_LEVITATE) || BattlerHasTrait(battler, ABILITY_EELEVATE))))
         return TRUE;
     return FALSE;
 }
@@ -8635,9 +8635,9 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct BattleCont
         if (ctx->updateFlags && (BattlerHasTrait(ctx->battlerDef, ABILITY_LEVITATE) || BattlerHasTrait(ctx->battlerDef, ABILITY_EELEVATE)))
         {
             gBattleStruct->moveResultFlags[ctx->battlerDef] |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
-            gLastUsedAbility = ctx->abilityDef;
+            gLastUsedAbility = BattlerHasTrait(ctx->battlerDef, ABILITY_LEVITATE) ? ABILITY_LEVITATE : (BattlerHasTrait(ctx->battlerDef, ABILITY_EELEVATE) ? ABILITY_EELEVATE : ctx->abilityDef);
             ctx->abilityBlocked = TRUE;
-            RecordAbilityBattle(ctx->battlerDef, ctx->abilityDef);
+            RecordAbilityBattle(ctx->battlerDef, gLastUsedAbility);
         }
         else if (ctx->holdEffectDef == HOLD_EFFECT_AIR_BALLOON)
         {
