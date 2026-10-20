@@ -5818,7 +5818,7 @@ bool32 CanBeConfused(enum BattlerId battler)
     enum Ability ability = GetBattlerAbility(battler);
     if (gBattleMons[battler].volatiles.confusionTurns > 0
      || IsMistyTerrainAffected(battler, ability, GetBattlerHoldEffect(battler), gFieldStatuses)
-     || IsAbilityAndRecord(battler, ability, ABILITY_OWN_TEMPO))
+     || IsTraitAndRecord(battler, ABILITY_OWN_TEMPO))
         return FALSE;
     return TRUE;
 }
@@ -5835,7 +5835,7 @@ bool32 HasEnoughHpToEatBerry(enum BattlerId battler, enum Ability ability, u32 h
 
     if (hpFraction <= 4 && GetItemPocket(itemId) == POCKET_BERRIES
          && gBattleMons[battler].hp <= gBattleMons[battler].maxHP / 2
-         && IsAbilityAndRecord(battler, GetBattlerAbility(battler), ABILITY_GLUTTONY))
+         && IsTraitAndRecord(battler, ABILITY_GLUTTONY))
         return TRUE;
 
     return FALSE;
@@ -6289,9 +6289,9 @@ u32 GetBattlerWeight(enum BattlerId battler)
         }
     }
 
-    if (ability == ABILITY_HEAVY_METAL)
+    if (BattlerHasTrait(battler, ABILITY_HEAVY_METAL))
         weight *= 2;
-    else if (ability == ABILITY_LIGHT_METAL)
+    else if (BattlerHasTrait(battler, ABILITY_LIGHT_METAL))
         weight /= 2;
 
     if (holdEffect == HOLD_EFFECT_FLOAT_STONE)
@@ -10303,15 +10303,8 @@ bool32 HasWeatherEffect(void)
         if (!IsBattlerAlive(battler))
             continue;
 
-        enum Ability ability = GetBattlerAbility(battler);
-        switch (ability)
-        {
-        case ABILITY_CLOUD_NINE:
-        case ABILITY_AIR_LOCK:
+        if (BattlerHasTrait(battler, ABILITY_CLOUD_NINE) || BattlerHasTrait(battler, ABILITY_AIR_LOCK))
             return FALSE;
-        default:
-            break;
-        }
     }
 
     return TRUE;
