@@ -107,6 +107,6 @@ SINGLE_BATTLE_TEST("Innate Mold Breaker bypasses an opposing innate Levitate")
     } SCENE {
         HP_BAR(opponent);
     } THEN {
-        EXPECT_LT(opponent->hp, opponent->maxHP);
+        EXPECT_NE(opponent->hp, opponent->maxHP);
     }
 }
