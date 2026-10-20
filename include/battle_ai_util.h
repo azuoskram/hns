@@ -75,21 +75,64 @@ static inline bool32 IsMoveUnusable(u32 moveIndex, enum Move move, u32 moveLimit
         || moveLimitations & 1u << moveIndex;
 }
 
-// Trait-aware ability lookup for AI calculations. The selected Ability and all
-// fixed innate Abilities can independently influence move scoring.
+// Check Neutralizing Gas against cached AI traits without recursively calling
+// AI_BattlerHasTraitInData.
+static inline bool32 AI_IsTraitSuppressedByNeutralizingGas(const struct AiLogicData *aiData, enum Ability ability)
+{
+    if (gAbilitiesInfo[ability].cantBeSuppressed)
+        return FALSE;
+
+    for (enum BattlerId i = 0; i < MAX_BATTLERS_COUNT; i++)
+    {
+        if (gBattleMons[i].hp == 0
+         || gBattleMons[i].volatiles.gastroAcid
+         || aiData->holdEffects[i] == HOLD_EFFECT_ABILITY_SHIELD)
+            continue;
+
+        if (aiData->abilities[i] == ABILITY_NEUTRALIZING_GAS)
+            return TRUE;
+
+        for (u32 j = 0; j < MAX_MON_INNATES_INTERNAL; j++)
+        {
+            if (aiData->innates[i][j] == ABILITY_NEUTRALIZING_GAS)
+                return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+// Trait-aware ability lookup for AI calculations. Innates follow the same
+// Gastro Acid and Neutralizing Gas suppression rules as battle execution.
 static inline bool32 AI_BattlerHasTraitInData(const struct AiLogicData *aiData, enum BattlerId battler, enum Ability ability)
 {
+    bool32 hasTrait = FALSE;
+
     if (aiData == NULL || battler >= MAX_BATTLERS_COUNT || ability == ABILITY_NONE)
         return FALSE;
 
     if (aiData->abilities[battler] == ability)
-        return TRUE;
+        hasTrait = TRUE;
+    else
+    {
+        for (u32 i = 0; i < MAX_MON_INNATES_INTERNAL; i++)
+        {
+            if (aiData->innates[battler][i] == ability)
+            {
+                hasTrait = TRUE;
+                break;
+            }
+        }
+    }
 
-    for (u32 i = 0; i < MAX_MON_INNATES_INTERNAL; i++)
-        if (aiData->innates[battler][i] == ability)
-            return TRUE;
+    if (!hasTrait || gBattleMons[battler].volatiles.gastroAcid)
+        return FALSE;
 
-    return FALSE;
+    if (aiData->holdEffects[battler] != HOLD_EFFECT_ABILITY_SHIELD
+     && AI_IsTraitSuppressedByNeutralizingGas(aiData, ability))
+        return FALSE;
+
+    return TRUE;
 }
 
 static inline bool32 AI_BattlerHasTraitCached(enum BattlerId battler, enum Ability ability)
