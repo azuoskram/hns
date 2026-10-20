@@ -5,6 +5,10 @@
 #include "battle_environment.h"
 #include "battle_pyramid.h"
 #include "battle_util.h"
+
+enum Ability gTraitStack[MAX_BATTLERS_COUNT * (4 + MAX_MON_INNATES_INTERNAL)][2];
+
+
 #include "battle_controllers.h"
 #include "battle_interface.h"
 #include "battle_setup.h"
@@ -5037,6 +5041,72 @@ enum Ability GetBattlerAbilityIgnoreMoldBreaker(enum BattlerId battler)
 enum Ability GetBattlerAbility(enum BattlerId battler)
 {
     return GetBattlerAbilityInternal(battler, FALSE, FALSE);
+}
+
+enum Ability GetBattlerTrait(enum BattlerId battler, u32 traitNum, bool32 ignoreMoldBreaker)
+{
+    if (battler >= gBattlersCount || traitNum > MAX_MON_INNATES_INTERNAL)
+        return ABILITY_NONE;
+
+    if (traitNum == 0)
+        return ignoreMoldBreaker ? GetBattlerAbilityIgnoreMoldBreaker(battler) : GetBattlerAbility(battler);
+
+    if (gBattleMons[battler].innates[traitNum - 1] == ABILITY_NONE)
+        return ABILITY_NONE;
+
+    if (!BattlerHasTrait(battler, gBattleMons[battler].innates[traitNum - 1]))
+        return ABILITY_NONE;
+
+    return gBattleMons[battler].innates[traitNum - 1];
+}
+
+void PushTraitStack(enum BattlerId battler, enum Ability ability)
+{
+    u32 i;
+    if (battler >= MAX_BATTLERS_COUNT || ability <= ABILITY_NONE || ability >= ABILITIES_COUNT)
+        return;
+
+    for (i = 0; i < ARRAY_COUNT(gTraitStack); i++)
+    {
+        if (gTraitStack[i][1] == ABILITY_NONE)
+        {
+            gTraitStack[i][0] = (enum Ability)battler;
+            gTraitStack[i][1] = ability;
+            return;
+        }
+    }
+}
+
+u32 PullTraitStackBattler(void)
+{
+    s32 i;
+    for (i = ARRAY_COUNT(gTraitStack) - 1; i >= 0; i--)
+        if (gTraitStack[i][1] != ABILITY_NONE)
+            return (u32)gTraitStack[i][0];
+    return MAX_BATTLERS_COUNT;
+}
+
+enum Ability PullTraitStackAbility(void)
+{
+    s32 i;
+    for (i = ARRAY_COUNT(gTraitStack) - 1; i >= 0; i--)
+        if (gTraitStack[i][1] != ABILITY_NONE)
+            return gTraitStack[i][1];
+    return ABILITY_NONE;
+}
+
+void PopTraitStack(void)
+{
+    s32 i;
+    for (i = ARRAY_COUNT(gTraitStack) - 1; i >= 0; i--)
+    {
+        if (gTraitStack[i][1] != ABILITY_NONE)
+        {
+            gTraitStack[i][0] = 0;
+            gTraitStack[i][1] = ABILITY_NONE;
+            return;
+        }
+    }
 }
 
 bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
