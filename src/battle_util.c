@@ -4963,8 +4963,14 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
 
     primaryAbility = ability ? ability : GetBattlerAbility(battler);
     effect = AbilityBattleEffectsSingle(caseID, battler, primaryAbility, move, shouldAbilityTrigger);
-    if (effect != 0 || primaryAbility != GetBattlerAbility(battler))
+    if (effect != 0)
+    {
+        if (caseID == ABILITYEFFECT_ON_SWITCHIN && primaryAbility != GetBattlerAbility(battler))
+            PushTraitStack(battler, primaryAbility);
         return effect;
+    }
+    if (primaryAbility != GetBattlerAbility(battler))
+        return 0;
 
     // Switch-in abilities are dispatched one trait at a time by the switch-in
     // event state machine so multiple innate switch-in effects can all run.
