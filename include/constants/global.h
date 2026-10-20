@@ -29,6 +29,10 @@
 #include "config/pokemon.h"
 #include "config/summary_screen.h"
 
+// Number of additional fixed Abilities a species may have alongside its selected Ability.
+#define MAX_MON_INNATES_INTERNAL 3
+#define MAX_MON_INNATES MAX_MON_INNATES_INTERNAL
+
 // Invalid Versions show as "----------" in Gen 4 and Gen 5's summary screen.
 // In Gens 6 and 7, invalid versions instead show "a distant land" in the summary screen.
 // In Gen 4 only, migrated Pokémon with Diamond, Pearl, or Platinum's ID show as "----------".
