@@ -6625,7 +6625,7 @@ static inline u32 CalcMoveBasePower(struct BattleContext *ctx)
         break;
     case EFFECT_DOUBLE_POWER_ON_ARG_STATUS:
         // Comatose targets treated as if asleep
-        if ((gBattleMons[battlerDef].status1 | (STATUS1_SLEEP * (ctx->abilityDef == ABILITY_COMATOSE))) & GetMoveEffectArg_Status(move)
+        if ((gBattleMons[battlerDef].status1 | (STATUS1_SLEEP * BattlerHasTrait(battlerDef, ABILITY_COMATOSE))) & GetMoveEffectArg_Status(move)
          && !((GetMoveAdditionalEffectById(move, 0)->moveEffect == MOVE_EFFECT_REMOVE_STATUS) && DoesSubstituteBlockMove(battlerAtk, battlerDef, move)))
             basePower *= 2;
         break;
@@ -8349,21 +8349,21 @@ s32 CalcCritChanceStageGen1(struct BattleContext *ctx)
     if (holdEffectCritStage > 0)
         critChance *= 4 * holdEffectCritStage;
 
-    if (ctx->abilityAtk == ABILITY_SUPER_LUCK)
+    if (BattlerHasTrait(ctx->battlerAtk, ABILITY_SUPER_LUCK))
         critChance *= 4;
 
     if (critChance > 255)
         critChance = 255;
 
-    if (ctx->abilityDef == ABILITY_BATTLE_ARMOR || ctx->abilityDef == ABILITY_SHELL_ARMOR)
+    if (BattlerHasTrait(ctx->battlerDef, ABILITY_BATTLE_ARMOR) || BattlerHasTrait(ctx->battlerDef, ABILITY_SHELL_ARMOR))
     {
         if (ctx->updateFlags)
-            RecordAbilityBattle(ctx->battlerDef, ctx->abilityDef);
+            RecordAbilityBattle(ctx->battlerDef, BattlerHasTrait(ctx->battlerDef, ABILITY_BATTLE_ARMOR) ? ABILITY_BATTLE_ARMOR : ABILITY_SHELL_ARMOR);
         critChance = CRITICAL_HIT_BLOCKED;
     }
     else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocus
           || MoveAlwaysCrits(ctx->move)
-          || (ctx->abilityAtk == ABILITY_MERCILESS && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
+          || (BattlerHasTrait(ctx->battlerAtk, ABILITY_MERCILESS) && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
     {
         critChance = CRITICAL_HIT_ALWAYS;
     }
@@ -8678,7 +8678,7 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct BattleCont
         {
             gLastUsedAbility = ctx->abilityDef;
             gBattleStruct->moveResultFlags[ctx->battlerDef] |= MOVE_RESULT_MISSED;
-            RecordAbilityBattle(ctx->battlerDef, gBattleMons[ctx->battlerDef].ability);
+            RecordAbilityBattle(ctx->battlerDef, BattlerHasTrait(ctx->battlerDef, ABILITY_WONDER_GUARD) ? ABILITY_WONDER_GUARD : ABILITY_TELEPATHY);
         }
     }
 
@@ -8770,7 +8770,7 @@ uq4_12_t GetOverworldTypeEffectiveness(struct Pokemon *mon, enum Type moveType)
     if (type2 != type1)
         MulByTypeEffectiveness(&ctx, &modifier, type2);
 
-    if ((modifier <= UQ_4_12(1.0) && BattlerHasTrait(ctx.battlerDef, ABILITY_WONDER_GUARD))
+    if ((modifier <= UQ_4_12(1.0) && ctx.abilityDef == ABILITY_WONDER_GUARD)
      || CanAbilityAbsorbMove(&ctx))
         modifier = UQ_4_12(0.0);
 
