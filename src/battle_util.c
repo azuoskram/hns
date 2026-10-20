@@ -2422,7 +2422,7 @@ bool32 CanTargetBlockPranksterMove(struct BattleContext *ctx, s32 movePriority)
     if (movePriority <= 0
      || !IsBattleMoveStatus(ctx->move)
      || !BlocksPrankster(ctx->move, ctx->battlerAtk, ctx->battlerDef, TRUE)
-     || (IsBattleMoveStatus(ctx->move) && (ctx->abilityDef == ABILITY_MAGIC_BOUNCE || gProtectStructs[ctx->battlerDef].bounceMove)))
+     || (IsBattleMoveStatus(ctx->move) && (BattlerHasTrait(ctx->battlerDef, ABILITY_MAGIC_BOUNCE) || gProtectStructs[ctx->battlerDef].bounceMove)))
         return FALSE;
 
     if (ctx->runScript)
@@ -6151,7 +6151,7 @@ bool32 IsBattlerProtected(struct BattleContext *ctx)
     {
         if (IsZMove(ctx->move) || IsMaxMove(ctx->move))
             return FALSE; // Z-Moves and Max Moves bypass protection (except Max Guard).
-        if ((ctx->abilityAtk == ABILITY_UNSEEN_FIST || ctx->abilityAtk == ABILITY_PIERCING_DRILL)
+        if ((BattlerHasTrait(ctx->battlerAtk, ABILITY_UNSEEN_FIST) || BattlerHasTrait(ctx->battlerAtk, ABILITY_PIERCING_DRILL))
          && IsMoveMakingContact(ctx->battlerAtk, ctx->battlerDef, ctx->abilityAtk, ctx->holdEffectAtk, ctx->move))
             return FALSE;
     }
@@ -7207,7 +7207,7 @@ static inline u32 CalcAttackStat(struct BattleContext *ctx)
     if (ctx->isCrit && atkStage < DEFAULT_STAT_STAGE)
         atkStage = DEFAULT_STAT_STAGE;
     // pokemon with unaware ignore attack stat changes while taking damage
-    if (ctx->abilityDef == ABILITY_UNAWARE)
+    if (BattlerHasTrait(ctx->battlerDef, ABILITY_UNAWARE))
         atkStage = DEFAULT_STAT_STAGE;
 
     atkStat *= gStatStageRatios[atkStage][0];
@@ -7494,7 +7494,7 @@ static inline u32 CalcDefenseStat(struct BattleContext *ctx)
     if (ctx->isCrit && defStage > DEFAULT_STAT_STAGE)
         defStage = DEFAULT_STAT_STAGE;
     // pokemon with unaware ignore defense stat changes while dealing damage
-    if (ctx->abilityAtk == ABILITY_UNAWARE)
+    if (BattlerHasTrait(ctx->battlerAtk, ABILITY_UNAWARE))
         defStage = DEFAULT_STAT_STAGE;
     // certain moves also ignore stat changes
     if (MoveIgnoresDefenseEvasionStages(move))
@@ -7660,7 +7660,7 @@ static inline uq4_12_t GetSameTypeAttackBonusModifier(struct BattleContext *ctx)
     if (ctx->moveType == TYPE_MYSTERY)
         return UQ_4_12(1.0);
     else if (gBattleStruct->pledgeMove && IS_BATTLER_OF_TYPE(BATTLE_PARTNER(ctx->battlerAtk), ctx->moveType))
-        return (ctx->abilityAtk == ABILITY_ADAPTABILITY) ? UQ_4_12(2.0) : UQ_4_12(1.5);
+        return (BattlerHasTrait(ctx->battlerAtk, ABILITY_ADAPTABILITY)) ? UQ_4_12(2.0) : UQ_4_12(1.5);
     else if (!IS_BATTLER_OF_TYPE(ctx->battlerAtk, ctx->moveType) || ctx->move == MOVE_STRUGGLE || ctx->move == MOVE_NONE)
         return UQ_4_12(1.0);
     return (ctx->abilityAtk == ABILITY_ADAPTABILITY) ? UQ_4_12(2.0) : UQ_4_12(1.5);
@@ -7778,7 +7778,7 @@ static inline uq4_12_t GetScreensModifier(struct BattleContext *ctx)
     {
         return UQ_4_12(1.0);
     }
-    if (ctx->abilityAtk == ABILITY_INFILTRATOR && !IsBattlerAlly(ctx->battlerAtk, ctx->battlerDef))
+    if (BattlerHasTrait(ctx->battlerAtk, ABILITY_INFILTRATOR) && !IsBattlerAlly(ctx->battlerAtk, ctx->battlerDef))
     {
         if (ctx->updateFlags)
             RecordAbilityBattle(ctx->battlerAtk, ctx->abilityAtk);
@@ -7942,7 +7942,7 @@ static inline uq4_12_t GetDefenderItemsModifier(struct BattleContext *ctx)
                 gSpecialStatuses[ctx->battlerDef].berryReduced = TRUE;
             if (ctx->aiCalc && AI_DAMAGES_THROUGH_BERRIES)
                 ctx->aiCheckBerryModifier = TRUE;
-            return (ctx->abilityDef == ABILITY_RIPEN) ? UQ_4_12(0.25) : UQ_4_12(0.5);
+            return (BattlerHasTrait(ctx->battlerDef, ABILITY_RIPEN)) ? UQ_4_12(0.25) : UQ_4_12(0.5);
         }
         break;
     default:
@@ -8285,7 +8285,7 @@ s32 CalcCritChanceStage(struct BattleContext *ctx)
     }
     else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocus
           || MoveAlwaysCrits(ctx->move)
-          || (ctx->abilityAtk == ABILITY_MERCILESS && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
+          || (BattlerHasTrait(ctx->battlerAtk, ABILITY_MERCILESS) && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
     {
         critChance = CRITICAL_HIT_ALWAYS;
     }
@@ -8296,14 +8296,14 @@ s32 CalcCritChanceStage(struct BattleContext *ctx)
                     + GetMoveCriticalHitStage(ctx->move)
                     + GetHoldEffectCritChanceIncrease(ctx->battlerAtk, ctx->holdEffectAtk)
                     + ((B_AFFECTION_MECHANICS == TRUE && GetBattlerAffectionHearts(ctx->battlerAtk) == AFFECTION_FIVE_HEARTS) ? 2 : 0)
-                    + (ctx->abilityAtk == ABILITY_SUPER_LUCK ? 1 : 0)
+                    + (BattlerHasTrait(ctx->battlerAtk, ABILITY_SUPER_LUCK) ? 1 : 0)
                     + gBattleMons[ctx->battlerAtk].volatiles.bonusCritStages;
 
         if (critChance >= ARRAY_COUNT(sCriticalHitOdds))
             critChance = ARRAY_COUNT(sCriticalHitOdds) - 1;
     }
 
-    if (critChance != CRITICAL_HIT_BLOCKED && (ctx->abilityDef == ABILITY_BATTLE_ARMOR || ctx->abilityDef == ABILITY_SHELL_ARMOR))
+    if (critChance != CRITICAL_HIT_BLOCKED && (BattlerHasTrait(ctx->battlerDef, ABILITY_BATTLE_ARMOR) || BattlerHasTrait(ctx->battlerDef, ABILITY_SHELL_ARMOR)))
     {
         // Record ability only if move had 100% chance to get a crit
         if (ctx->updateFlags)
@@ -8433,7 +8433,7 @@ s32 GetAdjustedDamage(struct BattleContext *ctx, s32 damage)
     {
         enduredHit = TRUE;
     }
-    else if (GetConfig(B_STURDY) >= GEN_5 && gSaveBlock3Ptr->challengeSettings.tx_Mode_Sturdy == 1 && ctx->abilityDef == ABILITY_STURDY && IsBattlerAtMaxHp(ctx->battlerDef))
+    else if (GetConfig(B_STURDY) >= GEN_5 && gSaveBlock3Ptr->challengeSettings.tx_Mode_Sturdy == 1 && BattlerHasTrait(ctx->battlerDef, ABILITY_STURDY) && IsBattlerAtMaxHp(ctx->battlerDef))
     {
         enduredHit = TRUE;
         RecordAbilityBattle(ctx->battlerDef, ABILITY_STURDY);
@@ -8515,7 +8515,7 @@ static inline void MulByTypeEffectiveness(struct BattleContext *ctx, uq4_12_t *m
         mod = UQ_4_12(1.0);
     }
     else if ((ctx->moveType == TYPE_FIGHTING || ctx->moveType == TYPE_NORMAL) && defType == TYPE_GHOST
-        && (ctx->abilityAtk == ABILITY_SCRAPPY || ctx->abilityAtk == ABILITY_MINDS_EYE)
+        && (BattlerHasTrait(ctx->battlerAtk, ABILITY_SCRAPPY) || BattlerHasTrait(ctx->battlerAtk, ABILITY_MINDS_EYE))
         && mod == UQ_4_12(0.0))
     {
         mod = UQ_4_12(1.0);
@@ -8632,7 +8632,7 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct BattleCont
         && !(ctx->holdEffectDef == HOLD_EFFECT_RING_TARGET && IS_BATTLER_OF_TYPE(ctx->battlerDef, TYPE_FLYING) && !IsBattlerUngroundedByAbilityItemOrEffect(ctx->battlerDef, ctx->abilityDef, ctx->holdEffectDef)))
     {
         modifier = UQ_4_12(0.0);
-        if (ctx->updateFlags && (ctx->abilityDef == ABILITY_LEVITATE || ctx->abilityDef == ABILITY_EELEVATE))
+        if (ctx->updateFlags && (BattlerHasTrait(ctx->battlerDef, ABILITY_LEVITATE) || BattlerHasTrait(ctx->battlerDef, ABILITY_EELEVATE)))
         {
             gBattleStruct->moveResultFlags[ctx->battlerDef] |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
             gLastUsedAbility = ctx->abilityDef;
@@ -8668,8 +8668,8 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct BattleCont
         modifier = UQ_4_12(1.0);
     }
 
-    if (((ctx->abilityDef == ABILITY_WONDER_GUARD && modifier <= UQ_4_12(1.0) && !isPresentHealing)
-        || (ctx->abilityDef == ABILITY_TELEPATHY && ctx->battlerDef == BATTLE_PARTNER(ctx->battlerAtk)))
+    if (((BattlerHasTrait(ctx->battlerDef, ABILITY_WONDER_GUARD) && modifier <= UQ_4_12(1.0) && !isPresentHealing)
+        || (BattlerHasTrait(ctx->battlerDef, ABILITY_TELEPATHY) && ctx->battlerDef == BATTLE_PARTNER(ctx->battlerAtk)))
         && GetMovePower(ctx->move) != 0)
     {
         modifier = UQ_4_12(0.0);
@@ -8770,7 +8770,7 @@ uq4_12_t GetOverworldTypeEffectiveness(struct Pokemon *mon, enum Type moveType)
     if (type2 != type1)
         MulByTypeEffectiveness(&ctx, &modifier, type2);
 
-    if ((modifier <= UQ_4_12(1.0) && ctx.abilityDef == ABILITY_WONDER_GUARD)
+    if ((modifier <= UQ_4_12(1.0) && BattlerHasTrait(ctx.battlerDef, ABILITY_WONDER_GUARD))
      || CanAbilityAbsorbMove(&ctx))
         modifier = UQ_4_12(0.0);
 
