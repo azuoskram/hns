@@ -1858,6 +1858,15 @@ bool32 IsAbilityAndRecord(enum BattlerId battler, enum Ability battlerAbility, e
     return TRUE;
 }
 
+bool32 IsTraitAndRecord(enum BattlerId battler, enum Ability ability)
+{
+    if (!BattlerHasTrait(battler, ability))
+        return FALSE;
+
+    RecordAbilityBattle(battler, ability);
+    return TRUE;
+}
+
 bool32 HandleFaintedMonActions(void)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
