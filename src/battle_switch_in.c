@@ -341,7 +341,7 @@ static bool32 FirstEventBlockEvents(struct BattleCalcValues *calcValues)
         if (!effect && gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
         {
             gBattleStruct->eventState.battlerSwitchInTrait = 0;
-        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
+            gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
             if (TryClearIllusion(battler, calcValues->abilities[battler]))
                 effect = TRUE;
             gBattleStruct->eventState.battlerSwitchIn++;
