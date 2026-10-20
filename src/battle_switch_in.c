@@ -453,7 +453,6 @@ static bool32 SecondEventBlockEvents(struct BattleCalcValues *calcValues)
             if (traitIndex > MAX_MON_INNATES_INTERNAL)
             {
                 gBattleStruct->eventState.battlerSwitchInTrait = 0;
-        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
                 gBattleStruct->eventState.battlerSwitchInAbilityEvent++;
                 continue;
             }
@@ -489,7 +488,6 @@ static bool32 SecondEventBlockEvents(struct BattleCalcValues *calcValues)
         {
             gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
             gBattleStruct->eventState.battlerSwitchInTrait = 0;
-        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
             gBattleStruct->eventState.battlerSwitchIn++;
         }
         break;
