@@ -419,7 +419,8 @@ struct SpeciesInfo
     u8 growthRate;
     u8 eggGroups[2];
     enum Ability abilities[NUM_ABILITY_SLOTS]; // 3 selectable Ability slots.
-    enum Ability innate; // One fixed additional Ability, active alongside the selected Ability.
+    enum Ability innate; // First fixed additional Ability, active alongside the selected Ability.
+    enum Ability innates[MAX_MON_INNATES_INTERNAL - 1]; // Additional fixed Abilities (slots 2+).
     u8 safariZoneFleeRate;
 
     // Pokédex data
@@ -812,7 +813,8 @@ u8 GetMonsStateToDoubles(void);
 u8 GetMonsStateToDoubles_2(void);
 enum Ability GetAbilityBySpecies(u16 species, u8 abilityNum);
 enum Ability GetMonAbility(struct Pokemon *mon);
-enum Ability GetSpeciesInnate(u16 species);
+enum Ability GetSpeciesInnate(u16 species); // Compatibility accessor for the first innate.
+enum Ability GetSpeciesInnateAtIndex(u16 species, u32 innateIndex); // Zero-based innate slot.
 void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord);
 enum TrainerPicID GetSecretBaseTrainerPicIndex(void);
 enum TrainerClassID GetSecretBaseTrainerClass(void);
