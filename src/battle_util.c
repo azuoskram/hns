@@ -5053,7 +5053,7 @@ bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
 
     for (innateIndex = 0; innateIndex < MAX_MON_INNATES_INTERNAL; innateIndex++)
     {
-        if (GetSpeciesInnateAtIndex(gBattleMons[battler].species, innateIndex) == ability)
+        if (gBattleMons[battler].innates[innateIndex] == ability)
             break;
     }
 
@@ -5077,7 +5077,7 @@ bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
 
         for (gasInnateIndex = 0; !hasNeutralizingGas && gasInnateIndex < MAX_MON_INNATES_INTERNAL; gasInnateIndex++)
         {
-            hasNeutralizingGas = GetSpeciesInnateAtIndex(gBattleMons[i].species, gasInnateIndex) == ABILITY_NEUTRALIZING_GAS;
+            hasNeutralizingGas = gBattleMons[i].innates[gasInnateIndex] == ABILITY_NEUTRALIZING_GAS;
         }
 
         if (hasNeutralizingGas && GetBattlerHoldEffect(i) != HOLD_EFFECT_ABILITY_SHIELD)
