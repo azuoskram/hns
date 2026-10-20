@@ -26,15 +26,6 @@ static u32 GetBattlerSideForMessage(enum BattleSide side)
     return battler;
 }
 
-static bool32 IsTraitAndRecord(enum BattlerId battler, enum Ability ability)
-{
-    if (!BattlerHasTrait(battler, ability))
-        return FALSE;
-
-    RecordAbilityBattle(battler, ability);
-    return TRUE;
-}
-
 static bool32 HandleEndTurnOrder(enum BattlerId battler)
 {
     bool32 effect = FALSE;
