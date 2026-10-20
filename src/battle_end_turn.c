@@ -95,23 +95,23 @@ static bool32 HandleEndTurnWeather(enum BattlerId battler)
 static bool32 HandleEndTurnWeatherDamage(enum BattlerId battler)
 {
     bool32 effect = FALSE;
-
-    enum Ability ability = GetBattlerAbility(battler);
     u32 currBattleWeather = GetCurrentBattleWeather();
 
     if (currBattleWeather == 0xFF)
     {
-        // If there is no weather on the field, no need to check other battlers so go to next state
+        // If there is no weather on the field, no need to check other battlers so go to next state.
+        gBattleStruct->eventState.endTurnTrait = 0;
         gBattleStruct->eventState.endTurnBattler = 0;
         gBattleStruct->eventState.endTurn++;
-        return effect;
+        return FALSE;
     }
 
-    gBattleStruct->eventState.endTurnBattler++;
-
     if (!IsBattlerAlive(battler) || !HasWeatherEffect())
-        return effect;
-
+    {
+        gBattleStruct->eventState.endTurnTrait = 0;
+        gBattleStruct->eventState.endTurnBattler++;
+        return FALSE;
+    }
 
     switch (currBattleWeather)
     {
@@ -121,62 +121,75 @@ static bool32 HandleEndTurnWeatherDamage(enum BattlerId battler)
     case BATTLE_WEATHER_RAIN:
     case BATTLE_WEATHER_RAIN_PRIMAL:
     case BATTLE_WEATHER_RAIN_DOWNPOUR:
-        if (ability == ABILITY_DRY_SKIN || ability == ABILITY_RAIN_DISH)
+        while (gBattleStruct->eventState.endTurnTrait <= MAX_MON_INNATES_INTERNAL)
         {
-            if (AbilityBattleEffects(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
-                effect = TRUE;
+            enum Ability ability = GetBattlerTrait(battler, gBattleStruct->eventState.endTurnTrait++, FALSE);
+            if ((ability == ABILITY_DRY_SKIN || ability == ABILITY_RAIN_DISH)
+             && AbilityBattleEffectsForTrait(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
+                return TRUE;
         }
         break;
     case BATTLE_WEATHER_SUN:
     case BATTLE_WEATHER_SUN_PRIMAL:
-        if (ability == ABILITY_DRY_SKIN || ability == ABILITY_SOLAR_POWER)
+        while (gBattleStruct->eventState.endTurnTrait <= MAX_MON_INNATES_INTERNAL)
         {
-            if (AbilityBattleEffects(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
-                effect = TRUE;
+            enum Ability ability = GetBattlerTrait(battler, gBattleStruct->eventState.endTurnTrait++, FALSE);
+            if ((ability == ABILITY_DRY_SKIN || ability == ABILITY_SOLAR_POWER)
+             && AbilityBattleEffectsForTrait(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
+                return TRUE;
         }
         break;
     case BATTLE_WEATHER_SANDSTORM:
-        if (ability != ABILITY_SAND_VEIL
-         && ability != ABILITY_SAND_FORCE
-         && ability != ABILITY_SAND_RUSH
-         && ability != ABILITY_OVERCOAT
+        if (!BattlerHasTrait(battler, ABILITY_SAND_VEIL)
+         && !BattlerHasTrait(battler, ABILITY_SAND_FORCE)
+         && !BattlerHasTrait(battler, ABILITY_SAND_RUSH)
+         && !BattlerHasTrait(battler, ABILITY_OVERCOAT)
          && !IS_BATTLER_ANY_TYPE(battler, TYPE_ROCK, TYPE_GROUND, TYPE_STEEL)
          && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERGROUND
          && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERWATER
          && GetBattlerHoldEffect(battler) != HOLD_EFFECT_SAFETY_GOGGLES
-         && !IsAbilityAndRecord(battler, ability, ABILITY_MAGIC_GUARD))
+         && !BattlerHasTrait(battler, ABILITY_MAGIC_GUARD))
         {
             SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 16);
             gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_SANDSTORM;
+            gBattleStruct->eventState.endTurnBattler++;
             BattleScriptExecute(BattleScript_DamagingWeather);
             effect = TRUE;
         }
         break;
     case BATTLE_WEATHER_HAIL:
     case BATTLE_WEATHER_SNOW:
-        if (ability == ABILITY_ICE_BODY)
+        while (gBattleStruct->eventState.endTurnTrait <= MAX_MON_INNATES_INTERNAL)
         {
-            if (AbilityBattleEffects(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
-                effect = TRUE;
+            enum Ability ability = GetBattlerTrait(battler, gBattleStruct->eventState.endTurnTrait++, FALSE);
+            if (ability == ABILITY_ICE_BODY
+             && AbilityBattleEffectsForTrait(ABILITYEFFECT_ENDTURN, battler, ability, MOVE_NONE, TRUE))
+                return TRUE;
         }
-        else if (currBattleWeather == BATTLE_WEATHER_HAIL)
+
+        if (currBattleWeather == BATTLE_WEATHER_HAIL
+         && !BattlerHasTrait(battler, ABILITY_SNOW_CLOAK)
+         && !BattlerHasTrait(battler, ABILITY_OVERCOAT)
+         && !IS_BATTLER_OF_TYPE(battler, TYPE_ICE)
+         && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERGROUND
+         && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERWATER
+         && GetBattlerHoldEffect(battler) != HOLD_EFFECT_SAFETY_GOGGLES
+         && !BattlerHasTrait(battler, ABILITY_MAGIC_GUARD))
         {
-            if (ability != ABILITY_SNOW_CLOAK
-             && ability != ABILITY_OVERCOAT
-             && !IS_BATTLER_OF_TYPE(battler, TYPE_ICE)
-             && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERGROUND
-             && gBattleMons[battler].volatiles.semiInvulnerable != STATE_UNDERWATER
-             && GetBattlerHoldEffect(battler) != HOLD_EFFECT_SAFETY_GOGGLES
-             && !IsAbilityAndRecord(battler, ability, ABILITY_MAGIC_GUARD))
-            {
-                SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 16);
-                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HAIL;
-                BattleScriptExecute(BattleScript_DamagingWeather);
-                effect = TRUE;
-            }
+            SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 16);
+            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HAIL;
+            gBattleStruct->eventState.endTurnBattler++;
+            BattleScriptExecute(BattleScript_DamagingWeather);
+            effect = TRUE;
         }
         break;
     }
+
+    if (gBattleStruct->eventState.endTurnTrait > MAX_MON_INNATES_INTERNAL)
+        gBattleStruct->eventState.endTurnTrait = 0;
+
+    if (!effect)
+        gBattleStruct->eventState.endTurnBattler++;
 
     return effect;
 }
