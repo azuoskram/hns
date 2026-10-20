@@ -4976,7 +4976,12 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
 
         effect = AbilityBattleEffectsSingle(caseID, battler, innateAbility, move, shouldAbilityTrigger);
         if (effect != 0)
+        {
+            // Queue the actual trait that triggered so the ability popup/script
+            // reports the innate rather than the selected Ability.
+            PushTraitStack(battler, innateAbility);
             return effect;
+        }
     }
 
     return 0;
