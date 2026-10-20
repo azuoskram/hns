@@ -36,6 +36,7 @@ bool32 DoSwitchInEvents(void)
         gBattleStruct->switchInBattlerCounter = 0;
         gBattleStruct->eventState.battlerSwitchIn = 0;
         gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
         gBattleStruct->eventState.switchIn++;
         // fallthrough
     case SWITCH_IN_EVENTS_TERA_SHIFT:
@@ -78,6 +79,7 @@ bool32 DoSwitchInEvents(void)
                 gBattleStruct->switchInBattlerCounter++;
                 gBattleStruct->eventState.battlerSwitchIn = 0;
         gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
                 continue;
             }
 
@@ -91,6 +93,7 @@ bool32 DoSwitchInEvents(void)
             gBattleStruct->switchInBattlerCounter++;
             gBattleStruct->eventState.battlerSwitchIn = 0;
         gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
         }
         gBattleStruct->switchInBattlerCounter = 0;
         gBattleStruct->eventState.switchIn++;
@@ -115,6 +118,7 @@ bool32 DoSwitchInEvents(void)
                 gBattleStruct->switchInBattlerCounter++;
                 gBattleStruct->eventState.battlerSwitchIn = 0;
         gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
                 continue;
             }
 
@@ -128,6 +132,7 @@ bool32 DoSwitchInEvents(void)
             gBattleStruct->switchInBattlerCounter++;
             gBattleStruct->eventState.battlerSwitchIn = 0;
         gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
         }
         gBattleStruct->switchInBattlerCounter = 0;
         gBattleStruct->eventState.switchIn++;
@@ -300,6 +305,7 @@ static bool32 FirstEventBlockEvents(struct BattleCalcValues *calcValues)
         if (!effect && gBattleStruct->eventState.battlerSwitchInTrait > MAX_MON_INNATES_INTERNAL)
         {
             gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
             if (TryClearIllusion(battler, calcValues->abilities[battler]))
                 effect = TRUE;
             gBattleStruct->eventState.battlerSwitchIn++;
@@ -447,6 +453,7 @@ static bool32 SecondEventBlockEvents(struct BattleCalcValues *calcValues)
             if (traitIndex > MAX_MON_INNATES_INTERNAL)
             {
                 gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
                 gBattleStruct->eventState.battlerSwitchInAbilityEvent++;
                 continue;
             }
@@ -482,6 +489,7 @@ static bool32 SecondEventBlockEvents(struct BattleCalcValues *calcValues)
         {
             gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
             gBattleStruct->eventState.battlerSwitchInTrait = 0;
+        gBattleStruct->eventState.battlerSwitchInAbilityEvent = 0;
             gBattleStruct->eventState.battlerSwitchIn++;
         }
         break;
