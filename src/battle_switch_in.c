@@ -51,7 +51,7 @@ bool32 DoSwitchInEvents(void)
             }
 
             enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
-            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_TERA_SHIFT, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
+            if (trait != ABILITY_NONE && AbilityBattleEffectsForTrait(ABILITYEFFECT_TERA_SHIFT, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
@@ -70,7 +70,7 @@ bool32 DoSwitchInEvents(void)
             }
 
             enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
-            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_NEUTRALIZINGGAS, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
+            if (trait != ABILITY_NONE && AbilityBattleEffectsForTrait(ABILITYEFFECT_NEUTRALIZINGGAS, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
@@ -89,7 +89,7 @@ bool32 DoSwitchInEvents(void)
             }
 
             enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
-            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_UNNERVE, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
+            if (trait != ABILITY_NONE && AbilityBattleEffectsForTrait(ABILITYEFFECT_UNNERVE, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
@@ -137,7 +137,7 @@ bool32 DoSwitchInEvents(void)
             }
 
             enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
-            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_SWITCH_IN_FORM_CHANGE, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
+            if (trait != ABILITY_NONE && AbilityBattleEffectsForTrait(ABILITYEFFECT_SWITCH_IN_FORM_CHANGE, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
                 return TRUE;
         }
         gBattleStruct->switchInBattlerCounter = 0;
@@ -331,7 +331,7 @@ static bool32 FirstEventBlockEvents(struct BattleCalcValues *calcValues)
             enum Ability trait = GetBattlerTrait(battler, traitIndex, FALSE);
 
             if (trait != ABILITY_NONE
-             && AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
+             && AbilityBattleEffectsForTrait(ABILITYEFFECT_ON_SWITCHIN, battler, trait, MOVE_NONE, gBattleStruct->battlerState[battler].switchIn))
             {
                 effect = TRUE;
                 break;
@@ -352,7 +352,7 @@ static bool32 FirstEventBlockEvents(struct BattleCalcValues *calcValues)
         {
             u32 traitIndex = gBattleStruct->eventState.battlerSwitchInTrait++;
             enum Ability trait = GetBattlerTrait(battler, traitIndex, FALSE);
-            if (trait != ABILITY_NONE && AbilityBattleEffects(ABILITYEFFECT_IMMUNITY, battler, trait, MOVE_NONE, TRUE))
+            if (trait != ABILITY_NONE && AbilityBattleEffectsForTrait(ABILITYEFFECT_IMMUNITY, battler, trait, MOVE_NONE, TRUE))
             {
                 effect = TRUE;
                 break;
@@ -527,7 +527,7 @@ static bool32 SecondEventBlockEvents(struct BattleCalcValues *calcValues)
             }
 
             if (trait != ABILITY_NONE
-             && AbilityBattleEffects(abilityEffect, battler, trait, MOVE_NONE, shouldTrigger))
+             && AbilityBattleEffectsForTrait(abilityEffect, battler, trait, MOVE_NONE, shouldTrigger))
             {
                 effect = TRUE;
                 break;
