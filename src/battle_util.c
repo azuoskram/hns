@@ -5614,8 +5614,9 @@ bool32 CanSetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId battler
             abilityDef = ABILITY_PASTEL_VEIL;
             battleScript = BattleScript_ImmunityProtected;
         }
-        else if (abilityDef == ABILITY_IMMUNITY)
+        else if (abilityDef == ABILITY_IMMUNITY || (!gBattleStruct->moldBreakerActive && BattlerHasTrait(battlerDef, ABILITY_IMMUNITY)))
         {
+            abilityDef = ABILITY_IMMUNITY;
             abilityAffected = TRUE;
             battleScript = BattleScript_ImmunityProtected;
         }
@@ -5633,8 +5634,9 @@ bool32 CanSetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId battler
         {
             battleScript = BattleScript_ButItFailed;
         }
-        else if (abilityDef == ABILITY_LIMBER)
+        else if (abilityDef == ABILITY_LIMBER || (!gBattleStruct->moldBreakerActive && BattlerHasTrait(battlerDef, ABILITY_LIMBER)))
         {
+            abilityDef = ABILITY_LIMBER;
             abilityAffected = TRUE;
             battleScript = BattleScript_ImmunityProtected;
         }
@@ -5648,13 +5650,17 @@ bool32 CanSetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId battler
         {
             battleScript = BattleScript_NotAffected;
         }
-        else if (abilityDef == ABILITY_WATER_VEIL || abilityDef == ABILITY_WATER_BUBBLE)
+        else if (abilityDef == ABILITY_WATER_VEIL || abilityDef == ABILITY_WATER_BUBBLE
+              || (!gBattleStruct->moldBreakerActive && (BattlerHasTrait(battlerDef, ABILITY_WATER_VEIL) || BattlerHasTrait(battlerDef, ABILITY_WATER_BUBBLE))))
         {
+            if (abilityDef != ABILITY_WATER_VEIL && abilityDef != ABILITY_WATER_BUBBLE)
+                abilityDef = BattlerHasTrait(battlerDef, ABILITY_WATER_VEIL) ? ABILITY_WATER_VEIL : ABILITY_WATER_BUBBLE;
             abilityAffected = TRUE;
             battleScript = BattleScript_ImmunityProtected;
         }
-        else if (abilityDef == ABILITY_THERMAL_EXCHANGE)
+        else if (abilityDef == ABILITY_THERMAL_EXCHANGE || (!gBattleStruct->moldBreakerActive && BattlerHasTrait(battlerDef, ABILITY_THERMAL_EXCHANGE)))
         {
+            abilityDef = ABILITY_THERMAL_EXCHANGE;
             abilityAffected = TRUE;
             battleScript = BattleScript_AbilityProtectsDoesntAffect;
         }
@@ -5683,8 +5689,11 @@ bool32 CanSetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId battler
             abilityDef = ABILITY_SWEET_VEIL;
             battleScript = BattleScript_ImmunityProtected;
         }
-        else if (abilityDef == ABILITY_VITAL_SPIRIT || abilityDef == ABILITY_INSOMNIA)
+        else if (abilityDef == ABILITY_VITAL_SPIRIT || abilityDef == ABILITY_INSOMNIA
+              || (!gBattleStruct->moldBreakerActive && (BattlerHasTrait(battlerDef, ABILITY_VITAL_SPIRIT) || BattlerHasTrait(battlerDef, ABILITY_INSOMNIA))))
         {
+            if (abilityDef != ABILITY_VITAL_SPIRIT && abilityDef != ABILITY_INSOMNIA)
+                abilityDef = BattlerHasTrait(battlerDef, ABILITY_VITAL_SPIRIT) ? ABILITY_VITAL_SPIRIT : ABILITY_INSOMNIA;
             abilityAffected = TRUE;
             battleScript = BattleScript_PrintAbilityMadeIneffective;
         }
@@ -5699,8 +5708,9 @@ bool32 CanSetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId battler
         {
             battleScript = BattleScript_NotAffected;
         }
-        else if (abilityDef == ABILITY_MAGMA_ARMOR)
+        else if (abilityDef == ABILITY_MAGMA_ARMOR || (!gBattleStruct->moldBreakerActive && BattlerHasTrait(battlerDef, ABILITY_MAGMA_ARMOR)))
         {
+            abilityDef = ABILITY_MAGMA_ARMOR;
             abilityAffected = TRUE;
             battleScript = BattleScript_NotAffected;
         }
@@ -5713,9 +5723,11 @@ bool32 CanSetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId battler
         return FALSE;
 
     // Checks that apply to all non volatile statuses
-    if (abilityDef == ABILITY_COMATOSE
-     || abilityDef == ABILITY_PURIFYING_SALT)
+    if (abilityDef == ABILITY_COMATOSE || abilityDef == ABILITY_PURIFYING_SALT
+     || (!gBattleStruct->moldBreakerActive && (BattlerHasTrait(battlerDef, ABILITY_COMATOSE) || BattlerHasTrait(battlerDef, ABILITY_PURIFYING_SALT))))
     {
+        if (abilityDef != ABILITY_COMATOSE && abilityDef != ABILITY_PURIFYING_SALT)
+            abilityDef = BattlerHasTrait(battlerDef, ABILITY_COMATOSE) ? ABILITY_COMATOSE : ABILITY_PURIFYING_SALT;
         abilityAffected = TRUE;
         battleScript = BattleScript_AbilityProtectsDoesntAffect;
     }
@@ -5723,8 +5735,10 @@ bool32 CanSetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId battler
     {
         battleScript = BattleScript_MistyTerrainPrevents;
     }
-    else if (IsLeafGuardProtected(battlerDef, abilityDef))
+    else if (IsLeafGuardProtected(battlerDef, abilityDef)
+          || (!gBattleStruct->moldBreakerActive && IsLeafGuardProtected(battlerDef, ABILITY_LEAF_GUARD)))
     {
+        abilityDef = ABILITY_LEAF_GUARD;
         abilityAffected = TRUE;
         battleScript = BattleScript_AbilityProtectsDoesntAffect;
     }
