@@ -14375,6 +14375,13 @@ void BS_TryInstruct(void)
     }
 }
 
+void BS_PushTraitStack(void)
+{
+    NATIVE_ARGS(u8 battler, u16 ability);
+    PushTraitStack(GetBattlerForBattleScript(cmd->battler), cmd->ability);
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
 void BS_ShowAbilityPopup(void)
 {
     NATIVE_ARGS();
