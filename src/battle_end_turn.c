@@ -515,9 +515,9 @@ static bool32 HandleEndTurnPoison(enum BattlerId battler)
     {
         if (BattlerHasTrait(battler, ABILITY_POISON_HEAL))
         {
-            RecordAbilityBattle(battler, ABILITY_POISON_HEAL);
             if (!IsBattlerAtMaxHp(battler) && !gBattleMons[battler].volatiles.healBlock)
             {
+                RecordAbilityBattle(battler, ABILITY_POISON_HEAL);
                 SetHealAmount(battler, GetNonDynamaxMaxHP(battler) / 8);
                 BattleScriptExecute(BattleScript_PoisonHealActivates);
                 effect = TRUE;
