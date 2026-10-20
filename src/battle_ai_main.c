@@ -1636,7 +1636,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         }
         break;
     case EFFECT_GEAR_UP:
-        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MINUS))
+        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_MINUS))
         {
             // same as growth, work up
             if (!BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], STAT_ATK) || !HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_PHYSICAL))
@@ -1647,13 +1647,13 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         }
         else if (hasPartner)
         {
-            if (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(BATTLE_PARTNER(battlerAtk), ABILITY_MINUS))
+            if (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_MINUS))
             {
                 if ((!BattlerStatCanRise(BATTLE_PARTNER(battlerAtk), aiData->abilities[BATTLE_PARTNER(battlerAtk)], STAT_ATK) || !HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_PHYSICAL))
                   && (!BattlerStatCanRise(BATTLE_PARTNER(battlerAtk), aiData->abilities[BATTLE_PARTNER(battlerAtk)], STAT_SPATK) || !HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_SPECIAL)))
                     ADJUST_SCORE(-10);
             }
-            else if (!!AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) && !AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MINUS))
+            else if (!!AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) && !!AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_MINUS))
             {
                 ADJUST_SCORE(-10);    // nor our or our partner's ability is plus/minus
             }
@@ -1668,7 +1668,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
             ADJUST_SCORE(-10);
         break;
     case EFFECT_MAGNETIC_FLUX:
-        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MINUS))
+        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_MINUS))
         {
             if (!BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], STAT_DEF))
                 ADJUST_SCORE(-10);
@@ -1677,14 +1677,14 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         }
         else if (hasPartner)
         {
-            if (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(BATTLE_PARTNER(battlerAtk), ABILITY_MINUS))
+            if (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_MINUS))
             {
                 if (!BattlerStatCanRise(BATTLE_PARTNER(battlerAtk), aiData->abilities[BATTLE_PARTNER(battlerAtk)], STAT_DEF))
                     ADJUST_SCORE(-10);
                 else if (!BattlerStatCanRise(BATTLE_PARTNER(battlerAtk), aiData->abilities[BATTLE_PARTNER(battlerAtk)], STAT_SPDEF))
                     ADJUST_SCORE(-8);
             }
-            else if (!!AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) && !AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MINUS))
+            else if (!!AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) && !!AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_MINUS))
             {
                 ADJUST_SCORE(-10);    // nor our or our partner's ability is plus/minus
             }
@@ -2356,7 +2356,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
     case EFFECT_LASER_FOCUS:
         if (gBattleMons[battlerDef].volatiles.laserFocus)
             ADJUST_SCORE(-10);
-        else if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerDef, ABILITY_SHELL_ARMOR) || AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_BATTLE_ARMOR))
+        else if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerDef, ABILITY_SHELL_ARMOR) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerDef, ABILITY_BATTLE_ARMOR))
             ADJUST_SCORE(-8);
         break;
     case EFFECT_SKETCH:
@@ -4549,24 +4549,24 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
         ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_SPATK_2));
         break;
     case EFFECT_GEAR_UP:
-        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MINUS))
+        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_MINUS))
         {
             ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_ATK));
             ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_SPATK));
         }
-        if (hasPartner && (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(BATTLE_PARTNER(battlerAtk), ABILITY_MINUS)))
+        if (hasPartner && (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_MINUS)))
         {
             ADJUST_SCORE(IncreaseStatUpScore(BATTLE_PARTNER(battlerAtk), battlerDef, STAT_CHANGE_ATK));
             ADJUST_SCORE(IncreaseStatUpScore(BATTLE_PARTNER(battlerAtk), battlerDef, STAT_CHANGE_SPATK));
         }
         break;
     case EFFECT_MAGNETIC_FLUX:
-        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MINUS))
+        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_MINUS))
         {
             ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_DEF));
             ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_SPDEF));
         }
-        if (hasPartner && (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT(BATTLE_PARTNER(battlerAtk), ABILITY_MINUS)))
+        if (hasPartner && (AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_PLUS) || AI_BATTLER_HAS_TRAIT_DATA(aiData, BATTLE_PARTNER(battlerAtk), ABILITY_MINUS)))
         {
             ADJUST_SCORE(IncreaseStatUpScore(BATTLE_PARTNER(battlerAtk), battlerDef, STAT_CHANGE_DEF));
             ADJUST_SCORE(IncreaseStatUpScore(BATTLE_PARTNER(battlerAtk), battlerDef, STAT_CHANGE_SPDEF));
@@ -4963,7 +4963,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
         }
         break;
     case EFFECT_FORESIGHT:
-        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_SCRAPPY) || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MINDS_EYE))
+        if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_SCRAPPY) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_MINDS_EYE))
             break;
         else if (gBattleMons[battlerDef].statStages[STAT_EVASION] > DEFAULT_STAT_STAGE
          || (IS_BATTLER_OF_TYPE(battlerDef, TYPE_GHOST)
@@ -5014,7 +5014,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
     case EFFECT_SEMI_INVULNERABLE:
         if (predictedMove != MOVE_NONE && isBattle1v1)
         {
-            if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_NO_GUARD) || AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_NO_GUARD))
+            if (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_NO_GUARD) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerDef, ABILITY_NO_GUARD))
                 break;
 
             enum BattleMoveEffects predictedEffect = GetMoveEffect(predictedMove);
@@ -5228,7 +5228,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 case HOLD_EFFECT_STICKY_BARB:
                     break;
                 case HOLD_EFFECT_UTILITY_UMBRELLA:
-                    if ((AI_GetWeather() & B_WEATHER_SUN) && (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_DRY_SKIN) || AI_BATTLER_HAS_TRAIT(battlerDef, ABILITY_DRY_SKIN)))
+                    if ((AI_GetWeather() & B_WEATHER_SUN) && (AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerAtk, ABILITY_DRY_SKIN) || AI_BATTLER_HAS_TRAIT_DATA(aiData, battlerDef, ABILITY_DRY_SKIN)))
                         ADJUST_SCORE(DECENT_EFFECT);
                     else if (!DoesAbilityBenefitFromSunOrRain(battlerAtk, aiData->abilities[battlerAtk], AI_GetWeather()))
                         ADJUST_SCORE(WEAK_EFFECT);
