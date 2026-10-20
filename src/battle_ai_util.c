@@ -32,7 +32,11 @@ enum Ability AI_GetMoldBreakerSanitizedAbility(enum BattlerId battlerAtk, enum A
     if (MoveIgnoresTargetAbility(move))
         return ABILITY_NONE;
 
-    if (holdEffectDef != HOLD_EFFECT_ABILITY_SHIELD && IsMoldBreakerTypeAbility(battlerAtk, abilityAtk))
+    if (holdEffectDef != HOLD_EFFECT_ABILITY_SHIELD
+     && (IsMoldBreakerTypeAbility(battlerAtk, abilityAtk)
+      || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_MOLD_BREAKER)
+      || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_TERAVOLT)
+      || AI_BATTLER_HAS_TRAIT(battlerAtk, ABILITY_TURBOBLAZE)))
         return ABILITY_NONE;
 
     return abilityDef;
