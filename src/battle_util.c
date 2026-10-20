@@ -8309,9 +8309,9 @@ s32 CalcCritChanceStage(struct BattleContext *ctx)
         if (ctx->updateFlags)
         {
             if (critChance == CRITICAL_HIT_ALWAYS)
-                RecordAbilityBattle(ctx->battlerDef, ctx->abilityDef);
+                RecordAbilityBattle(ctx->battlerDef, BattlerHasTrait(ctx->battlerDef, ABILITY_BATTLE_ARMOR) ? ABILITY_BATTLE_ARMOR : ABILITY_SHELL_ARMOR);
             else if (GetCriticalHitOdds(critChance) == 1)
-                RecordAbilityBattle(ctx->battlerDef, ctx->abilityDef);
+                RecordAbilityBattle(ctx->battlerDef, BattlerHasTrait(ctx->battlerDef, ABILITY_BATTLE_ARMOR) ? ABILITY_BATTLE_ARMOR : ABILITY_SHELL_ARMOR);
         }
         critChance = CRITICAL_HIT_BLOCKED;
     }
@@ -8676,9 +8676,9 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct BattleCont
         ctx->abilityBlocked = TRUE;
         if (ctx->updateFlags)
         {
-            gLastUsedAbility = ctx->abilityDef;
+            gLastUsedAbility = BattlerHasTrait(ctx->battlerDef, ABILITY_WONDER_GUARD) ? ABILITY_WONDER_GUARD : ABILITY_TELEPATHY;
             gBattleStruct->moveResultFlags[ctx->battlerDef] |= MOVE_RESULT_MISSED;
-            RecordAbilityBattle(ctx->battlerDef, BattlerHasTrait(ctx->battlerDef, ABILITY_WONDER_GUARD) ? ABILITY_WONDER_GUARD : ABILITY_TELEPATHY);
+            RecordAbilityBattle(ctx->battlerDef, gLastUsedAbility);
         }
     }
 
