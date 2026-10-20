@@ -533,6 +533,8 @@ struct EventStates
     enum EndTurnResolutionOrder endTurn:8;
     u32 endTurnBlock:8; // FirstEventBlock, SecondEventBlock, ThirdEventBlock
     enum BattlerId endTurnBattler:4;
+    u32 endTurnTrait:3; // Selected Ability plus innate slots during end-turn dispatch
+    u32 paddingEndTurnTrait:1;
     u32 arenaTurn:8;
     enum BattleSide battlerSide:4;
     enum BattlerId moveEndBattler:4;
