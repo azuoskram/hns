@@ -7018,25 +7018,16 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct BattleContext *ctx)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.33));
     }
 
-    // attacker partner's abilities
-    if (IsBattlerAlive(BATTLE_PARTNER(battlerAtk)))
+    // Attacker partner traits can stack when they occupy separate trait slots.
+    enum BattlerId atkPartner = BATTLE_PARTNER(battlerAtk);
+    if (IsBattlerAlive(atkPartner))
     {
-        switch (GetBattlerAbility(BATTLE_PARTNER(battlerAtk)))
-        {
-        case ABILITY_BATTERY:
-            if (IsBattleMoveSpecial(move))
-                modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
-            break;
-        case ABILITY_POWER_SPOT:
+        if (BattlerHasTrait(atkPartner, ABILITY_BATTERY) && IsBattleMoveSpecial(move))
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
-            break;
-        case ABILITY_STEELY_SPIRIT:
-            if (moveType == TYPE_STEEL)
-                modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
-            break;
-        default:
-            break;
-        }
+        if (BattlerHasTrait(atkPartner, ABILITY_POWER_SPOT))
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
+        if (BattlerHasTrait(atkPartner, ABILITY_STEELY_SPIRIT) && moveType == TYPE_STEEL)
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
     }
 
     // target's abilities
@@ -7396,19 +7387,14 @@ static inline u32 CalcAttackStat(struct BattleContext *ctx)
         break;
     }
 
-    // ally's abilities
-    if (IsBattlerAlive(BATTLE_PARTNER(battlerAtk)))
-    {
-        switch (GetBattlerAbility(BATTLE_PARTNER(battlerAtk)))
-        {
-        case ABILITY_FLOWER_GIFT:
-            if (gBattleMons[BATTLE_PARTNER(battlerAtk)].species == SPECIES_CHERRIM_SUNSHINE && IsBattlerWeatherAffected(BATTLE_PARTNER(battlerAtk), B_WEATHER_SUN) && IsBattleMovePhysical(move))
-                modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
-            break;
-        default:
-            break;
-        }
-    }
+    // Ally's Flower Gift also works when it is an innate trait.
+    enum BattlerId atkPartner = BATTLE_PARTNER(battlerAtk);
+    if (IsBattlerAlive(atkPartner)
+     && BattlerHasTrait(atkPartner, ABILITY_FLOWER_GIFT)
+     && gBattleMons[atkPartner].species == SPECIES_CHERRIM_SUNSHINE
+     && IsBattlerWeatherAffected(atkPartner, B_WEATHER_SUN)
+     && IsBattleMovePhysical(move))
+        modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
 
     // Ruin field effects
     if (IsBattleMoveSpecial(move) && !gBattleMons[ctx->battlerAtk].volatiles.vesselOfRuin && IsRuinStatusActive(VOLATILE_VESSEL_OF_RUIN))
@@ -7584,19 +7570,14 @@ static inline u32 CalcDefenseStat(struct BattleContext *ctx)
         break;
     }
 
-    // ally's abilities
-    if (IsBattlerAlive(BATTLE_PARTNER(battlerDef)))
-    {
-        switch (GetBattlerAbility(BATTLE_PARTNER(battlerDef)))
-        {
-        case ABILITY_FLOWER_GIFT:
-            if (gBattleMons[BATTLE_PARTNER(battlerDef)].species == SPECIES_CHERRIM_SUNSHINE && IsBattlerWeatherAffected(BATTLE_PARTNER(battlerDef), B_WEATHER_SUN) && !usesDefStat)
-                modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
-            break;
-        default:
-            break;
-        }
-    }
+    // Defender partner's Flower Gift also works when it is an innate trait.
+    enum BattlerId defPartner = BATTLE_PARTNER(battlerDef);
+    if (IsBattlerAlive(defPartner)
+     && BattlerHasTrait(defPartner, ABILITY_FLOWER_GIFT)
+     && gBattleMons[defPartner].species == SPECIES_CHERRIM_SUNSHINE
+     && IsBattlerWeatherAffected(defPartner, B_WEATHER_SUN)
+     && !usesDefStat)
+        modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
 
     // Ruin field effects
     if (usesDefStat && !gBattleMons[ctx->battlerDef].volatiles.swordOfRuin && IsRuinStatusActive(VOLATILE_SWORD_OF_RUIN))
@@ -7911,17 +7892,8 @@ static inline uq4_12_t GetDefenderAbilitiesModifier(struct BattleContext *ctx)
 
 static inline uq4_12_t GetDefenderPartnerAbilitiesModifier(enum BattlerId battlerPartnerDef)
 {
-    if (!IsBattlerAlive(battlerPartnerDef))
-        return UQ_4_12(1.0);
-
-    switch (GetBattlerAbility(battlerPartnerDef))
-    {
-    case ABILITY_FRIEND_GUARD:
+    if (IsBattlerAlive(battlerPartnerDef) && BattlerHasTrait(battlerPartnerDef, ABILITY_FRIEND_GUARD))
         return UQ_4_12(0.75);
-        break;
-    default:
-        break;
-    }
     return UQ_4_12(1.0);
 }
 
@@ -10782,17 +10754,10 @@ u32 GetTotalAccuracy(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum 
         break;
     }
 
-    // Attacker's ally's ability
+    // Attacker's ally's Victory Star can be its innate trait.
     enum BattlerId atkAlly = BATTLE_PARTNER(battlerAtk);
-    switch (GetBattlerAbility(atkAlly))
-    {
-    case ABILITY_VICTORY_STAR:
-        if (IsBattlerAlive(atkAlly))
-            calc = (calc * 110) / 100; // 1.1 ally's victory star boost
-        break;
-    default:
-        break;
-    }
+    if (IsBattlerAlive(atkAlly) && BattlerHasTrait(atkAlly, ABILITY_VICTORY_STAR))
+        calc = (calc * 110) / 100; // 1.1 ally's Victory Star boost
 
     if (MoveHasIncreasedAccByTenOnSameType(move) && !IS_BATTLER_OF_TYPE(battlerAtk, GetMoveType(move)))
         calc = (calc * 110) / 100;
@@ -11001,26 +10966,16 @@ void RemoveAbilityFlags(enum BattlerId battler)
 {
     gBattleMons[battler].volatiles.unburdenActive = FALSE;
 
-    switch (GetBattlerAbility(battler))
-    {
-    case ABILITY_FLASH_FIRE:
+    if (BattlerHasTrait(battler, ABILITY_FLASH_FIRE))
         gBattleMons[battler].volatiles.flashFireBoosted = FALSE;
-        break;
-    case ABILITY_VESSEL_OF_RUIN:
+    if (BattlerHasTrait(battler, ABILITY_VESSEL_OF_RUIN))
         gBattleMons[battler].volatiles.vesselOfRuin = FALSE;
-        break;
-    case ABILITY_TABLETS_OF_RUIN:
+    if (BattlerHasTrait(battler, ABILITY_TABLETS_OF_RUIN))
         gBattleMons[battler].volatiles.tabletsOfRuin = FALSE;
-        break;
-    case ABILITY_SWORD_OF_RUIN:
+    if (BattlerHasTrait(battler, ABILITY_SWORD_OF_RUIN))
         gBattleMons[battler].volatiles.swordOfRuin = FALSE;
-        break;
-    case ABILITY_BEADS_OF_RUIN:
+    if (BattlerHasTrait(battler, ABILITY_BEADS_OF_RUIN))
         gBattleMons[battler].volatiles.beadsOfRuin = FALSE;
-        break;
-    default:
-       break;
-    }
 }
 
 void CheckSetUnburden(enum BattlerId battler)
