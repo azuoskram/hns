@@ -550,6 +550,8 @@ struct EventStates
     u32 battlerSwitchInAbilityEvent:2; // Weather, terrain, then commander switch-in effects
     u32 paddingSwitchInTrait:3;
     u32 moveEndBlock:8;
+    u32 moveEndTrait:3; // Selected Ability plus innate slots during move-end dispatch
+    u32 paddingMoveEndTrait:5;
 };
 
 // Cleared at the beginning of the battle. Fields need to be cleared when needed manually otherwise.
