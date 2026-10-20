@@ -23,7 +23,9 @@ SINGLE_BATTLE_TEST("Innate Immunity prevents Toxic")
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_SNORLAX) { Ability(ABILITY_THICK_FAT); }
     } WHEN {
-        opponent->innates[0] = ABILITY_IMMUNITY;
+        opponent->innates[0] = ABILITY_RUN_AWAY;
+        opponent->innates[1] = ABILITY_UNAWARE;
+        opponent->innates[2] = ABILITY_IMMUNITY;
         TURN { MOVE(player, MOVE_TOXIC); }
     } SCENE {
         NOT STATUS_ICON(opponent, poison: TRUE);
