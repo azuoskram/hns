@@ -10388,9 +10388,8 @@ bool32 TrySwitchInEjectPack(enum EjectPackTiming timing)
 
 bool32 EmergencyExitCanBeTriggered(enum BattlerId battler)
 {
-    enum Ability ability = GetBattlerAbility(battler);
-
-    if (ability != ABILITY_EMERGENCY_EXIT && ability != ABILITY_WIMP_OUT)
+    if (!BattlerHasTrait(battler, ABILITY_EMERGENCY_EXIT)
+     && !BattlerHasTrait(battler, ABILITY_WIMP_OUT))
         return FALSE;
 
     if (IsBattlerAlive(battler)
