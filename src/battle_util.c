@@ -6074,9 +6074,30 @@ enum HoldEffect GetBattlerHoldEffect(enum BattlerId battler)
 {
     enum Ability ability = GetBattlerAbility(battler);
 
-    // Klutz can be an innate trait as well as the selected Ability.
-    if (BattlerHasTrait(battler, ABILITY_KLUTZ))
-        ability = ABILITY_KLUTZ;
+    // Do not call BattlerHasTrait here: its suppression checks also query held
+    // items. Detect innate Klutz directly to avoid recursive item lookups.
+    if (ability != ABILITY_KLUTZ
+     && battler < gBattlersCount
+     && !gBattleMons[battler].volatiles.gastroAcid)
+    {
+        for (u32 i = 0; i < MAX_MON_INNATES_INTERNAL; i++)
+        {
+            if (gBattleMons[battler].innates[i] != ABILITY_KLUTZ)
+                continue;
+
+            // Klutz suppresses its own held-item protection, so Ability Shield
+            // cannot rescue it from Mold Breaker or Neutralizing Gas.
+            if (battler != gBattlerAttacker
+             && gBattleStruct->moldBreakerActive
+             && gAbilitiesInfo[ABILITY_KLUTZ].breakable)
+                break;
+            if (IsNeutralizingGasOnField() && !gAbilitiesInfo[ABILITY_KLUTZ].cantBeSuppressed)
+                break;
+
+            ability = ABILITY_KLUTZ;
+            break;
+        }
+    }
 
     return GetBattlerHoldEffectInternal(battler, ability);
 }
