@@ -5130,9 +5130,17 @@ bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
     if (innateIndex == MAX_MON_INNATES_INTERNAL)
         return FALSE;
 
-    // Innates are fixed traits, but are still suppressed by Gastro Acid and
-    // Neutralizing Gas under the same basic rules as ordinary Abilities.
+    // Innates are fixed traits, but remain subject to suppression.
     if (gBattleMons[battler].volatiles.gastroAcid)
+        return FALSE;
+
+    hasAbilityShield = GetBattlerHoldEffect(battler) == HOLD_EFFECT_ABILITY_SHIELD;
+
+    // Mold Breaker-style effects suppress breakable innate traits too.
+    if (battler != gBattlerAttacker
+     && gBattleStruct->moldBreakerActive
+     && !hasAbilityShield
+     && gAbilitiesInfo[ability].breakable)
         return FALSE;
 
     // Check Neutralizing Gas directly here to avoid recursion through
@@ -5157,7 +5165,6 @@ bool32 BattlerHasTrait(enum BattlerId battler, enum Ability ability)
         }
     }
 
-    hasAbilityShield = GetBattlerHoldEffect(battler) == HOLD_EFFECT_ABILITY_SHIELD;
     if (neutralizingGasOnField && !hasAbilityShield && !gAbilitiesInfo[ability].cantBeSuppressed)
         return FALSE;
 
