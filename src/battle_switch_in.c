@@ -186,11 +186,21 @@ bool32 DoSwitchInEvents(void)
     case SWITCH_IN_EVENTS_OPPORTUNIST:
         while (gBattleStruct->switchInBattlerCounter < gBattlersCount)
         {
-            enum BattlerId battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter++];
-            if (AbilityBattleEffects(ABILITYEFFECT_OPPORTUNIST, battler, calcValues.abilities[battler], 0, TRUE))
-                return TRUE;
+            enum BattlerId battler = gBattlersBySpeed[gBattleStruct->switchInBattlerCounter];
+
+            while (gBattleStruct->eventState.battlerSwitchInTrait <= MAX_MON_INNATES_INTERNAL)
+            {
+                enum Ability trait = GetBattlerTrait(battler, gBattleStruct->eventState.battlerSwitchInTrait++, FALSE);
+                if (trait != ABILITY_NONE
+                 && AbilityBattleEffectsForTrait(ABILITYEFFECT_OPPORTUNIST, battler, trait, 0, TRUE))
+                    return TRUE;
+            }
+
+            gBattleStruct->eventState.battlerSwitchInTrait = 0;
+            gBattleStruct->switchInBattlerCounter++;
         }
         gBattleStruct->switchInBattlerCounter = 0;
+        gBattleStruct->eventState.battlerSwitchInTrait = 0;
         gBattleStruct->eventState.switchIn++;
         break;
     case SWITCH_IN_EVENTS_MIRROR_HERB:
