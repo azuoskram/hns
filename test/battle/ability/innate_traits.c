@@ -167,3 +167,16 @@ SINGLE_BATTLE_TEST("Innate Natural Cure removes status on switching out")
         EXPECT_EQ(player->status1, 0);
     }
 }
+
+SINGLE_BATTLE_TEST("Innate Klutz suppresses held-item effects")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_LEFTOVERS); HP(100), MaxHP(400); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        player->innates[0] = ABILITY_KLUTZ;
+        TURN {}
+    } THEN {
+        EXPECT_EQ(player->hp, 100);
+    }
+}
