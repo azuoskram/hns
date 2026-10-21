@@ -768,8 +768,8 @@ bool32 IsAffectedByFollowMe(enum BattlerId battlerAtk, enum BattleSide defSide, 
         || (!IsBattlerAlive(gSideTimers[defSide].followmeTarget) && !IsSmartTargetMoveConsecutiveHit(battlerAtk, move))
         || effect == EFFECT_SNIPE_SHOT
         || effect == EFFECT_SKY_DROP
-        || IsAbilityAndRecord(battlerAtk, ability, ABILITY_PROPELLER_TAIL)
-        || IsAbilityAndRecord(battlerAtk, ability, ABILITY_STALWART))
+        || IsTraitAndRecord(battlerAtk, ABILITY_PROPELLER_TAIL)
+        || IsTraitAndRecord(battlerAtk, ABILITY_STALWART))
         return FALSE;
 
     if (effect == EFFECT_PURSUIT && IsPursuitTargetSet())
@@ -821,8 +821,8 @@ static bool32 HandleMoveTargetRedirection(enum MoveTarget moveTarget)
     {
         // Find first battler that redirects the move (in turn order)
         enum BattlerId battler;
-        bool32 attackerCannotBeRedirected = BattlerHasTrait(gBattlerAttacker, ABILITY_PROPELLER_TAIL)
-                                         || BattlerHasTrait(gBattlerAttacker, ABILITY_STALWART);
+        bool32 attackerCannotBeRedirected = IsTraitAndRecord(gBattlerAttacker, ABILITY_PROPELLER_TAIL)
+                                         || IsTraitAndRecord(gBattlerAttacker, ABILITY_STALWART);
         for (battler = 0; battler < gBattlersCount; battler++)
         {
             if (!IsBattlerAlive(battler) || gBattlerAttacker == battler)
@@ -1445,6 +1445,8 @@ static enum CancelerResult CancelerPriorityBlock(struct BattleContext *ctx)
     {
         gLastUsedAbility = ability;
         RecordAbilityBattle(battler, ability);
+        if (ability != GetBattlerAbility(battler))
+            PushTraitStack(battler, ability);
         gBattleScripting.battler = gBattlerAbility = battler;
         gBattlescriptCurrInstr = BattleScript_DazzlingProtected;
         return CANCELER_RESULT_FAILURE;
