@@ -1949,29 +1949,47 @@ u32 AI_GetWeather(void)
 
 u32 AI_GetSwitchinWeather(enum BattlerId battler)
 {
-    enum Ability ability = gBattleMons[battler].ability;
-    // Forced weather behaviour
+    enum Ability ability;
+    u32 traitIndex;
+    u32 weather = gBattleWeather;
+
+    // Forced weather behaviour. Cloud Nine and Air Lock work from any active
+    // trait, not just the selected ability.
     if (!AI_WeatherHasEffect())
         return B_WEATHER_NONE;
-    if (ability == ABILITY_CLOUD_NINE || ability == ABILITY_AIR_LOCK)
-        return B_WEATHER_NONE;
+    for (traitIndex = 0; traitIndex <= MAX_MON_INNATES_INTERNAL; traitIndex++)
+    {
+        ability = GetBattlerTrait(battler, traitIndex, FALSE);
+        if (ability == ABILITY_CLOUD_NINE || ability == ABILITY_AIR_LOCK)
+            return B_WEATHER_NONE;
+    }
     if (gBattleWeather & B_WEATHER_PRIMAL_ANY)
         return gBattleWeather;
 
-    // Switchin will introduce new weather
-    switch (ability)
+    // Model all switch-in traits in activation order. A later innate weather
+    // setter can replace weather set by the selected ability.
+    for (traitIndex = 0; traitIndex <= MAX_MON_INNATES_INTERNAL; traitIndex++)
     {
-    case ABILITY_DRIZZLE:
-        return B_WEATHER_RAIN_NORMAL;
-    case ABILITY_DROUGHT:
-        return B_WEATHER_SUN_NORMAL;
-    case ABILITY_SAND_STREAM:
-        return B_WEATHER_SANDSTORM;
-    case ABILITY_SNOW_WARNING:
-        return GetConfig(B_SNOW_WARNING) >= GEN_9 ? B_WEATHER_SNOW : B_WEATHER_HAIL;
-    default:
-        return gBattleWeather;
+        ability = GetBattlerTrait(battler, traitIndex, FALSE);
+        switch (ability)
+        {
+        case ABILITY_DRIZZLE:
+            weather = B_WEATHER_RAIN_NORMAL;
+            break;
+        case ABILITY_DROUGHT:
+            weather = B_WEATHER_SUN_NORMAL;
+            break;
+        case ABILITY_SAND_STREAM:
+            weather = B_WEATHER_SANDSTORM;
+            break;
+        case ABILITY_SNOW_WARNING:
+            weather = GetConfig(B_SNOW_WARNING) >= GEN_9 ? B_WEATHER_SNOW : B_WEATHER_HAIL;
+            break;
+        default:
+            break;
+        }
     }
+    return weather;
 }
 
 u32 SwitchinChangeBattleTerrain(u32 newTerrain, u32 fieldStatus)
@@ -1991,23 +2009,35 @@ u32 SwitchinChangeBattleTerrain(u32 newTerrain, u32 fieldStatus)
 
 u32 AI_GetSwitchinFieldStatus(enum BattlerId battler)
 {
-    enum Ability ability = gBattleMons[battler].ability;
-    u32 startingFieldStatus = gFieldStatuses;
-    // Switchin will introduce new terrain
-    switch (ability)
+    enum Ability ability;
+    u32 traitIndex;
+    u32 fieldStatus = gFieldStatuses;
+
+    // Switch-in terrain effects run for the selected ability and then each
+    // innate, so apply every terrain setter in that order.
+    for (traitIndex = 0; traitIndex <= MAX_MON_INNATES_INTERNAL; traitIndex++)
     {
-    case ABILITY_ELECTRIC_SURGE:
-    case ABILITY_HADRON_ENGINE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_ELECTRIC_TERRAIN, startingFieldStatus);
-    case ABILITY_GRASSY_SURGE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_GRASSY_TERRAIN, startingFieldStatus);
-    case ABILITY_MISTY_SURGE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_MISTY_TERRAIN, startingFieldStatus);
-    case ABILITY_PSYCHIC_SURGE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_PSYCHIC_TERRAIN, startingFieldStatus);
-    default:
-        return startingFieldStatus;
+        ability = GetBattlerTrait(battler, traitIndex, FALSE);
+        switch (ability)
+        {
+        case ABILITY_ELECTRIC_SURGE:
+        case ABILITY_HADRON_ENGINE:
+            fieldStatus = SwitchinChangeBattleTerrain(STATUS_FIELD_ELECTRIC_TERRAIN, fieldStatus);
+            break;
+        case ABILITY_GRASSY_SURGE:
+            fieldStatus = SwitchinChangeBattleTerrain(STATUS_FIELD_GRASSY_TERRAIN, fieldStatus);
+            break;
+        case ABILITY_MISTY_SURGE:
+            fieldStatus = SwitchinChangeBattleTerrain(STATUS_FIELD_MISTY_TERRAIN, fieldStatus);
+            break;
+        case ABILITY_PSYCHIC_SURGE:
+            fieldStatus = SwitchinChangeBattleTerrain(STATUS_FIELD_PSYCHIC_TERRAIN, fieldStatus);
+            break;
+        default:
+            break;
+        }
     }
+    return fieldStatus;
 }
 
 enum WeatherState IsWeatherActive(u32 flags)
