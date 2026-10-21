@@ -3151,12 +3151,15 @@ static enum MoveEndResult MoveEndMoveBlock(void)
          && IsBattlerAlive(gBattlerAttacker)
          && gBattleStruct->battlerState[gBattlerTarget].commanderSpecies == SPECIES_NONE)
         {
-            enum Ability targetAbility = GetBattlerAbility(gBattlerTarget);
-            if (targetAbility == ABILITY_GUARD_DOG)
+            if (BattlerHasTrait(gBattlerTarget, ABILITY_GUARD_DOG))
                 break;
 
-            if (targetAbility == ABILITY_SUCTION_CUPS)
+            if (BattlerHasTrait(gBattlerTarget, ABILITY_SUCTION_CUPS))
             {
+                gLastUsedAbility = ABILITY_SUCTION_CUPS;
+                RecordAbilityBattle(gBattlerTarget, ABILITY_SUCTION_CUPS);
+                if (GetBattlerAbility(gBattlerTarget) != ABILITY_SUCTION_CUPS)
+                    PushTraitStack(gBattlerTarget, ABILITY_SUCTION_CUPS);
                 BattleScriptCall(BattleScript_AbilityPreventsPhasingOutRet);
             }
             else if (gBattleMons[gBattlerTarget].volatiles.root)
