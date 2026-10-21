@@ -47,14 +47,25 @@ static enum CancelerResult CancelerClearFlags(struct BattleContext *ctx)
 
 static bool32 TryFormChangeBeforeMove(void)
 {
-    enum Ability ability = GetBattlerAbility(gBattlerAttacker);
+    u32 traitIndex;
 
-    if (TryBattleFormChange(gBattlerAttacker, FORM_CHANGE_BATTLE_BEFORE_MOVE, ability)
-        || TryBattleFormChange(gBattlerAttacker, FORM_CHANGE_BATTLE_BEFORE_MOVE_CATEGORY, ability))
+    // Form changes such as Stance Change, Schooling, and Shields Down must
+    // also work when the relevant ability is assigned as an innate.
+    for (traitIndex = 0; traitIndex <= MAX_MON_INNATES_INTERNAL; traitIndex++)
     {
-        gBattleScripting.battler = gBattlerAttacker;
-        BattleScriptCall(BattleScript_BattlerFormChange);
-        return TRUE;
+        enum Ability ability = GetBattlerTrait(gBattlerAttacker, traitIndex, FALSE);
+        if (ability == ABILITY_NONE)
+            continue;
+
+        if (TryBattleFormChange(gBattlerAttacker, FORM_CHANGE_BATTLE_BEFORE_MOVE, ability)
+            || TryBattleFormChange(gBattlerAttacker, FORM_CHANGE_BATTLE_BEFORE_MOVE_CATEGORY, ability))
+        {
+            if (ability != GetBattlerAbility(gBattlerAttacker))
+                PushTraitStack(gBattlerAttacker, ability);
+            gBattleScripting.battler = gBattlerAttacker;
+            BattleScriptCall(BattleScript_BattlerFormChange);
+            return TRUE;
+        }
     }
     return FALSE;
 }
@@ -3453,11 +3464,22 @@ static enum MoveEndResult MoveEndLifeOrbShellBell(void)
 static enum MoveEndResult MoveEndFormChange(void)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+    u32 traitIndex;
 
-    if (TryBattleFormChange(gBattlerAttacker, FORM_CHANGE_BATTLE_AFTER_MOVE, GetBattlerAbility(gBattlerAttacker)))
+    for (traitIndex = 0; traitIndex <= MAX_MON_INNATES_INTERNAL; traitIndex++)
     {
-        result = MOVEEND_RESULT_RUN_SCRIPT;
-        BattleScriptCall(BattleScript_AttackerFormChangeMoveEffect);
+        enum Ability ability = GetBattlerTrait(gBattlerAttacker, traitIndex, FALSE);
+        if (ability == ABILITY_NONE)
+            continue;
+
+        if (TryBattleFormChange(gBattlerAttacker, FORM_CHANGE_BATTLE_AFTER_MOVE, ability))
+        {
+            if (ability != GetBattlerAbility(gBattlerAttacker))
+                PushTraitStack(gBattlerAttacker, ability);
+            result = MOVEEND_RESULT_RUN_SCRIPT;
+            BattleScriptCall(BattleScript_AttackerFormChangeMoveEffect);
+            break;
+        }
     }
 
     gBattleScripting.moveendState++;
