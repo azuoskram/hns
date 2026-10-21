@@ -806,9 +806,8 @@ static bool32 HandleMoveTargetRedirection(enum MoveTarget moveTarget)
     }
 
     enum Type moveType = GetBattleMoveType(gCurrentMove);
-    enum Ability ability = GetBattlerAbility(gBattlerTarget);
-    bool32 currTargetCantAbsorb = ((ability != ABILITY_LIGHTNING_ROD && moveType == TYPE_ELECTRIC)
-                                || (ability != ABILITY_STORM_DRAIN && moveType == TYPE_WATER));
+    bool32 currTargetCantAbsorb = ((!BattlerHasTrait(gBattlerTarget, ABILITY_LIGHTNING_ROD) && moveType == TYPE_ELECTRIC)
+                                || (!BattlerHasTrait(gBattlerTarget, ABILITY_STORM_DRAIN) && moveType == TYPE_WATER));
 
     if (currTargetCantAbsorb
      && IsDoubleBattle()
@@ -821,22 +820,21 @@ static bool32 HandleMoveTargetRedirection(enum MoveTarget moveTarget)
      && moveEffect != EFFECT_PLEDGE)
     {
         // Find first battler that redirects the move (in turn order)
-        enum Ability abilityAtk = GetBattlerAbility(gBattlerAttacker);
         enum BattlerId battler;
+        bool32 attackerCannotBeRedirected = BattlerHasTrait(gBattlerAttacker, ABILITY_PROPELLER_TAIL)
+                                         || BattlerHasTrait(gBattlerAttacker, ABILITY_STALWART);
         for (battler = 0; battler < gBattlersCount; battler++)
         {
             if (!IsBattlerAlive(battler) || gBattlerAttacker == battler)
                 continue;
 
-            ability = GetBattlerAbility(battler);
             if ((B_REDIRECT_ABILITY_ALLIES >= GEN_4 || !IsBattlerAlly(gBattlerAttacker, battler))
                 && battler != gBattlerAttacker
                 && gBattlerTarget != battler
-                && ((ability == ABILITY_LIGHTNING_ROD && moveType == TYPE_ELECTRIC)
-                 || (ability == ABILITY_STORM_DRAIN && moveType == TYPE_WATER))
+                && ((BattlerHasTrait(battler, ABILITY_LIGHTNING_ROD) && moveType == TYPE_ELECTRIC)
+                 || (BattlerHasTrait(battler, ABILITY_STORM_DRAIN) && moveType == TYPE_WATER))
                 && GetBattlerTurnOrderNum(battler) < redirectorOrderNum
-                && !IsAbilityAndRecord(gBattlerAttacker, abilityAtk, ABILITY_PROPELLER_TAIL)
-                && !IsAbilityAndRecord(gBattlerAttacker, abilityAtk, ABILITY_STALWART))
+                && !attackerCannotBeRedirected)
             {
                 redirectorOrderNum = GetBattlerTurnOrderNum(battler);
             }
@@ -845,8 +843,14 @@ static bool32 HandleMoveTargetRedirection(enum MoveTarget moveTarget)
         {
             enum Ability battlerAbility;
             battler = gBattlerByTurnOrder[redirectorOrderNum];
-            battlerAbility = GetBattlerAbility(battler);
+            battlerAbility = moveType == TYPE_ELECTRIC
+                           ? (BattlerHasTrait(battler, ABILITY_LIGHTNING_ROD) ? ABILITY_LIGHTNING_ROD : ABILITY_NONE)
+                           : (BattlerHasTrait(battler, ABILITY_STORM_DRAIN) ? ABILITY_STORM_DRAIN : ABILITY_NONE);
+            if (battlerAbility == ABILITY_NONE)
+                battlerAbility = GetBattlerAbility(battler);
             RecordAbilityBattle(battler, battlerAbility);
+            if (battlerAbility != GetBattlerAbility(battler))
+                PushTraitStack(battler, battlerAbility);
             gSpecialStatuses[battler].abilityRedirected = TRUE;
             gBattlerTarget = battler;
             return TRUE;
@@ -1420,8 +1424,18 @@ static enum CancelerResult CancelerPriorityBlock(struct BattleContext *ctx)
             continue;
 
         ability = GetBattlerAbility(battler);
-        if (IsDazzlingAbility(ability))
+        if (IsDazzlingAbility(ability) || BattlerHasTrait(battler, ABILITY_DAZZLING)
+         || BattlerHasTrait(battler, ABILITY_QUEENLY_MAJESTY) || BattlerHasTrait(battler, ABILITY_ARMOR_TAIL))
         {
+            if (!IsDazzlingAbility(ability))
+            {
+                if (BattlerHasTrait(battler, ABILITY_DAZZLING))
+                    ability = ABILITY_DAZZLING;
+                else if (BattlerHasTrait(battler, ABILITY_QUEENLY_MAJESTY))
+                    ability = ABILITY_QUEENLY_MAJESTY;
+                else
+                    ability = ABILITY_ARMOR_TAIL;
+            }
             effect = TRUE;
             break;
         }
