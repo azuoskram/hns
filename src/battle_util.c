@@ -361,16 +361,10 @@ static bool32 IsUnnerveAbilityOnOpposingSide(enum BattlerId battler)
         if (!IsBattlerAlive(battlerDef))
             continue;
 
-        enum Ability ability = GetBattlerAbility(battlerDef);
-        switch (ability)
-        {
-        case ABILITY_UNNERVE:
-        case ABILITY_AS_ONE_ICE_RIDER:
-        case ABILITY_AS_ONE_SHADOW_RIDER:
+        if (BattlerHasTrait(battlerDef, ABILITY_UNNERVE)
+         || BattlerHasTrait(battlerDef, ABILITY_AS_ONE_ICE_RIDER)
+         || BattlerHasTrait(battlerDef, ABILITY_AS_ONE_SHADOW_RIDER))
             return TRUE;
-        default:
-            break;
-        }
     }
 
     return FALSE;
