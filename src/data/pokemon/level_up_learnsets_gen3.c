@@ -1252,6 +1252,7 @@ const struct LevelUpMove *const gLevelUpLearnsets_Gen3[NUM_SPECIES] = {
     [SPECIES_ROTOM_FROST] = sRotomLevelUpLearnset,
     [SPECIES_ROTOM_FAN] = sRotomLevelUpLearnset,
     [SPECIES_ROTOM_MOW] = sRotomLevelUpLearnset,
+    [SPECIES_ROTOM_STEREO] = sRotomLevelUpLearnset,
 #endif // P_FAMILY_ROTOM
 #if P_FAMILY_UXIE
     [SPECIES_UXIE] = sUxieLevelUpLearnset,

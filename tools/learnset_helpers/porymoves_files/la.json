@@ -17592,6 +17592,37 @@
       "MOVE_THUNDERBOLT"
     ]
   },
+    "ROTOM_WASH": {
+    "LevelMoves": [
+      {
+        "Level": 1,
+        "Move": "MOVE_THUNDER_SHOCK"
+      },
+      {
+        "Level": 6,
+        "Move": "MOVE_CHARGE_BEAM"
+      },
+      {
+        "Level": 11,
+        "Move": "MOVE_HEX"
+      },
+      {
+        "Level": 18,
+        "Move": "MOVE_THUNDER_WAVE"
+      },
+      {
+        "Level": 25,
+        "Move": "MOVE_SHADOW_BALL"
+      },
+      {
+        "Level": 34,
+        "Move": "MOVE_THUNDERBOLT"
+      },
+      {
+        "Level": 43,
+        "Move": "MOVE_THUNDER"
+      }
+    ],
   "SHAYMIN_SKY": {
     "LevelMoves": [
       {
