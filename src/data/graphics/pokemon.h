@@ -15737,6 +15737,12 @@ const u32 gObjectEventPic_Substitute[] = INCBIN_COMP("graphics/pokemon/question_
     const u16 gMonShinyPalette_RotomMow[] = INCBIN_U16("graphics/pokemon/rotom/mow/shiny.gbapal");
     const u8 gMonIcon_RotomMow[] = INCBIN_U8("graphics/pokemon/rotom/mow/icon.4bpp");
 
+    const u32 gMonFrontPic_RotomStereo[] = INCBIN_U32("graphics/pokemon/rotom/stereo/anim_front.4bpp.smol");
+    const u16 gMonPalette_RotomStereo[] = INCBIN_U16("graphics/pokemon/rotom/stereo/normal.gbapal");
+    const u32 gMonBackPic_RotomStereo[] = INCBIN_U32("graphics/pokemon/rotom/stereo/back.4bpp.smol");
+    const u16 gMonShinyPalette_RotomStereo[] = INCBIN_U16("graphics/pokemon/rotom/stereo/shiny.gbapal");
+    const u8 gMonIcon_RotomStereo[] = INCBIN_U8("graphics/pokemon/rotom/stereo/icon.4bpp");
+
 #if OW_POKEMON_OBJECT_EVENTS
     const u32 gObjectEventPic_Rotom[] = INCBIN_COMP("graphics/pokemon/rotom/overworld.4bpp");
     const u32 gObjectEventPic_RotomHeat[] = INCBIN_COMP("graphics/pokemon/rotom/heat/overworld.4bpp");
@@ -15744,6 +15750,7 @@ const u32 gObjectEventPic_Substitute[] = INCBIN_COMP("graphics/pokemon/question_
     const u32 gObjectEventPic_RotomFrost[] = INCBIN_COMP("graphics/pokemon/rotom/frost/overworld.4bpp");
     const u32 gObjectEventPic_RotomFan[] = INCBIN_COMP("graphics/pokemon/rotom/fan/overworld.4bpp");
     const u32 gObjectEventPic_RotomMow[] = INCBIN_COMP("graphics/pokemon/rotom/mow/overworld.4bpp");
+    const u32 gObjectEventPic_RotomStereo[] = INCBIN_COMP("graphics/pokemon/rotom/stereo/overworld.4bpp");
 #if OW_PKMN_OBJECTS_SHARE_PALETTES == FALSE
     const u16 gOverworldPalette_Rotom[] = INCBIN_U16("graphics/pokemon/rotom/overworld_normal.gbapal");
     const u16 gOverworldPalette_RotomHeat[] = INCBIN_U16("graphics/pokemon/rotom/heat/overworld_normal.gbapal");
@@ -15751,12 +15758,14 @@ const u32 gObjectEventPic_Substitute[] = INCBIN_COMP("graphics/pokemon/question_
     const u16 gOverworldPalette_RotomFrost[] = INCBIN_U16("graphics/pokemon/rotom/frost/overworld_normal.gbapal");
     const u16 gOverworldPalette_RotomFan[] = INCBIN_U16("graphics/pokemon/rotom/fan/overworld_normal.gbapal");
     const u16 gOverworldPalette_RotomMow[] = INCBIN_U16("graphics/pokemon/rotom/mow/overworld_normal.gbapal");
+    const u32 gObjectEventPic_RotomStereo[] = INCBIN_COMP("graphics/pokemon/rotom/stereo/overworld.4bpp");
     const u16 gShinyOverworldPalette_Rotom[] = INCBIN_U16("graphics/pokemon/rotom/overworld_shiny.gbapal");
     const u16 gShinyOverworldPalette_RotomHeat[] = INCBIN_U16("graphics/pokemon/rotom/heat/overworld_shiny.gbapal");
     const u16 gShinyOverworldPalette_RotomWash[] = INCBIN_U16("graphics/pokemon/rotom/wash/overworld_shiny.gbapal");
     const u16 gShinyOverworldPalette_RotomFrost[] = INCBIN_U16("graphics/pokemon/rotom/frost/overworld_shiny.gbapal");
     const u16 gShinyOverworldPalette_RotomFan[] = INCBIN_U16("graphics/pokemon/rotom/fan/overworld_shiny.gbapal");
     const u16 gShinyOverworldPalette_RotomMow[] = INCBIN_U16("graphics/pokemon/rotom/mow/overworld_shiny.gbapal");
+    const u16 gShinyOverworldPalette_RotomStereo[] = INCBIN_U16("graphics/pokemon/rotom/stereo/overworld_shiny.gbapal");
 #endif //OW_PKMN_OBJECTS_SHARE_PALETTES
 #endif //OW_POKEMON_OBJECT_EVENTS
 #endif //P_FAMILY_ROTOM
