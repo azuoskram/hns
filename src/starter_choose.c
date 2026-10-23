@@ -115,7 +115,7 @@ static const u8 sStarterLabelCoords[STARTER_MON_COUNT][2] =
 
 #if IS_HNS
 // Must match the VAR_STARTER_MON values set in NewBarkTown_Lab_hns/scripts.inc
-#define GRASS_STARTER SPECIES_CHIKORITA
+#define GRASS_STARTER SPECIES_ROTOM_STEREO
 #define FIRE_STARTER  SPECIES_CYNDAQUIL
 #define WATER_STARTER SPECIES_TOTODILE
 #else

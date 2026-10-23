@@ -263,6 +263,9 @@ void NewGameInitData(void)
     gSaveBlock1Ptr->registeredItem = ITEM_NONE;
     gSaveBlock3Ptr->registeredItemHold = ITEM_NONE;
     ClearBag();
+#if IS_HNS
+    AddBagItem(ITEM_ROTOM_CATALOG, 1);
+#endif
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();

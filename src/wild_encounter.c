@@ -29,6 +29,9 @@
 #include "constants/item.h"
 #include "constants/items.h"
 #include "constants/layouts.h"
+#if IS_HNS
+#include "constants/maps.h"
+#endif
 #include "constants/songs.h"
 #include "constants/weather.h"
 #include "pokenav.h"
@@ -584,6 +587,12 @@ static void TryApplyPokeblockBonus(struct Pokemon *mon, u16 species)
 
 void CreateWildMon(u16 species, u8 level)
 {
+#if IS_HNS
+    // Every wild encounter on Route 29 is Rotom Stereo on this branch.
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_ROUTE29_HNS)
+     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_ROUTE29_HNS))
+        species = SPECIES_ROTOM_STEREO;
+#endif
     ZeroEnemyPartyMons();
     u32 personality = GetMonPersonality(species, GetSynchronizedGender(WILDMON_ORIGIN, species), PickWildMonNature(species), RANDOM_UNOWN_LETTER);
     CreateMonWithIVs(&gEnemyParty[0], species, level, personality, OTID_STRUCT_PLAYER_ID, USE_RANDOM_IVS);

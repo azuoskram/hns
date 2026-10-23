@@ -159,24 +159,24 @@ NewBarkTown_Lab_EventScript_ShouldntTouch::
 	end
 
 
-NewBarkTown_Lab_EventScript_ChikoritaBall::
+NewBarkTown_Lab_EventScript_RotomStereoBall::
 	lock
 	goto_if_set FLAG_SYS_POKEMON_GET, NewBarkTown_Lab_EventScript_ShouldntTouch
-	goto_if_eq VAR_NEWBARKTOWN_LABSTATE, 1, NewBarkTown_Lab_EventScript_ChikoritaBall_Choice
+	goto_if_eq VAR_NEWBARKTOWN_LABSTATE, 1, NewBarkTown_Lab_EventScript_RotomStereoBall_Choice
 	msgbox NewBarkTown_Lab_Text_ShouldntTouch, MSGBOX_DEFAULT
 	release
 	closemessage
 	end
 
-NewBarkTown_Lab_EventScript_ChikoritaBall_Choice::
+NewBarkTown_Lab_EventScript_RotomStereoBall_Choice::
 	@callnative DisableStaticRandomizer
 	setvar VAR_STARTER_MON, 0
-	setvar PLAYER_STARTER_SPECIES, SPECIES_CHIKORITA
+	setvar PLAYER_STARTER_SPECIES, SPECIES_ROTOM_STEREO
 	showmonpic PLAYER_STARTER_SPECIES, 10, 3
 	playmoncry PLAYER_STARTER_SPECIES, CRY_MODE_NORMAL
 	bufferspeciesname STR_VAR_1, PLAYER_STARTER_SPECIES
 	buffermoncategory STR_VAR_2, PLAYER_STARTER_SPECIES
-	msgbox NewBarkTown_Lab_Text_ChooseChikorita, MSGBOX_YESNO
+	msgbox NewBarkTown_Lab_Text_ChooseRotomStereo, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, NewBarkTown_Lab_EventScript_ChoseStarter
 	goto_if_eq VAR_RESULT, NO, NewBarkTown_Lab_EventScript_DeclinedStarter
 	end
@@ -238,7 +238,7 @@ NewBarkTown_Lab_EventScript_ChoseStarter::
 	hidemonpic
 	removeobject VAR_LAST_TALKED
 	msgbox NewBarkTown_Lab_Text_ChoseStarter, MSGBOX_DEFAULT
-	call_if_eq VAR_STARTER_MON, 0, NewBarkTown_Lab_EventScript_GiveStarter_Chikorita
+	call_if_eq VAR_STARTER_MON, 0, NewBarkTown_Lab_EventScript_GiveStarter_RotomStereo
 	call_if_eq VAR_STARTER_MON, 1, NewBarkTown_Lab_EventScript_GiveStarter_Cyndaquil
 	call_if_eq VAR_STARTER_MON, 2, NewBarkTown_Lab_EventScript_GiveStarter_Totodile
 	setflag FLAG_SYS_POKEMON_GET
@@ -254,7 +254,7 @@ NewBarkTown_Lab_EventScript_ChoseStarter::
 	release
 	end
 
-NewBarkTown_Lab_EventScript_GiveStarter_Chikorita::
+NewBarkTown_Lab_EventScript_GiveStarter_RotomStereo::
 	call_if_unset FLAG_SHINY_STARTER_1, NewBarkTown_Lab_EventScript_GiveStarter_NotShiny
 	call_if_set FLAG_SHINY_STARTER_1, NewBarkTown_Lab_EventScript_GiveStarter_Shiny
 	return
@@ -367,7 +367,7 @@ NewBarkTown_Lab_EventScript_HideCyndaquil::
 NewBarkTown_Lab_EventScript_HideTotodile::
 	setflag FLAG_HIDE_TOTODILEBALL
 	return
-NewBarkTown_Lab_EventScript_HideChikorita::
+NewBarkTown_Lab_EventScript_HideRotomStereo::
 	setflag FLAG_HIDE_CHIKORITABALL
 	return
 
@@ -376,7 +376,7 @@ NewBarkTown_Lab_EventScript_PoliceEpisode::
 	setmetatile 7, 1, METATILE_R26_21_Broken_Window, TRUE
 	call_if_eq VAR_STARTER_MON, 0 NewBarkTown_Lab_EventScript_HideCyndaquil
 	call_if_eq VAR_STARTER_MON, 1 NewBarkTown_Lab_EventScript_HideTotodile
-	call_if_eq VAR_STARTER_MON, 2 NewBarkTown_Lab_EventScript_HideChikorita
+	call_if_eq VAR_STARTER_MON, 2 NewBarkTown_Lab_EventScript_HideRotomStereo
 	applymovement OBJ_EVENT_ID_PLAYER, NeBarkTownLab_Movement_PlayerWalkToCop
 	waitmovement 0
 	setflag FLAG_HIDE_LAB_POLICEMAN
@@ -728,7 +728,7 @@ NewBarkTown_Lab_Text_ChooseTotodile:
 	.string "ELM: Do you want {STR_VAR_1},\n"
 	.string "the {STR_VAR_2} POKéMON?$"
 
-NewBarkTown_Lab_Text_ChooseChikorita:
+NewBarkTown_Lab_Text_ChooseRotomStereo:
 	.string "ELM: So, you like {STR_VAR_1},\n"
 	.string "the {STR_VAR_2} POKéMON?$"
 
