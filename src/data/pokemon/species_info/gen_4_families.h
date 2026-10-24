@@ -6387,6 +6387,84 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .formChangeTable = sRotomFormChangeTable,
         .randomizerMode = MON_RANDOMIZER_INVALID,
     },
+
+    [SPECIES_ROTOM_STEREO] =
+    {
+        .dexNotRequired = TRUE,
+        .baseHP        = 50,
+        .baseAttack    = 65,
+        .baseDefense   = 107,
+        .baseSpeed     = 86,
+        .baseSpAttack  = 105,
+        .baseSpDefense = 107,
+    #if P_UPDATED_TYPES >= GEN_5
+        .types = MON_TYPES(TYPE_ELECTRIC, TYPE_NORMAL),
+    #else
+        .types = ROTOM_FAMILY_TYPES,
+    #endif
+        .catchRate = 45,
+        .expYield = ROTOM_APPLIANCE_EXP_YIELD,
+        .evYield_Speed = 1,
+        .evYield_SpAttack = 1,
+        .genderRatio = MON_GENDERLESS,
+        .eggCycles = 20,
+        .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_FAST,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_AMORPHOUS),
+        .abilities = { ABILITY_LEVITATE, ABILITY_NONE, ABILITY_NONE },
+        .bodyColor = BODY_COLOR_RED,
+        .speciesName = _("ROTOM"),
+        .cryId = CRY_ROTOM,
+        .natDexNum = NATIONAL_DEX_ROTOM,
+        .categoryName = _("Plasma"),
+        .height = 3,
+        .weight = 3,
+        .description = COMPOUND_STRING(
+            "This Rotom entered a mini stereo system\n"
+            "and was deeply moved by the synth-pop CD\n"
+            "someone had left inside. The experience\n"
+            "gave this Pokemon an upbeat personality."),
+        .pokemonScale = 530,
+        .pokemonOffset = 13,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+        .frontPic = gMonFrontPic_RotomStereo,
+        .frontPicSize = MON_COORDS_SIZE(56, 48),
+        .frontPicYOffset = 10,
+        .frontAnimFrames = ANIM_FRAMES(
+            ANIMCMD_FRAME(0, 20),
+            ANIMCMD_FRAME(1, 40),
+            ANIMCMD_FRAME(0, 20),
+        ),
+        .frontAnimId = ANIM_SHRINK_GROW_VIBRATE_FAST,
+        .enemyMonElevation = 17,
+        .backPic = gMonBackPic_RotomStereo,
+        .backPicSize = MON_COORDS_SIZE(64, 40),
+        .backPicYOffset = 0,
+        .backAnimId = BACK_ANIM_SHRINK_GROW_VIBRATE,
+        .palette = gMonPalette_RotomStereo,
+        .shinyPalette = gMonShinyPalette_RotomStereo,
+        .iconSprite = gMonIcon_RotomStereo,
+        .iconPalIndex = 0,
+        .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
+        SHADOW(-2, 17, SHADOW_SIZE_L)
+        FOOTPRINT(Rotom)
+        OVERWORLD(
+            sPicTable_RotomStereo,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_RotomStereo,
+            gShinyOverworldPalette_RotomStereo
+        )
+        .levelUpLearnset = sRotomLevelUpLearnset,
+        .teachableLearnset = sRotomTeachableLearnset,
+        .formSpeciesIdTable = sRotomFormSpeciesIdTable,
+        .formChangeTable = sRotomFormChangeTable,
+        .randomizerMode = MON_RANDOMIZER_INVALID,
+    },
+
 #endif //P_FAMILY_ROTOM
 
 #if P_FAMILY_UXIE

@@ -17592,6 +17592,50 @@
       "MOVE_THUNDERBOLT"
     ]
   },
+  "ROTOM_STEREO": {
+    "LevelMoves": [
+      {
+        "Level": 1,
+        "Move": "MOVE_THUNDER_SHOCK"
+      },
+      {
+        "Level": 6,
+        "Move": "MOVE_CHARGE_BEAM"
+      },
+      {
+        "Level": 11,
+        "Move": "MOVE_HEX"
+      },
+      {
+        "Level": 18,
+        "Move": "MOVE_THUNDER_WAVE"
+      },
+      {
+        "Level": 25,
+        "Move": "MOVE_SHADOW_BALL"
+      },
+      {
+        "Level": 34,
+        "Move": "MOVE_THUNDERBOLT"
+      },
+      {
+        "Level": 43,
+        "Move": "MOVE_THUNDER"
+      }
+    ],
+    "PreEvoMoves": [],
+    "TMMoves": [],
+    "EggMoves": [],
+    "TutorMoves": [
+      "MOVE_CHARGE_BEAM",
+      "MOVE_DARK_PULSE",
+      "MOVE_OMINOUS_WIND",
+      "MOVE_REST",
+      "MOVE_SHADOW_BALL",
+      "MOVE_SWIFT",
+      "MOVE_THUNDERBOLT"
+    ]
+  },
   "SHAYMIN_SKY": {
     "LevelMoves": [
       {
