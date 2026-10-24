@@ -6390,6 +6390,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
 
     [SPECIES_ROTOM_STEREO] =
     {
+        .dexNotRequired = TRUE,
         .baseHP        = 50,
         .baseAttack    = 65,
         .baseDefense   = 107,
@@ -6461,6 +6462,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
+        .randomizerMode = MON_RANDOMIZER_INVALID,
     },
 
 #endif //P_FAMILY_ROTOM
