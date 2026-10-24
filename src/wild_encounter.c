@@ -666,9 +666,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum 
         #endif
         #if IS_HNS
         // Route 29 is the Rotom-Stereo encounter route on this branch.
-        if (area == WILD_AREA_LAND
-         && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_ROUTE29_HNS)
-         && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_ROUTE29_HNS))
+        if (area == WILD_AREA_LAND && gMapHeader.mapLayoutId == LAYOUT_ROUTE29_HNS)
             species = SPECIES_ROTOM_STEREO;
         #endif
         CreateWildMon(species, level);
