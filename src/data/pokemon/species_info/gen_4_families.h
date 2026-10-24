@@ -6390,7 +6390,6 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
 
     [SPECIES_ROTOM_STEREO] =
     {
-        .dexNotRequired = TRUE,
         .baseHP        = 50,
         .baseAttack    = 65,
         .baseDefense   = 107,
@@ -6432,22 +6431,22 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .frontPicSize = MON_COORDS_SIZE(56, 48),
         .frontPicYOffset = 10,
         .frontAnimFrames = ANIM_FRAMES(
-            ANIMCMD_FRAME(0, 30),
-            ANIMCMD_FRAME(1, 30),
+            ANIMCMD_FRAME(0, 20),
+            ANIMCMD_FRAME(1, 40),
             ANIMCMD_FRAME(0, 20),
         ),
-        .frontAnimId = ANIM_V_SQUISH_AND_BOUNCE,
-        .enemyMonElevation = 6,
+        .frontAnimId = ANIM_SHRINK_GROW_VIBRATE_FAST,
+        .enemyMonElevation = 17,
         .backPic = gMonBackPic_RotomStereo,
         .backPicSize = MON_COORDS_SIZE(64, 40),
-        .backPicYOffset = 12,
-        .backAnimId = BACK_ANIM_SHAKE_GLOW_GREEN,
+        .backPicYOffset = 0,
+        .backAnimId = BACK_ANIM_SHRINK_GROW_VIBRATE,
         .palette = gMonPalette_RotomStereo,
         .shinyPalette = gMonShinyPalette_RotomStereo,
         .iconSprite = gMonIcon_RotomStereo,
         .iconPalIndex = 0,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
-        SHADOW(-1, 7, SHADOW_SIZE_M)
+        SHADOW(-2, 17, SHADOW_SIZE_L)
         FOOTPRINT(Rotom)
         OVERWORLD(
             sPicTable_RotomStereo,
@@ -6462,7 +6461,6 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
-        .randomizerMode = MON_RANDOMIZER_INVALID,
     },
 
 #endif //P_FAMILY_ROTOM
