@@ -242,6 +242,7 @@ NewBarkTown_Lab_EventScript_ChoseStarter::
 	call_if_eq VAR_STARTER_MON, 1, NewBarkTown_Lab_EventScript_GiveStarter_Cyndaquil
 	call_if_eq VAR_STARTER_MON, 2, NewBarkTown_Lab_EventScript_GiveStarter_Totodile
 	giveitem ITEM_ROTOM_CATALOG
+	msgbox NewBarkTown_Lab_Text_ReceivedRotomCatalogue, MSGBOX_DEFAULT
 	setflag FLAG_SYS_POKEMON_GET
 	playfanfare MUS_OBTAIN_ITEM
 	bufferspeciesname STR_VAR_1, PLAYER_STARTER_SPECIES
@@ -743,6 +744,9 @@ NewBarkTown_Lab_Text_ChoseStarter:
 
 NewBarkTown_Lab_Text_ReceivedStarter:
 	.string "{PLAYER} received {STR_VAR_1}!$"
+
+NewBarkTown_Lab_Text_ReceivedRotomCatalogue:
+	.string "You received the ROTOM CATALOGUE!$"
 
 NewBarkTown_Lab_Text_Nickname:
 	.string "Would you like to give your\n"
