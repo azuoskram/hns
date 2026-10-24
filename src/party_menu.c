@@ -114,6 +114,7 @@ enum {
     MENU_CATALOG_FRIDGE,
     MENU_CATALOG_FAN,
     MENU_CATALOG_MOWER,
+    MENU_CATALOG_STEREO,
     MENU_CHANGE_FORM,
     MENU_CHANGE_ABILITY,
     MENU_PKMN_FOLLOWER,
@@ -492,6 +493,7 @@ static void CursorCb_CatalogWashing(u8);
 static void CursorCb_CatalogFridge(u8);
 static void CursorCb_CatalogFan(u8);
 static void CursorCb_CatalogMower(u8);
+static void CursorCb_CatalogStereo(u8);
 static void CursorCb_ChangeForm(u8);
 static void CursorCb_ChangeAbility(u8);
 static void CursorCb_PkmnFollower(u8);
@@ -6982,6 +6984,12 @@ static void CursorCb_CatalogMower(u8 taskId)
     TryMultichoiceFormChange(taskId);
 }
 
+static void CursorCb_CatalogStereo(u8 taskId)
+{
+    gSpecialVar_Result = 6;
+    gSpecialVar_0x8000 = ROTOM_STEREO_MOVE;
+    TryMultichoiceFormChange(taskId);
+}
 void ItemUseCB_ZygardeCube(u8 taskId, TaskFunc task)
 {
     PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
