@@ -1,0 +1,30 @@
+[1mdiff --git a/src/data/pokemon/species_info/gen_4_families.h b/src/data/pokemon/species_info/gen_4_families.h[m
+[1mindex c80a1c9b94..4dcf3878af 100644[m
+[1m--- a/src/data/pokemon/species_info/gen_4_families.h[m
+[1m+++ b/src/data/pokemon/species_info/gen_4_families.h[m
+[36m@@ -6430,14 +6430,14 @@[m [mconst struct SpeciesInfo gSpeciesInfoGen4[] =[m
+         .trainerOffset = 0,[m
+         .frontPic = gMonFrontPic_RotomStereo,[m
+         .frontPicSize = MON_COORDS_SIZE(56, 48),[m
+[31m-        .frontPicYOffset = 10,[m
+[32m+[m[32m        .frontPicYOffset = 3,[m
+         .frontAnimFrames = ANIM_FRAMES([m
+             ANIMCMD_FRAME(0, 20),[m
+             ANIMCMD_FRAME(1, 40),[m
+             ANIMCMD_FRAME(0, 20),[m
+         ),[m
+         .frontAnimId = ANIM_SHRINK_GROW_VIBRATE_FAST,[m
+[31m-        .enemyMonElevation = 17,[m
+[32m+[m[32m        .enemyMonElevation = 4,[m
+         .backPic = gMonBackPic_RotomStereo,[m
+         .backPicSize = MON_COORDS_SIZE(64, 40),[m
+         .backPicYOffset = 0,[m
+[36m@@ -6447,7 +6447,7 @@[m [mconst struct SpeciesInfo gSpeciesInfoGen4[] =[m
+         .iconSprite = gMonIcon_RotomStereo,[m
+         .iconPalIndex = 0,[m
+         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,[m
+[31m-        SHADOW(-2, 17, SHADOW_SIZE_L)[m
+[32m+[m[32m        SHADOW(-2, 14, SHADOW_SIZE_L)[m
+         FOOTPRINT(Rotom)[m
+         OVERWORLD([m
+             sPicTable_RotomStereo,[m
