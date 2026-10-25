@@ -6430,14 +6430,14 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .trainerOffset = 0,
         .frontPic = gMonFrontPic_RotomStereo,
         .frontPicSize = MON_COORDS_SIZE(56, 48),
-        .frontPicYOffset = 10,
+        .frontPicYOffset = 3,
         .frontAnimFrames = ANIM_FRAMES(
             ANIMCMD_FRAME(0, 20),
             ANIMCMD_FRAME(1, 40),
             ANIMCMD_FRAME(0, 20),
         ),
         .frontAnimId = ANIM_SHRINK_GROW_VIBRATE_FAST,
-        .enemyMonElevation = 17,
+        .enemyMonElevation = 4,
         .backPic = gMonBackPic_RotomStereo,
         .backPicSize = MON_COORDS_SIZE(64, 40),
         .backPicYOffset = 0,
@@ -6447,7 +6447,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .iconSprite = gMonIcon_RotomStereo,
         .iconPalIndex = 0,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
-        SHADOW(-2, 17, SHADOW_SIZE_L)
+        SHADOW(-2, 14, SHADOW_SIZE_L)
         FOOTPRINT(Rotom)
         OVERWORLD(
             sPicTable_RotomStereo,
