@@ -531,9 +531,9 @@ static const struct WindowTemplate sCatalogSelectWindowTemplate =
 {
     .bg = 2,
     .tilemapLeft = 17,
-    .tilemapTop = 5,
+    .tilemapTop = 3,
     .width = 12,
-    .height = 14,
+    .height = 16,
     .paletteNum = 14,
     .baseBlock = 0x2E9,
 };
