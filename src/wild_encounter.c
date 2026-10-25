@@ -665,9 +665,21 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum 
         species = RandomizeWildEncounter(species, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, area, wildMonIndex);
         #endif
         #if IS_HNS
-        // Route 29 is the Rotom-Stereo encounter route on this branch.
+        // Route 29 can encounter any Rotom form, including the custom Stereo form.
         if (area == WILD_AREA_LAND && gMapHeader.mapLayoutId == LAYOUT_ROUTE29_HNS)
-            species = SPECIES_ROTOM_STEREO;
+        {
+            static const u16 sRoute29RotomForms[] =
+            {
+                SPECIES_ROTOM,
+                SPECIES_ROTOM_HEAT,
+                SPECIES_ROTOM_WASH,
+                SPECIES_ROTOM_FROST,
+                SPECIES_ROTOM_FAN,
+                SPECIES_ROTOM_MOW,
+                SPECIES_ROTOM_STEREO,
+            };
+            species = sRoute29RotomForms[Random() % ARRAY_COUNT(sRoute29RotomForms)];
+        }
         #endif
         CreateWildMon(species, level);
     }
@@ -1345,6 +1357,9 @@ bool8 TryDoDoubleWildBattle(void)
     if (GetSafariZoneFlag()
       || (B_DOUBLE_WILD_REQUIRE_2_MONS == TRUE && GetMonsStateToDoubles() != PLAYER_HAS_TWO_USABLE_MONS))
         return FALSE;
+    // Route 29's wild Rotom encounters are always double battles when allowed.
+    if (gMapHeader.mapLayoutId == LAYOUT_ROUTE29_HNS)
+        return TRUE;
     if (FollowerNPCIsBattlePartner() && FNPC_FLAG_PARTNER_WILD_BATTLES != 0
      && (FNPC_FLAG_PARTNER_WILD_BATTLES == FNPC_ALWAYS || FlagGet(FNPC_FLAG_PARTNER_WILD_BATTLES)) && FNPC_NPC_FOLLOWER_WILD_BATTLE_VS_2 == TRUE)
         return TRUE;
