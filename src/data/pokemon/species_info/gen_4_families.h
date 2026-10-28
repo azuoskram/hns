@@ -6447,7 +6447,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .iconSprite = gMonIcon_RotomStereo,
         .iconPalIndex = 0,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
-        SHADOW(-2, 14, SHADOW_SIZE_L)
+        SHADOW(-2, 16, SHADOW_SIZE_M)
         FOOTPRINT(Rotom)
         OVERWORLD(
             sPicTable_RotomStereo,
