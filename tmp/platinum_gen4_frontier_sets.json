@@ -3333,5 +3333,350 @@
       "item": "ITEM_POISON_BARB",
       "form": 0
     }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/skuntank_1.json",
+    "data": {
+      "species": "SPECIES_SKUNTANK",
+      "moves": [
+        "MOVE_SUCKER_PUNCH",
+        "MOVE_POISON_JAB",
+        "MOVE_SLASH",
+        "MOVE_SCREECH"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_RAZOR_CLAW",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/skuntank_2.json",
+    "data": {
+      "species": "SPECIES_SKUNTANK",
+      "moves": [
+        "MOVE_CRUNCH",
+        "MOVE_TOXIC",
+        "MOVE_SWAGGER",
+        "MOVE_DOUBLE_TEAM"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": false,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_JOLLY",
+      "item": "ITEM_CHESTO_BERRY",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/skuntank_3.json",
+    "data": {
+      "species": "SPECIES_SKUNTANK",
+      "moves": [
+        "MOVE_SLUDGE_BOMB",
+        "MOVE_DARK_PULSE",
+        "MOVE_FLAMETHROWER",
+        "MOVE_SHADOW_BALL"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": true,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_TIMID",
+      "item": "ITEM_SHUCA_BERRY",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/skuntank_4.json",
+    "data": {
+      "species": "SPECIES_SKUNTANK",
+      "moves": [
+        "MOVE_POISON_JAB",
+        "MOVE_NIGHT_SLASH",
+        "MOVE_CRUNCH",
+        "MOVE_EXPLOSION"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_JOLLY",
+      "item": "ITEM_MUSCLE_BAND",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/snover_1.json",
+    "data": {
+      "species": "SPECIES_SNOVER",
+      "moves": [
+        "MOVE_ICE_PUNCH",
+        "MOVE_RAZOR_LEAF",
+        "MOVE_GRASS_WHISTLE",
+        "MOVE_INGRAIN"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_NEVERMELTICE",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/staraptor_1.json",
+    "data": {
+      "species": "SPECIES_STARAPTOR",
+      "moves": [
+        "MOVE_RETURN",
+        "MOVE_AERIAL_ACE",
+        "MOVE_DOUBLE_TEAM",
+        "MOVE_ROOST"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_JOLLY",
+      "item": "ITEM_KINGS_ROCK",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/staraptor_2.json",
+    "data": {
+      "species": "SPECIES_STARAPTOR",
+      "moves": [
+        "MOVE_ENDEAVOR",
+        "MOVE_AERIAL_ACE",
+        "MOVE_ENDURE",
+        "MOVE_QUICK_ATTACK"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_JOLLY",
+      "item": "ITEM_KINGS_ROCK",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/staraptor_3.json",
+    "data": {
+      "species": "SPECIES_STARAPTOR",
+      "moves": [
+        "MOVE_BRAVE_BIRD",
+        "MOVE_RETURN",
+        "MOVE_STEEL_WING",
+        "MOVE_PURSUIT"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_MUSCLE_BAND",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/staraptor_4.json",
+    "data": {
+      "species": "SPECIES_STARAPTOR",
+      "moves": [
+        "MOVE_BRAVE_BIRD",
+        "MOVE_GIGA_IMPACT",
+        "MOVE_CLOSE_COMBAT",
+        "MOVE_U_TURN"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_CHOICE_BAND",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/staravia_1.json",
+    "data": {
+      "species": "SPECIES_STARAVIA",
+      "moves": [
+        "MOVE_ENDEAVOR",
+        "MOVE_WING_ATTACK",
+        "MOVE_QUICK_ATTACK",
+        "MOVE_WHIRLWIND"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_SHARP_BEAK",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/starly_1.json",
+    "data": {
+      "species": "SPECIES_STARLY",
+      "moves": [
+        "MOVE_WING_ATTACK",
+        "MOVE_QUICK_ATTACK",
+        "MOVE_ENDEAVOR",
+        "MOVE_GROWL"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_SHARP_BEAK",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/stunky_1.json",
+    "data": {
+      "species": "SPECIES_STUNKY",
+      "moves": [
+        "MOVE_PURSUIT",
+        "MOVE_TOXIC",
+        "MOVE_SLASH",
+        "MOVE_SMOKE_SCREEN"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_BLACKGLASSES",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/togekiss_1.json",
+    "data": {
+      "species": "SPECIES_TOGEKISS",
+      "moves": [
+        "MOVE_SKY_ATTACK",
+        "MOVE_EXTREME_SPEED",
+        "MOVE_DRAIN_PUNCH",
+        "MOVE_ROOST"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_POWER_HERB",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/togekiss_2.json",
+    "data": {
+      "species": "SPECIES_TOGEKISS",
+      "moves": [
+        "MOVE_AIR_SLASH",
+        "MOVE_OMINOUS_WIND",
+        "MOVE_SILVER_WIND",
+        "MOVE_ANCIENT_POWER"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": false,
+        "defense": false,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_SCOPE_LENS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/togekiss_3.json",
+    "data": {
+      "species": "SPECIES_TOGEKISS",
+      "moves": [
+        "MOVE_AIR_SLASH",
+        "MOVE_HEAT_WAVE",
+        "MOVE_SIGNAL_BEAM",
+        "MOVE_MAGICAL_LEAF"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": true,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_WISE_GLASSES",
+      "form": 0
+    }
   }
 ]
