@@ -1263,5 +1263,350 @@
       "item": "ITEM_BRIGHTPOWDER",
       "form": 0
     }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/gallade_3.json",
+    "data": {
+      "species": "SPECIES_GALLADE",
+      "moves": [
+        "MOVE_PSYCHO_CUT",
+        "MOVE_STONE_EDGE",
+        "MOVE_AERIAL_ACE",
+        "MOVE_X_SCISSOR"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_SCOPE_LENS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/gallade_4.json",
+    "data": {
+      "species": "SPECIES_GALLADE",
+      "moves": [
+        "MOVE_PSYCHO_CUT",
+        "MOVE_CLOSE_COMBAT",
+        "MOVE_LEAF_BLADE",
+        "MOVE_NIGHT_SLASH"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_SCOPE_LENS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/garchomp_1.json",
+    "data": {
+      "species": "SPECIES_GARCHOMP",
+      "moves": [
+        "MOVE_DRAGON_CLAW",
+        "MOVE_EARTHQUAKE",
+        "MOVE_DOUBLE_TEAM",
+        "MOVE_SANDSTORM"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_JOLLY",
+      "item": "ITEM_BRIGHTPOWDER",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/garchomp_2.json",
+    "data": {
+      "species": "SPECIES_GARCHOMP",
+      "moves": [
+        "MOVE_DRACO_METEOR",
+        "MOVE_EARTH_POWER",
+        "MOVE_FLAMETHROWER",
+        "MOVE_SURF"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": true,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_WHITE_HERB",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/garchomp_3.json",
+    "data": {
+      "species": "SPECIES_GARCHOMP",
+      "moves": [
+        "MOVE_DRAGON_RUSH",
+        "MOVE_STONE_EDGE",
+        "MOVE_AQUA_TAIL",
+        "MOVE_AERIAL_ACE"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_FOCUS_SASH",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/garchomp_4.json",
+    "data": {
+      "species": "SPECIES_GARCHOMP",
+      "moves": [
+        "MOVE_OUTRAGE",
+        "MOVE_EARTHQUAKE",
+        "MOVE_CRUNCH",
+        "MOVE_FIRE_FANG"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_PERSIM_BERRY",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/gastrodon_1.json",
+    "data": {
+      "species": "SPECIES_GASTRODON",
+      "moves": [
+        "MOVE_WATERFALL",
+        "MOVE_EARTHQUAKE",
+        "MOVE_RECOVER",
+        "MOVE_MIRROR_COAT"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": false,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_CAREFUL",
+      "item": "ITEM_FOCUS_SASH",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/gastrodon_2.json",
+    "data": {
+      "species": "SPECIES_GASTRODON",
+      "moves": [
+        "MOVE_MUDDY_WATER",
+        "MOVE_MUD_BOMB",
+        "MOVE_RECOVER",
+        "MOVE_YAWN"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": true
+      },
+      "nature": "NATURE_SASSY",
+      "item": "ITEM_ZOOM_LENS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/gastrodon_3.json",
+    "data": {
+      "species": "SPECIES_GASTRODON",
+      "moves": [
+        "MOVE_WATERFALL",
+        "MOVE_EARTHQUAKE",
+        "MOVE_STONE_EDGE",
+        "MOVE_FISSURE"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_SHELL_BELL",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/gastrodon_4.json",
+    "data": {
+      "species": "SPECIES_GASTRODON",
+      "moves": [
+        "MOVE_SURF",
+        "MOVE_EARTH_POWER",
+        "MOVE_ICE_BEAM",
+        "MOVE_SLUDGE_BOMB"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": false,
+        "defense": false,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_WISE_GLASSES",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/gible_1.json",
+    "data": {
+      "species": "SPECIES_GIBLE",
+      "moves": [
+        "MOVE_DRAGON_RAGE",
+        "MOVE_SAND_TOMB",
+        "MOVE_METAL_CLAW",
+        "MOVE_SANDSTORM"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_SOFT_SAND",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/glaceon_1.json",
+    "data": {
+      "species": "SPECIES_GLACEON",
+      "moves": [
+        "MOVE_ICE_BEAM",
+        "MOVE_WATER_PULSE",
+        "MOVE_DOUBLE_TEAM",
+        "MOVE_BATON_PASS"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": true
+      },
+      "nature": "NATURE_CALM",
+      "item": "ITEM_LAX_INCENSE",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/glaceon_2.json",
+    "data": {
+      "species": "SPECIES_GLACEON",
+      "moves": [
+        "MOVE_ICE_BEAM",
+        "MOVE_DOUBLE_TEAM",
+        "MOVE_YAWN",
+        "MOVE_HAIL"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": true
+      },
+      "nature": "NATURE_CALM",
+      "item": "ITEM_LEFTOVERS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/glaceon_3.json",
+    "data": {
+      "species": "SPECIES_GLACEON",
+      "moves": [
+        "MOVE_BLIZZARD",
+        "MOVE_HYPER_BEAM",
+        "MOVE_HAIL",
+        "MOVE_MIRROR_COAT"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": true,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_FOCUS_SASH",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/glaceon_4.json",
+    "data": {
+      "species": "SPECIES_GLACEON",
+      "moves": [
+        "MOVE_ICE_BEAM",
+        "MOVE_SHADOW_BALL",
+        "MOVE_SIGNAL_BEAM",
+        "MOVE_WATER_PULSE"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": true,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_WISE_GLASSES",
+      "form": 0
+    }
   }
 ]
