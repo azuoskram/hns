@@ -3678,5 +3678,373 @@
       "item": "ITEM_WISE_GLASSES",
       "form": 0
     }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/togekiss_4.json",
+    "data": {
+      "species": "SPECIES_TOGEKISS",
+      "moves": [
+        "MOVE_HYPER_BEAM",
+        "MOVE_AIR_SLASH",
+        "MOVE_AURA_SPHERE",
+        "MOVE_PSYCHIC"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": true,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_EXPERT_BELT",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/torterra_1.json",
+    "data": {
+      "species": "SPECIES_TORTERRA",
+      "moves": [
+        "MOVE_EARTHQUAKE",
+        "MOVE_GRASS_KNOT",
+        "MOVE_ROCK_SLIDE",
+        "MOVE_CURSE"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_YACHE_BERRY",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/torterra_2.json",
+    "data": {
+      "species": "SPECIES_TORTERRA",
+      "moves": [
+        "MOVE_GIGA_DRAIN",
+        "MOVE_LEECH_SEED",
+        "MOVE_SYNTHESIS",
+        "MOVE_AMNESIA"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": false,
+        "defense": true,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_SASSY",
+      "item": "ITEM_LEFTOVERS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/torterra_3.json",
+    "data": {
+      "species": "SPECIES_TORTERRA",
+      "moves": [
+        "MOVE_FRENZY_PLANT",
+        "MOVE_EARTH_POWER",
+        "MOVE_HYPER_BEAM",
+        "MOVE_LEECH_SEED"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": true,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_LAX_INCENSE",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/torterra_4.json",
+    "data": {
+      "species": "SPECIES_TORTERRA",
+      "moves": [
+        "MOVE_WOOD_HAMMER",
+        "MOVE_EARTHQUAKE",
+        "MOVE_STONE_EDGE",
+        "MOVE_CRUNCH"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_QUICK_CLAW",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/toxicroak_1.json",
+    "data": {
+      "species": "SPECIES_TOXICROAK",
+      "moves": [
+        "MOVE_POISON_JAB",
+        "MOVE_BRICK_BREAK",
+        "MOVE_X_SCISSOR",
+        "MOVE_KNOCK_OFF"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_BLACK_SLUDGE",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/toxicroak_2.json",
+    "data": {
+      "species": "SPECIES_TOXICROAK",
+      "moves": [
+        "MOVE_DYNAMIC_PUNCH",
+        "MOVE_POISON_JAB",
+        "MOVE_THUNDER_PUNCH",
+        "MOVE_ICE_PUNCH"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_WIDE_LENS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/toxicroak_3.json",
+    "data": {
+      "species": "SPECIES_TOXICROAK",
+      "moves": [
+        "MOVE_SLUDGE_BOMB",
+        "MOVE_FOCUS_BLAST",
+        "MOVE_SHADOW_BALL",
+        "MOVE_DARK_PULSE"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": false,
+        "speed": true,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_WISE_GLASSES",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/toxicroak_4.json",
+    "data": {
+      "species": "SPECIES_TOXICROAK",
+      "moves": [
+        "MOVE_GUNK_SHOT",
+        "MOVE_CROSS_CHOP",
+        "MOVE_EARTHQUAKE",
+        "MOVE_STONE_EDGE"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": true,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_RAZOR_CLAW",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/turtwig_1.json",
+    "data": {
+      "species": "SPECIES_TURTWIG",
+      "moves": [
+        "MOVE_RAZOR_LEAF",
+        "MOVE_BITE",
+        "MOVE_TICKLE",
+        "MOVE_WITHDRAW"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_OCCA_BERRY",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/vespiquen_1.json",
+    "data": {
+      "species": "SPECIES_VESPIQUEN",
+      "moves": [
+        "MOVE_SILVER_WIND",
+        "MOVE_AIR_CUTTER",
+        "MOVE_OMINOUS_WIND",
+        "MOVE_SWAGGER"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": true,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_SCOPE_LENS",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/vespiquen_2.json",
+    "data": {
+      "species": "SPECIES_VESPIQUEN",
+      "moves": [
+        "MOVE_X_SCISSOR",
+        "MOVE_TOXIC",
+        "MOVE_HEAL_ORDER",
+        "MOVE_DESTINY_BOND"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": false,
+        "defense": true,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_CAREFUL",
+      "item": "ITEM_PERSIM_BERRY",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/vespiquen_3.json",
+    "data": {
+      "species": "SPECIES_VESPIQUEN",
+      "moves": [
+        "MOVE_X_SCISSOR",
+        "MOVE_AERIAL_ACE",
+        "MOVE_PURSUIT",
+        "MOVE_U_TURN"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_MUSCLE_BAND",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/vespiquen_4.json",
+    "data": {
+      "species": "SPECIES_VESPIQUEN",
+      "moves": [
+        "MOVE_ATTACK_ORDER",
+        "MOVE_DEFEND_ORDER",
+        "MOVE_HEAL_ORDER",
+        "MOVE_CONFUSE_RAY"
+      ],
+      "evFlags": {
+        "hp": true,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": false
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_SHELL_BELL",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/wormadam_1.json",
+    "data": {
+      "species": "SPECIES_WORMADAM",
+      "moves": [
+        "MOVE_RAZOR_LEAF",
+        "MOVE_BUG_BITE",
+        "MOVE_PROTECT",
+        "MOVE_CAPTIVATE"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": true,
+        "defense": false,
+        "speed": false,
+        "special_attack": false,
+        "special_defense": true
+      },
+      "nature": "NATURE_ADAMANT",
+      "item": "ITEM_COBA_BERRY",
+      "form": 0
+    }
+  },
+  {
+    "file": "res/trainers/frontier/pokemon/wormadam_2.json",
+    "data": {
+      "species": "SPECIES_WORMADAM",
+      "moves": [
+        "MOVE_GIGA_DRAIN",
+        "MOVE_SIGNAL_BEAM",
+        "MOVE_PSYCHIC",
+        "MOVE_ATTRACT"
+      ],
+      "evFlags": {
+        "hp": false,
+        "attack": false,
+        "defense": true,
+        "speed": false,
+        "special_attack": true,
+        "special_defense": false
+      },
+      "nature": "NATURE_MODEST",
+      "item": "ITEM_COBA_BERRY",
+      "form": 0
+    }
   }
 ]
